@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memchr.c                                        :+:    :+:            */
+/*   pwd.c                                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
+/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/01 11:33:27 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 12:04:36 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/02/04 18:09:44 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+void	pwd(t_data data)
 {
-	size_t i;
+	char	*buf;
 
-	i = 0;
-	while (n > i)
+	buf = NULL;
+	buf = getcwd(data.curdir, 0);
+	// free(buf);
+	if (!buf)
 	{
-		if (((unsigned char *)s)[i] == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
+		printf("A whoopsie doopsie happened\n");
+		exit (0);
 	}
-	return (0);
+	printf("%s\n", buf);
+	free(buf);
+	return ;
 }
