@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   string_utils.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 18:16:48 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/02/04 18:38:31 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/02/04 18:39:45 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(void)
+int	count_words(char const *s, char c)
 {
-	char	*buf;
+	int	i;
+	int	wc;
 
-	buf = NULL;
-	buf = getcwd(buf, 0);
-	if (!buf)
-		exit (0);
-	printf("%s\n", buf);
-	free(buf);
-	return ;
+	i = 0;
+	wc = 0;
+	while (s[i] == c && s[i])
+		i++;
+	while (s[i])
+	{
+		while (s[i] && s[i] != c)
+			i++;
+		wc++;
+		while (s[i] && s[i] == c)
+			i++;
+	}
+	return (wc);
 }

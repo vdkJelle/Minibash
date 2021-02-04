@@ -6,13 +6,15 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/04 17:45:35 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/02/04 18:52:18 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 SRCS		=	main\
-				pwd
+				cd\
+				pwd\
+				string_utils
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.

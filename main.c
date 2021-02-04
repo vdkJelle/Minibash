@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 17:45:12 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/04 18:47:07 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ int	main(void)
 		if (!ft_strncmp(data.input, "exit", 4) && ft_strlen(data.input) == 4)
 			exit(0);
 		if (!ft_strncmp(data.input, "pwd", 3) && ft_strlen(data.input) == 3)
-			pwd(data);
+			pwd();
+		if (!ft_strncmp(data.input, "cd ", 3) && count_words(data.input, ' ') == 2)
+			cd(data.input);
 		free(data.input);
 		data.input = NULL;
 	}
