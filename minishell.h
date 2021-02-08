@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 18:44:50 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/08 15:20:24 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 
@@ -44,5 +46,10 @@ void	cd(char *path);
 **-------------------------------STRING_UTILS.C---------------------------------
 */
 int		count_words(char const *s, char c);
+
+/*
+**--------------------------------EXECUTABLE.C----------------------------------
+*/
+void	execute(char *path);
 
 #endif

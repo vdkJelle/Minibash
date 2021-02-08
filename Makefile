@@ -6,19 +6,20 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/04 18:52:18 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/02/08 14:39:29 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 SRCS		=	main\
 				cd\
+				executable\
 				pwd\
 				string_utils
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.
-FLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
+FLAGS		=	-Wall -Wextra -g -fsanitize=address
 LIBRARIES	=	libft/libft.a\
 				get_next_line/gnl.a
 
@@ -29,7 +30,7 @@ $(NAME): $(OFILES) $(LIBRARIES)
 
 $(LIBRARIES):
 	@echo "Compiling libft"
-	@make -C libft
+	@make bonus -C libft
 	@echo "Compiling get_next_line"
 	@make -C get_next_line
 

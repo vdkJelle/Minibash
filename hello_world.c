@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
+/*   hello_world.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/08 11:04:14 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/02/08 11:33:09 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/02/08 15:40:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdio.h>
 
-void	cd(char *path)
+int	main(int argc, char **argv)
 {
-	int		i;
+	int i = 1;
 
-	i = 2;
-	while (path[i] == ' ')
+	argc--;
+	while (argc)
+	{
+		printf("%s\n", argv[i]);
 		i++;
-	i = chdir(path + i);
-	if (i < 0)
-		printf("Path does not exist\n");
-	return ;
+		argc--;
+	}
+	return (0);
 }
