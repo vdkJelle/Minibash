@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/08 14:39:29 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/02/16 21:37:02 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS		=	main\
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.
-FLAGS		=	-Wall -Wextra -g -fsanitize=address
+FLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
 LIBRARIES	=	libft/libft.a\
 				get_next_line/gnl.a
 
