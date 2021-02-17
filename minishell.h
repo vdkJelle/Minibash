@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/17 11:14:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/17 12:47:00 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,15 @@ int		count_words(char const *s, char c);
 **--------------------------------EXECUTABLE.C----------------------------------
 */
 void	execute(char *path);
+
+/*
+**------------------------------------ECHO.C------------------------------------
+*/
+void	ft_echo(char *line);
+
+/*
+**-------------------------------COUNT_QUOTES.C---------------------------------
+*/
+int		count_quotes(char *line);
 
 #endif
