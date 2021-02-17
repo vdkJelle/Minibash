@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/08 11:04:14 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/17 11:20:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ void	cd(char *path)
 		i++;
 	i = chdir(path + i);
 	if (i < 0)
-		printf("Path does not exist\n");
+		printf("%s\n", strerror(errno));
 	return ;
 }
