@@ -6,30 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 11:23:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/02/17 11:38:07 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 12:27:08 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		count_backslash(char *line, int loc)
-{
-	int		i;
-	int		count;
-
-	i = loc - 1;
-	if (i < 0)
-		return (0);
-	count = 0;		
-	while (i > 0 && line[i] == '\\')
-	{
-		count++;
-		i--;
-	}
-	return (count);
-}
-
-static int		count_double_quotes(char *line)
+static int	count_double_quotes(char *line)
 {
 	int		i;
 
@@ -38,12 +21,12 @@ static int		count_double_quotes(char *line)
 	{
 		i++;
 		if (line[i] && line[i] == '\"' && count_backslash(line, i) % 2 != 0)
-			i++;				
+			i++;
 	}
 	return (i);
 }
 
-static int		count_single_quotes(char *line)
+static int	count_single_quotes(char *line)
 {
 	int		i;
 
@@ -53,7 +36,7 @@ static int		count_single_quotes(char *line)
 	return (i);
 }
 
-int				count_quotes(char *line)
+int			count_quotes(char *line)
 {
 	int		i;
 

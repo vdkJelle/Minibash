@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
+/*   utils_list.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:24:14 by tevan-de      ########   odam.nl         */
+/*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
+/*   Updated: 2021/02/28 12:19:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char *path)
+void	free_token(void *content)
 {
-	int		i;
-	int		ret;
+	free(((t_token*)content)->cmd);
+	free(((t_token*)content)->arg);
+	free(content);
+}
 
-	i = 0;
-	while (path[i] == ' ')
-		i++;
-	if (path[i] == '\0')
-		ret = chdir(get_env(environ, "HOME"));
-	else
-		ret = chdir(path + i);
-	if (ret < 0)
-		printf("%s\n", strerror(errno));
-	return ;
+void	print_token(void *content)
+{
+	printf("cmd = |%s|\n", ((t_token*)content)->cmd);
+	printf("arg = |%s|\n", ((t_token*)content)->arg);
 }

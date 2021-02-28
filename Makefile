@@ -6,18 +6,23 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/17 11:32:57 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/02/28 12:19:04 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	main\
-				cd\
+SRCS		=	cd\
 				count_quotes\
 				echo\
 				executable\
+				get_env\
+				main\
 				pwd\
-				string_utils
+				utils_list\
+				utils_string1\
+				utils_string2\
+				utils_string_whitespaces\
+				token
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.
