@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:53:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 12:57:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	cody_catch(t_list *token)
+static void	cody_catch(t_list *token, t_data data)
 {
 	t_list			*temp;
 
@@ -26,7 +26,7 @@ static void	cody_catch(t_list *token)
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "cd ", 2))
 			cd(((t_token*)temp->content)->arg);
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "./", 2) || !ft_strncmp(((t_token*)temp->content)->cmd, "/", 1) || !ft_strncmp(((t_token*)temp->content)->cmd, "..", 2))
-			execute(((t_token*)temp->content)->cmd);
+			execute(((t_token*)temp->content)->cmd, data);
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "echo", 4))
 			ft_echo(((t_token*)temp->content)->arg);
 		temp = temp->next;
@@ -68,7 +68,7 @@ int	main(void)
 		if (data.r == -1)
 			exit(1);		
 		get_token(data.input, &token);
-		cody_catch(token);
+		cody_catch(token, data);
 		ft_lstclear(&token, free_token);
 		free(data.input);
 		data.input = NULL;
