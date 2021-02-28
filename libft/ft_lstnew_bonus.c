@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/11 13:30:05 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/14 11:58:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/18 16:47:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*p;
 
-	p = malloc(sizeof(p));
+	p = malloc(sizeof(t_list));
 	if (p == 0)
 		return (0);
 	p->content = content;
