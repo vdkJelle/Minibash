@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/02/17 12:23:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 11:18:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		count_backslash(char *line, int loc)
+int		count_backslash(char *line, int loc)
 {
 	int		i;
 	int		count;

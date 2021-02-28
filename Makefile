@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/17 11:32:57 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/02/24 10:44:25 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS		=	main\
 				count_quotes\
 				echo\
 				executable\
+				export\
 				pwd\
 				string_utils
 CFILES		=	$(SRCS:%=%.c)
