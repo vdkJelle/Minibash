@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:18:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 12:47:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,27 @@
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 
+/*
+**------------------------------GLOBAL VARIABLES--------------------------------
+*/
+extern char	**environ;
+
+/*
+**-----------------------------------STRUCTS------------------------------------
+*/
+typedef struct	s_data
+{
+	char	**our_env;
+	char	*input;
+	char	*curdir;
+	int		r;
+}				t_data;
+
 typedef struct	s_token
 {
 	char		*cmd;
 	char		*arg;
 }				t_token;
-
-typedef struct	s_data
-{
-	char		*input;
-	char		*curdir;
-	int			r;
-}				t_data;
-
-extern char 	**environ;
 
 /*
 **------------------------------------CD.C--------------------------------------
@@ -55,7 +62,12 @@ void	ft_echo(char *line);
 /*
 **--------------------------------EXECUTABLE.C----------------------------------
 */
-void	execute(char *path);
+void	execute(char *path, t_data data);
+
+/*
+**----------------------------------EXPORT.C------------------------------------
+*/
+void	export(char *input, t_data *data, char ***our_env);
 
 /*
 **----------------------------------GET_ENV.C-----------------------------------
@@ -66,11 +78,6 @@ char    *get_env(char **env, char *key);
 **------------------------------------MAIN.C------------------------------------
 */
 int		main(void);
-
-/*
-**------------------------------------PWD.C-------------------------------------
-*/
-void	pwd(void);
 
 /*
 **-----------------------------------TOKEN.C------------------------------------
@@ -105,5 +112,11 @@ void	skip_whitespaces(char **s);
 int		skip_whitespaces_int(char *s);
 void	skip_nonwhitespaces(char **s);
 int		skip_nonwhitespaces_int(char *s);
+
+/*
+**------------------------------------PWD.C-------------------------------------
+*/
+void	pwd(void);
+
 
 #endif

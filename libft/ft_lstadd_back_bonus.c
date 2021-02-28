@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/11 15:47:36 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/20 16:03:52 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/02/18 16:23:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 {
 	t_list	*tmp;
 
-	if (!alst)
+	if (!new)
 		return ;
 	tmp = *alst;
 	if (tmp)
