@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/03/05 16:52:21 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/03/07 20:08:37 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,13 @@ SRCS		=	cd\
 				count_quotes\
 				echo\
 				executable\
+				export\
 				exit\
 				get_env\
 				main\
 				pwd\
 				redirection\
+				utils_export\
 				utils_list\
 				utils_string1\
 				utils_string2\

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/07 20:00:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/07 20:07:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,10 @@ static void	cody_catch(t_data data)
 	data.token = start;
 }
 
-static void	initialize_env(char ***our_env)
+static void	initialize_env(char ***our_env, int *env_size)
 {
-	int i;
+	extern char	**environ;
+	int			i;
 
 	i = 0;
 	while (environ[i])
@@ -89,6 +90,7 @@ static void	initialize_env(char ***our_env)
 		i++;
 	}
 	(*our_env)[i] = NULL;
+	(*env_size) = i;
 }
 
 int	main(void)
@@ -98,7 +100,7 @@ int	main(void)
 
 	ft_bzero(&data, sizeof(data));
 	printf("Welcome to the amazing Codyshell!\n");
-	initialize_env(&data.our_env);
+	initialize_env(&data.our_env, &data.env_size);
 	i = 0;
 	while (1)
 	{

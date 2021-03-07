@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/07 19:58:54 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/07 20:10:37 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 /*
 **------------------------------GLOBAL VARIABLES--------------------------------
 */
-extern char	**environ;
 
 /*
 **-----------------------------------STRUCTS------------------------------------
@@ -41,6 +40,7 @@ typedef struct	s_data
 {
 	char		**our_env;
 	char		*input;
+	int			env_size;
 	int			fd_count;
 	int			r;
 	t_list		*token;
@@ -59,7 +59,7 @@ void	execute(t_data data);
 /*
 **----------------------------------EXPORT.C------------------------------------
 */
-void	export(char *input, t_data *data, char ***our_env);
+void	export(char **arg, char ***our_env, int *env_size);
 
 /*
 **----------------------------------FT_CD.C-------------------------------------
@@ -100,6 +100,11 @@ int		redirection(t_data *data, char *s, char c);
 **-----------------------------------TOKEN.C------------------------------------
 */
 void	get_token(t_data *data, char *s);
+
+/*
+**--------------------------------UTILS_LIST.C----------------------------------
+*/
+char	*create_string(char *arg);
 
 /*
 **--------------------------------UTILS_LIST.C----------------------------------
