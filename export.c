@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:25:21 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/03 13:28:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,61 @@ static void	print_export(char **our_env)
 	}
 }
 
-static int	check_if_valid(char *input)
+static void	append_key_value(char *arg, char ***our_env, int *env_size)
 {
-	int i;
+	char	**tmp;
+	int		i;
 
 	i = 0;
-	if ((input[i] <= 'A' || input[i] >= 'Z') && (input[i] <= 'a' && input[i] >= 'z'))
-		return (1);
-	while (input[i] && input[i] != '=')
+	tmp = (char **)malloc(sizeof(char *) * ((*env_size) + 2));
+	while ((*our_env)[i])
 	{
-		if ((input[i] <= 'A' || input[i] >= 'Z') && (input[i] <= 'a' || input[i] >= 'z') && (input[i] <= '0' || input[i] >= '9'));
-		return (2);
+		tmp[i] = ft_strdup((*our_env)[i]);
 		i++;
 	}
+	tmp[i] = create_string(arg);
+	tmp[i + 1] = NULL;
+	// free_array(our_env);
+	(*our_env) = tmp;
 }
 
-void		export(char *input, t_data *data, char ***our_env)
+static int	check_if_valid(char *input, int *i)
 {
-	int			i;
+	if (!ft_isalpha(input[*i]) || input[*i] != '_')
+		return (1);
+	while (input[*i] && input[*i] != '=')
+	{
+		if (!ft_isalnum(input[*i] || input[*i] != '_'))
+			return (1);
+		(*i)++;
+	}
+	return (0);
+}
 
-	(void)data;
-	if (ft_strlen(input) == 6)
+void		export(char **arg, char ***our_env, int *env_size)
+{
+	int	i;
+	int	j;
+
+	if (!arg[0])
 		print_export(*our_env);
 	else
 	{
-		i = 6;
-		while (input[i] == ' ')
-			i++;
-		if (check_if_valid(input + i) == 1)
-			return (printf("export: not an identifier: %s\n", input + i));
-		if (check_if_valid(input + i) == 2)
-			return (printf("export: not valid in this context: %s\n", input + i));
-		// i = append_env(input + i);
+		j = 0;
+		while (arg[j])
+		{
+			i = 0;
+			if (check_if_valid(arg[j], &i))
+			{
+				printf("🐶: export: not a valid identifier: %s\n", arg[j]);
+				j++;
+				continue ;
+			}
+			if (arg[j][i] == '=')
+				append_key_value(arg[j], our_env, env_size);
+			// else
+				// append_key(arg[j], our_env, env_size);
+			j++;
+		}
 	}
 }

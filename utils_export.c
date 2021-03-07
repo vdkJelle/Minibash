@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd.c                                               :+:    :+:            */
+/*   utils_export.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/03 13:23:41 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/03/03 12:22:34 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/03/03 13:04:08 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char *path, char **our_env)
+char	*create_string(char *arg)
 {
 	int		i;
-	int		ret;
+	char	*ret;
 
 	i = 0;
-	while (path[i] == ' ')
+	ret = malloc(sizeof(char) * ft_strlen(arg) + 3);
+	while (arg[i] && arg[i] != '=')
+	{
+		ret[i] = arg[i];
 		i++;
-	if (path[i] == '\0')
-		ret = chdir(get_env(our_env, "HOME"));
-	else
-		ret = chdir(path + i);
-	if (ret < 0)
-		printf("%s\n", strerror(errno));
-	return ;
+	}
+	ret[i] = '=';
+	ret[i + 1] = '"';
+	while (arg[i + 1])
+	{
+		ret[i + 2] = arg[i + 1];
+		i++;
+	}
+	ret[i + 2] = '"';
+	ret[i + 3] = '\0';
+	return (ret);
 }

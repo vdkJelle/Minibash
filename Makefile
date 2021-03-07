@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/28 12:53:52 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/03/03 12:24:00 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS		=	cd\
 				get_env\
 				main\
 				pwd\
+				utils_export\
 				utils_list\
 				utils_string1\
 				utils_string2\

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:57:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/03 13:47:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,21 @@ static void	cody_catch(t_list *token, t_data data)
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "pwd", 3))
 			pwd();
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "cd ", 2))
-			cd(((t_token*)temp->content)->arg);
+			cd(((t_token*)temp->content)->arg, data.our_env);
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "./", 2) || !ft_strncmp(((t_token*)temp->content)->cmd, "/", 1) || !ft_strncmp(((t_token*)temp->content)->cmd, "..", 2))
 			execute(((t_token*)temp->content)->cmd, data);
 		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "echo", 4))
 			ft_echo(((t_token*)temp->content)->arg);
+		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "export", 6))
+			export(((t_token*)temp->content)->arg, &data.our_env, &data.env_size);
 		temp = temp->next;
 	}
 }
 
-static void	initialize_env(char ***our_env)
+static void	initialize_env(char ***our_env, int *env_size)
 {
-	int i;
+	extern char	**environ;
+	int			i;
 
 	i = 0;
 	while (environ[i])
@@ -48,6 +51,7 @@ static void	initialize_env(char ***our_env)
 		i++;
 	}
 	(*our_env)[i] = NULL;
+	(*env_size) = i;
 }
 
 int	main(void)
@@ -59,7 +63,7 @@ int	main(void)
 	token = NULL;
 	ft_bzero(&data, sizeof(data));
 	printf("Welcome to the amazing Codyshell!\n");
-	initialize_env(&data.our_env);
+	initialize_env(&data.our_env, &data.env_size);
 	i = 0;
 	while (1)
 	{

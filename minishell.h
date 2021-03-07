@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:47:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/03 13:27:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 /*
 **------------------------------GLOBAL VARIABLES--------------------------------
 */
-extern char	**environ;
 
 /*
 **-----------------------------------STRUCTS------------------------------------
@@ -35,6 +34,7 @@ typedef struct	s_data
 	char	**our_env;
 	char	*input;
 	char	*curdir;
+	int		env_size;
 	int		r;
 }				t_data;
 
@@ -47,7 +47,7 @@ typedef struct	s_token
 /*
 **------------------------------------CD.C--------------------------------------
 */
-void	cd(char *path);
+void	cd(char *path, char **our_env);
 
 /*
 **-------------------------------COUNT_QUOTES.C---------------------------------
@@ -67,7 +67,7 @@ void	execute(char *path, t_data data);
 /*
 **----------------------------------EXPORT.C------------------------------------
 */
-void	export(char *input, t_data *data, char ***our_env);
+void	export(char **arg, char ***our_env, int *env_size);
 
 /*
 **----------------------------------GET_ENV.C-----------------------------------
@@ -83,6 +83,11 @@ int		main(void);
 **-----------------------------------TOKEN.C------------------------------------
 */
 void	get_token(char *line, t_list **token);
+
+/*
+**--------------------------------UTILS_LIST.C----------------------------------
+*/
+char	*create_string(char *arg);
 
 /*
 **--------------------------------UTILS_LIST.C----------------------------------

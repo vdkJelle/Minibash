@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:49:00 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/03 13:25:18 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int		print_env(char *line)
 	key = ft_substr(line, 0, len);
 	if (!key)
 		exit(1);
-	value = get_env(environ, key);
+	value = get_env(NULL, key);
 	free(key);
 	ft_putstr_fd(value, 1);
 	return (len);
