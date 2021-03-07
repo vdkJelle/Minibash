@@ -6,11 +6,19 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 11:23:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:27:08 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 13:20:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Checks for multiline commands
+** Counts the amount of double quotes making sure they are not being escaped
+** Counts the amount of single quotes
+** If there is an uneven amount of quotes the function returns -1
+** Else the function returns 0
+*/
 
 static int	count_double_quotes(char *line)
 {

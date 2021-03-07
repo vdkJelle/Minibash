@@ -6,42 +6,34 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 16:23:09 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:14:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/02/28 13:34:28 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env(char **env, char *key)
+/*
+** Finds the value of our environmental variables based on the key
+** If the key matches the key in our enviromental variables the value is returned
+** Else the function returns NULL
+*/
+
+char	*get_env(char **our_env, char *key)
 {
-	int	lenkey;
-	int	lenenv;
+	int	len_key;
+	int	len_our_key;
 	int	i;
 
-	lenkey = 0;
-	while (key[lenkey] && key[lenkey] != '=')
-		lenkey++;
+	len_key = 0;
+	while (key[len_key] && key[len_key] != '=')
+		len_key++;
 	i = 0;
-	while (env[i])
+	while (our_env[i])
 	{
-		lenenv = skip_until_char(env[i], '=');
-		if (lenenv == lenkey && !ft_strncmp(env[i], key, lenenv))
-			return (env[i] + lenkey + 1);
+		len_our_key = skip_until_char(our_env[i], '=');
+		if (len_our_key == len_key && !ft_strncmp(our_env[i], key, len_our_key))
+			return (our_env[i] + len_key + 1);
 		i++;
 	}
 	return (NULL);
 }
-
-// int main(void)
-// {
-//     char    **env;
-//     char    *value;
-
-//     env = malloc(sizeof(char*) * (3 + 1));
-//     env[0] = "key=value";
-//     env[1] = "snoep=lekker";
-//     env[2] = "zuurkool=vies";
-//     value = get_env(env, "key");
-//     printf("%s\n", value);
-//     return (0);
-// }

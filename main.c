@@ -6,31 +6,72 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:57:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/07 20:00:22 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	cody_catch(t_list *token, t_data data)
+typedef enum
 {
-	t_list			*temp;
+		NONE = -1,
+		CD = 0,
+		ECHO = 1,
+		// ENV,
+		EXIT = 2,
+		// EXPORT,
+		PWD = 3,
+		// UNSET,
+}		builtin;
 
-	temp = token;
-	while (temp)
+typedef void (*f_builtin)(t_data data);
+
+//could maybe just make a function seperately and use ft_lstiter
+static void	cody_catch(t_data data)
+{
+	t_list		*start;
+	builtin		cmd;
+	f_builtin	builtin[4];
+
+	builtin[0] = ft_cd;
+    builtin[1] = ft_echo;
+    // builtin[2] = ft_env;
+    builtin[2] = ft_exit;
+    // builtin[4] = ft_export;
+    builtin[3] = ft_pwd;
+    // builtin[6] = ft_unset;
+
+	start = data.token;
+	while (data.token)
 	{
-		if (!ft_strncmp(((t_token*)temp->content)->cmd, "exit", 4))
-			exit(0);
-		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "pwd", 3))
-			pwd();
-		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "cd ", 2))
-			cd(((t_token*)temp->content)->arg);
-		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "./", 2) || !ft_strncmp(((t_token*)temp->content)->cmd, "/", 1) || !ft_strncmp(((t_token*)temp->content)->cmd, "..", 2))
-			execute(((t_token*)temp->content)->cmd, data);
-		else if (!ft_strncmp(((t_token*)temp->content)->cmd, "echo", 4))
-			ft_echo(((t_token*)temp->content)->arg);
-		temp = temp->next;
+		if (!ft_strcmp(((t_token*)data.token->content)->cmd, "cd"))
+			cmd = CD;
+		// cd(((t_token*)data.token->content)->arg);
+		else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "echo"))
+			cmd = ECHO;
+		// 	echo(((t_token*)data.token->content)->arg, data.our_env);
+		// // else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "env"))
+		// // 	envstuff
+		else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "exit"))
+			ft_exit(data);
+		// // else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "export"))
+		// // 	exportstuff
+		else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "pwd"))
+			cmd = PWD;
+		// 	pwd();
+		// // else if (!ft_strcmp(((t_token*)data.token->content)->cmd, "unset"))
+		// // 	unsetstuff
+		// else
+		// 	execute(((t_token*)data.token->content)->cmd, data);
+		else
+			cmd = NONE;
+		if (cmd != -1)
+			builtin[cmd](data);
+		else
+			execute(data);
+		data.token = data.token->next;
 	}
+	data.token = start;
 }
 
 static void	initialize_env(char ***our_env)
@@ -52,11 +93,9 @@ static void	initialize_env(char ***our_env)
 
 int	main(void)
 {
-	t_data		data;
-	t_list		*token;	
-	int			i;
+	t_data	data;
+	int		i;
 
-	token = NULL;
 	ft_bzero(&data, sizeof(data));
 	printf("Welcome to the amazing Codyshell!\n");
 	initialize_env(&data.our_env);
@@ -66,10 +105,12 @@ int	main(void)
 		write(1, "🐶 > ", sizeof("🐶 > "));
 		data.r = get_next_line(0, &data.input);
 		if (data.r == -1)
-			exit(1);		
-		get_token(data.input, &token);
-		cody_catch(token, data);
-		ft_lstclear(&token, free_token);
+			exit(1);
+		data.fd_count = 0;
+		get_token(&data, data.input);
+		ft_lstiter(data.token, print_token);
+		cody_catch(data);
+		ft_lstclear(&data.token, free_token);
 		free(data.input);
 		data.input = NULL;
 	}

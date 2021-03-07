@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/28 12:47:50 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/07 19:58:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,21 @@ extern char	**environ;
 /*
 **-----------------------------------STRUCTS------------------------------------
 */
-typedef struct	s_data
-{
-	char	**our_env;
-	char	*input;
-	char	*curdir;
-	int		r;
-}				t_data;
 
 typedef struct	s_token
 {
 	char		*cmd;
-	char		*arg;
+	char		**arg;
 }				t_token;
 
-/*
-**------------------------------------CD.C--------------------------------------
-*/
-void	cd(char *path);
+typedef struct	s_data
+{
+	char		**our_env;
+	char		*input;
+	int			fd_count;
+	int			r;
+	t_list		*token;
+}				t_data;
 
 /*
 **-------------------------------COUNT_QUOTES.C---------------------------------
@@ -55,14 +52,9 @@ void	cd(char *path);
 int		count_quotes(char *line);
 
 /*
-**------------------------------------ECHO.C------------------------------------
-*/
-void	ft_echo(char *line);
-
-/*
 **--------------------------------EXECUTABLE.C----------------------------------
 */
-void	execute(char *path, t_data data);
+void	execute(t_data data);
 
 /*
 **----------------------------------EXPORT.C------------------------------------
@@ -70,9 +62,29 @@ void	execute(char *path, t_data data);
 void	export(char *input, t_data *data, char ***our_env);
 
 /*
+**----------------------------------FT_CD.C-------------------------------------
+*/
+void	ft_cd(t_data data);
+
+/*
+**----------------------------------FT_ECHO.C-----------------------------------
+*/
+void	ft_echo(t_data data);
+
+/*
+**----------------------------------FT_EXIT.C-----------------------------------
+*/
+void	ft_exit(t_data data);
+
+/*
+**---------------------------------FT_PWD.C-------------------------------------
+*/
+void	ft_pwd(t_data data);
+
+/*
 **----------------------------------GET_ENV.C-----------------------------------
 */
-char    *get_env(char **env, char *key);
+char	*get_env(char **env, char *key);
 
 /*
 **------------------------------------MAIN.C------------------------------------
@@ -80,9 +92,14 @@ char    *get_env(char **env, char *key);
 int		main(void);
 
 /*
+**--------------------------------REDIRECTIONS.C--------------------------------
+*/
+int		redirection(t_data *data, char *s, char c);
+
+/*
 **-----------------------------------TOKEN.C------------------------------------
 */
-void	get_token(char *line, t_list **token);
+void	get_token(t_data *data, char *s);
 
 /*
 **--------------------------------UTILS_LIST.C----------------------------------
@@ -96,13 +113,27 @@ void 	print_token(void *content);
 void	skip_char(char **s, char c);
 void	skip_chars(char **s, char c);
 int		skip_chars_int(char *s, char c);
+int		skip_doubleq(char *line);
 int		skip_until_char(char *s, char c);
 
 /*
 **-------------------------------UTILS_STRING2.C--------------------------------
 */
+int		count_arguments(char *s, char c);
 int		count_backslash(char *line, int loc);
 int		count_words(char const *s, char c);
+
+/*
+**-------------------------------UTILS_STRING3.C--------------------------------
+*/
+int		ft_strcmp(const char *s1, const char *s2);
+
+/*
+**--------------------------UTILS_STRING_STRJOIN.C------------------------------
+*/
+char	*ft_strjoin_char(char *s1, char c);
+char	*ft_strjoin_free_both(char *s1, char *s2);
+char	*ft_strjoin_free_s1(char *s1, char const *s2);
 
 /*
 **--------------------------UTILS_STRING_WHITESPACES.C--------------------------
@@ -112,11 +143,5 @@ void	skip_whitespaces(char **s);
 int		skip_whitespaces_int(char *s);
 void	skip_nonwhitespaces(char **s);
 int		skip_nonwhitespaces_int(char *s);
-
-/*
-**------------------------------------PWD.C-------------------------------------
-*/
-void	pwd(void);
-
 
 #endif
