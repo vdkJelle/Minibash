@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/07 20:07:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/09 13:30:16 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 ** No return value
 */
 
-void	ft_cd(t_data data)
+void	ft_cd(t_data *data)
 {
 	int		ret;
 	char	*argument;
 
-	argument = ((t_token*)data.token->content)->arg[0];
+	argument = ((t_token*)data->token->content)->arg[0];
 	if (!argument)
-		ret = chdir(get_env(data.our_env, "HOME"));
+		ret = chdir(get_env(data->our_env, "HOME"));
 	else
 		ret = chdir(argument);
 	if (ret < 0)

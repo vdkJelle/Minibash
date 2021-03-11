@@ -5,33 +5,16 @@
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/03 12:22:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/03 13:04:08 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/03/10 13:46:24 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/03/10 15:51:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*create_string(char *arg)
+void	replace_entry(char *arg, char ***our_env, int i)
 {
-	int		i;
-	char	*ret;
-
-	i = 0;
-	ret = malloc(sizeof(char) * ft_strlen(arg) + 3);
-	while (arg[i] && arg[i] != '=')
-	{
-		ret[i] = arg[i];
-		i++;
-	}
-	ret[i] = '=';
-	ret[i + 1] = '"';
-	while (arg[i + 1])
-	{
-		ret[i + 2] = arg[i + 1];
-		i++;
-	}
-	ret[i + 2] = '"';
-	ret[i + 3] = '\0';
-	return (ret);
+	free((*our_env)[i]);
+	(*our_env)[i] = NULL;
+	(*our_env)[i] = ft_strdup(arg);
 }

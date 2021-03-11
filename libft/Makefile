@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/01 11:16:05 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/02/01 11:16:12 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/03/09 15:50:01 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,9 @@ OFILES		=	$(CFILES:.c=.o)
 BOFILES		=	$(BCFILES:.c=.o)
 INCLUDES	=	.
 FLAGS		=	-Wall -Werror -Wextra
+ifdef DEBUG
+FLAGS += -g -fsanitize=address
+endif
 
 all:	$(NAME)
 

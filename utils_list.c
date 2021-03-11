@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/03/07 19:58:07 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/09 15:55:31 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_token(void *content)
 		free(((t_token*)content)->arg[i]);
 		i++;
 	}
+	free(((t_token*)content)->arg);
 	free(content);
 }
 

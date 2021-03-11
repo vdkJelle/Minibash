@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 12:37:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/03/07 20:00:51 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/09 14:53:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,9 @@ static char **get_arg(t_data *data, char *s, char c)
 	loc = 0;
 	size = count_arguments(s, c);
 	arg = malloc(sizeof(char*) * (size + 1));
-	while (i < size)
+	if (!arg)
+		exit(1);
+	while (i < size && size != 0)
 	{
 		loc += put_arg(data, &arg[i], s + loc, c);
 		i++;
@@ -182,8 +184,8 @@ static int	tokenize(t_data *data, char *s, char c)
 	// 	tok->arg = get_export_arg(s + lencmd, data->our_env, c);
 	// else
 		tok->arg = get_arg(data, s + lencmd, c);
-	if (!tok->arg)
-		exit(1);
+	// if (!tok->arg)
+	// 	exit(1);
 	ft_lstadd_back(&data->token, ft_lstnew(tok));
 	return (lencmd + lenarg);
 }

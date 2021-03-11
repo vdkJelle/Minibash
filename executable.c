@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/03 16:23:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/09 16:03:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void		execute(t_data data)
 			printf("%s\n", strerror(errno));
 			exit(1);
 		}
-		free(path);
 	}
 	if (pid < 0)
 		printf("%s\n", strerror(errno));

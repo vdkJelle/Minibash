@@ -6,22 +6,60 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/03 13:28:01 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/10 16:05:06 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_export(char **our_env)
+static void	print_export(char **our_env, int i, int j)
 {
-	int i;
-
-	i = 0;
 	while (our_env[i])
 	{
-		printf("declare -x %s\n", our_env[i]);
+		j = 0;
+		while (our_env[i][j])
+		{
+			ft_putchar_fd(our_env[i][j], 1);
+			if (our_env[i][j] == '=')
+				break ;
+			j++;
+		}
+		if (our_env[i][j] == '=')
+		{
+			ft_putchar_fd('"', 1);
+			while (our_env[i][j])
+			{
+				j++;
+				ft_putchar_fd(our_env[i][j], 1);
+			}
+			ft_putchar_fd('"', 1);
+		}
+		ft_putchar_fd('\n', 1);
 		i++;
 	}
+}
+
+static int	check_if_exists(char *arg, char ***our_env)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while ((*our_env)[i])
+	{
+		j = 0;
+		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
+			j++;
+		if (!ft_strncmp((*our_env)[i], arg, j))
+		{
+			if (ft_strchr(arg, '='))
+				replace_entry(arg, our_env, i);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 static void	append_key_value(char *arg, char ***our_env, int *env_size)
@@ -29,6 +67,8 @@ static void	append_key_value(char *arg, char ***our_env, int *env_size)
 	char	**tmp;
 	int		i;
 
+	if (check_if_exists(arg, our_env))
+		return ;
 	i = 0;
 	tmp = (char **)malloc(sizeof(char *) * ((*env_size) + 2));
 	while ((*our_env)[i])
@@ -36,49 +76,50 @@ static void	append_key_value(char *arg, char ***our_env, int *env_size)
 		tmp[i] = ft_strdup((*our_env)[i]);
 		i++;
 	}
-	tmp[i] = create_string(arg);
+	tmp[i] = ft_strdup(arg);
 	tmp[i + 1] = NULL;
-	// free_array(our_env);
+	(*env_size)++;
+	free_array(*our_env);
 	(*our_env) = tmp;
 }
 
-static int	check_if_valid(char *input, int *i)
+static int	check_if_valid(char *input)
 {
-	if (!ft_isalpha(input[*i]) || input[*i] != '_')
+	int i;
+
+	i = 0;
+	if (!ft_isalpha(input[i]) && input[i] != '_')
 		return (1);
-	while (input[*i] && input[*i] != '=')
+	while (input[i] && input[i] != '=')
 	{
-		if (!ft_isalnum(input[*i] || input[*i] != '_'))
+		if (!ft_isalnum(input[i]) && input[i] != '_')
 			return (1);
-		(*i)++;
+		i++;
 	}
 	return (0);
 }
 
-void		export(char **arg, char ***our_env, int *env_size)
+void		ft_export(t_data *data)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	**arg;
 
+	arg = ((t_token*)data->token->content)->arg;
 	if (!arg[0])
-		print_export(*our_env);
+		print_export(data->our_env, 0, 0);
 	else
 	{
-		j = 0;
-		while (arg[j])
+		i = 0;
+		while (arg[i])
 		{
-			i = 0;
-			if (check_if_valid(arg[j], &i))
+			if (check_if_valid(arg[i]))
 			{
-				printf("🐶: export: not a valid identifier: %s\n", arg[j]);
-				j++;
+				printf("🐶: export: `%s\': not a valid identifier\n", arg[i]);
+				i++;
 				continue ;
 			}
-			if (arg[j][i] == '=')
-				append_key_value(arg[j], our_env, env_size);
-			// else
-				// append_key(arg[j], our_env, env_size);
-			j++;
+			append_key_value(arg[i], &data->our_env, &data->env_size);
+			i++;
 		}
 	}
 }

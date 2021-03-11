@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/07 20:10:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/03/10 16:08:14 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct	s_data
 	int			env_size;
 	int			fd_count;
 	int			r;
+	t_list		*start;
 	t_list		*token;
 }				t_data;
 
@@ -52,6 +53,11 @@ typedef struct	s_data
 int		count_quotes(char *line);
 
 /*
+**-----------------------------------ENV.C--------------------------------------
+*/
+void	ft_env(t_data *data);
+
+/*
 **--------------------------------EXECUTABLE.C----------------------------------
 */
 void	execute(t_data data);
@@ -59,27 +65,28 @@ void	execute(t_data data);
 /*
 **----------------------------------EXPORT.C------------------------------------
 */
-void	export(char **arg, char ***our_env, int *env_size);
+void	ft_export(t_data *data);
 
 /*
 **----------------------------------FT_CD.C-------------------------------------
 */
-void	ft_cd(t_data data);
+void	ft_cd(t_data *data);
 
 /*
 **----------------------------------FT_ECHO.C-----------------------------------
 */
-void	ft_echo(t_data data);
+void	ft_echo(t_data *data);
 
 /*
 **----------------------------------FT_EXIT.C-----------------------------------
 */
-void	ft_exit(t_data data);
+void	ft_exit(t_data *data);
+void	free_array(char **array);
 
 /*
 **---------------------------------FT_PWD.C-------------------------------------
 */
-void	ft_pwd(t_data data);
+void	ft_pwd(t_data *data);
 
 /*
 **----------------------------------GET_ENV.C-----------------------------------
@@ -102,9 +109,14 @@ int		redirection(t_data *data, char *s, char c);
 void	get_token(t_data *data, char *s);
 
 /*
-**--------------------------------UTILS_LIST.C----------------------------------
+**------------------------------------UNSET-------------------------------------
 */
-char	*create_string(char *arg);
+void	ft_unset(t_data *data);
+
+/*
+**--------------------------------UTILS_EXPORT.C--------------------------------
+*/
+void	replace_entry(char *arg, char ***our_env, int i);
 
 /*
 **--------------------------------UTILS_LIST.C----------------------------------

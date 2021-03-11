@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/03/07 20:08:37 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/03/10 16:07:39 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME		=	minishell
 SRCS		=	cd\
 				count_quotes\
 				echo\
+				env\
 				executable\
 				export\
 				exit\
 				get_env\
 				main\
 				pwd\
-				redirection\
 				utils_export\
 				utils_list\
 				utils_string1\
@@ -28,11 +28,15 @@ SRCS		=	cd\
 				utils_string3\
 				utils_string_strjoin\
 				utils_string_whitespaces\
+				unset\
 				token
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.
-FLAGS		=	-Wall -Wextra -g -fsanitize=address
+FLAGS		=	-Wall -Wextra -Werror
+ifdef DEBUG
+FLAGS += -g -fsanitize=address
+endif
 LIBRARIES	=	libft/libft.a\
 				get_next_line/gnl.a
 
@@ -43,9 +47,9 @@ $(NAME): $(OFILES) $(LIBRARIES)
 
 $(LIBRARIES):
 	@echo "Compiling libft"
-	@make bonus -C libft
+	@$(MAKE) bonus -C libft
 	@echo "Compiling get_next_line"
-	@make -C get_next_line
+	@$(MAKE) -C get_next_line
 
 %.o:	%.c
 	@echo "Compiling... $^"
