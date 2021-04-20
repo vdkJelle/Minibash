@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/09 16:03:10 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/20 13:12:06 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,21 @@ static char	*get_path_to_executable(t_data data)
 		return (ft_strjoin("/bin/", temp));
 }
 
-void		execute(t_data data)
+void		execute(t_data *data)
 {
 	char	*path;
 	char	**args;
 	int		ret;
 	pid_t	pid;
+	pid_t	wpid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		path = get_path_to_executable(data);
-		args = get_args(((t_token*)data.token->content)->arg, ((t_token*)data.token->content)->cmd);
-		ret = execve(path, args, data.our_env);
+		signal(SIGINT, SIG_DFL);
+		path = get_path_to_executable(*data);
+		args = get_args(((t_token*)data->token->content)->arg, ((t_token*)data->token->content)->cmd);
+		ret = execve(path, args, data->our_env);
 		if (ret < 0)
 		{
 			printf("%s\n", strerror(errno));
@@ -66,5 +68,7 @@ void		execute(t_data data)
 	if (pid < 0)
 		printf("%s\n", strerror(errno));
 	else
-		wait(NULL);
+		wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+	if (wpid == -1)
+		exit(-1);
 }

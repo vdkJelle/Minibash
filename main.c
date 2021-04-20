@@ -6,9 +6,15 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/10 16:10:32 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/24 13:26:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+**TO DO:
+**	- Make command history
+**	- Make signal handler
+*/
 
 #include "minishell.h"
 
@@ -25,6 +31,23 @@ typedef enum
 }		builtin;
 
 typedef void (*f_builtin)(t_data *data);
+
+static void	signal_output(int sig)
+{
+	if (sig == SIGINT)
+		write(1, "\n🐶 > ", sizeof("\n🐶 > "));
+	if (sig == SIGQUIT)
+	{
+		write(1, "\b\b  \b\bexit\n", 11);
+		exit(0);
+	}
+}
+
+static void	ft_signal_handler(void)
+{
+	if (signal(SIGINT, &signal_output) == SIG_ERR || signal(SIGQUIT, &signal_output) == SIG_ERR)
+		exit(0);
+}
 
 //could maybe just make a function seperately and use ft_lstiter
 static void	cody_catch(t_data *data)
@@ -62,7 +85,7 @@ static void	cody_catch(t_data *data)
 		if (cmd != NONE)
 			builtin[cmd](data);
 		else
-			execute(*data);
+			execute(data);
 		data->token = data->token->next;
 	}
 }
@@ -93,9 +116,11 @@ int	main(void)
 	ft_bzero(&data, sizeof(data));
 	printf("Welcome to the amazing Codyshell!\n");
 	initialize_env(&data.our_env, &data.env_size);
+	signal(SIGINT, SIG_IGN);
 	while (1)
 	{
 		write(1, "🐶 > ", sizeof("🐶 > "));
+		ft_signal_handler();
 		data.r = get_next_line(0, &data.input);
 		if (data.r == -1)
 			exit(1);
