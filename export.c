@@ -6,43 +6,47 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/10 16:05:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/29 14:27:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_export(char **our_env, int i, int j)
+static void	print_export(char **our_env, int our_fd, int i, int j)
 {
+	int		fd;
+
+	fd = our_fd;
 	while (our_env[i])
 	{
 		j = 0;
 		while (our_env[i][j])
 		{
-			ft_putchar_fd(our_env[i][j], 1);
+			ft_putchar_fd(our_env[i][j], fd);
 			if (our_env[i][j] == '=')
 				break ;
 			j++;
 		}
 		if (our_env[i][j] == '=')
 		{
-			ft_putchar_fd('"', 1);
+			ft_putchar_fd('"', fd);
+			j++;
 			while (our_env[i][j])
 			{
+				ft_putchar_fd(our_env[i][j], fd);
 				j++;
-				ft_putchar_fd(our_env[i][j], 1);
 			}
-			ft_putchar_fd('"', 1);
+			ft_putchar_fd('"', fd);
 		}
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', fd);
 		i++;
 	}
 }
 
 static int	check_if_exists(char *arg, char ***our_env)
 {
-	int	i;
-	int j;
+	int		i;
+	int 	j;
 
 	i = 0;
 	j = 0;
@@ -85,7 +89,7 @@ static void	append_key_value(char *arg, char ***our_env, int *env_size)
 
 static int	check_if_valid(char *input)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (!ft_isalpha(input[i]) && input[i] != '_')
@@ -104,12 +108,14 @@ void		ft_export(t_data *data)
 	int		i;
 	char	**arg;
 
-	arg = ((t_token*)data->token->content)->arg;
-	if (!arg[0])
-		print_export(data->our_env, 0, 0);
+	// arg = ((t_token*)data->token->content)->arg;
+	arg = data->arg;
+	if (!arg[1])
+		// print_export(data->our_env, 0, 0);
+		print_export(data->our_env, data->our_fd[1], 0, 0);
 	else
 	{
-		i = 0;
+		i = 1;
 		while (arg[i])
 		{
 			if (check_if_valid(arg[i]))

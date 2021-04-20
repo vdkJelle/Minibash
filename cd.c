@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/09 13:30:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/04/01 17:22:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,16 @@ void	ft_cd(t_data *data)
 	int		ret;
 	char	*argument;
 
-	argument = ((t_token*)data->token->content)->arg[0];
-	if (!argument)
+	// argument = ((t_token*)data->token->content)->arg[0];
+	argument = data->arg[1];
+	if (!argument && data->our_fd[1] != -1) 
 		ret = chdir(get_env(data->our_env, "HOME"));
 	else
 		ret = chdir(argument);
 	if (ret < 0)
-		printf("%s\n", strerror(errno));
+	{	// printf("%s\n", strerror(errno));
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putchar_fd('\n', 2);
+	}
 	return ;
 }

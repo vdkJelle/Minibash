@@ -5,213 +5,122 @@
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/24 12:37:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/03/09 14:53:29 by jelvan-d      ########   odam.nl         */
+/*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
+/*   Updated: 2021/04/09 12:35:44 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *get_key(char *s)
+static char **get_arguments(t_data *data, char *s, char control_operator)
 {
-	int		len;
-	char	*key;
-	
-	len = 0;
-	if (!ft_isalpha(s[0]) && s[0] != '_')
-		return (NULL);
-	while (s[len] && (ft_isalpha(s[len]) || ft_isdigit(s[len]) || s[len] == '_'))
-		len++;
-	key = ft_substr(s, 0, len);
-	if (!key)
-		exit(1);
-	return (key);
-}
-
-static int	arg_env_between_doubleq(char **ret, char **our_env, char *s)
-{
-	int		len;
-	char	*key;
-	char	*value;
-
-	len = 0;
-	if (!ft_isalpha(s[0]) && s[0] != '_')
-	{
-		if (s[len] != '\"')
-			len++;
-		while (s[len] && !is_whitespace(s[len]) && s[len] != '\"' && s[len] != '\\')
-			len++;
-		return (len);
-	}
-	while (s[len] && (ft_isalpha(s[len]) || ft_isdigit(s[len]) || s[len] == '_'))
-		len++;
-	key = ft_substr(s, 0, len);
-	if (!key)
-		exit(1);
-	value = get_env(our_env, key);
-	free(key);
-	if (value)
-		*ret = ft_strjoin_free_s1(*ret, value);
-	return (len);
-}
-
-static int	arg_between_doubleq(char **ret, char **our_env, char *s)
-{
-	int		i;
-
-	i = 0;
-	while (s[i] && s[i] != '\"')
-	{
-		if (s[i] == '\\')
-		{
-			if (ft_strchr("\\\"", s[i + 1]))
-			{
-				*ret = ft_strjoin_char(*ret, s[i + 1]);
-				i++;
-			}
-			else
-				*ret = ft_strjoin_char(*ret, s[i]);
-		}
-		else if (s[i] == '$' && count_backslash(s, i) % 2 == 0)
-			i += arg_env_between_doubleq(ret, our_env, s + i + 1);
-		else
-			*ret = ft_strjoin_char(*ret, s[i]);
-		i++;
-		if (s[i] == '\"' && count_backslash(s, i) % 2 != 0)
-		{
-			*ret = ft_strjoin_char(*ret, s[i]);
-			i++;
-		}
-	}
-	return (i);
-}
-
-static int	put_arg(t_data *data, char **ret, char *s, char c)
-{
-	char	*key;
-	char	*value;
-	int		i;
-	int		len;
-
-	*ret = ft_strdup("");
-	key = NULL;
-	i = 0;
-	i += skip_whitespaces_int(s);
-	while (s[i] && s[i] != c)
-	{
-		if (s[i] == '\'' && count_backslash(s, i) % 2 == 0)
-		{
-			len = skip_until_char(s + i + 1, '\'');
-			*ret = ft_strjoin_free_both(*ret, ft_substr(s, i + 1, len));
-			i += len + 1;
-		}
-		else if (s[i] == '\"' && count_backslash(s, i) % 2 == 0)
-		{
-			len = arg_between_doubleq(ret, data->our_env, s + i + 1);
-			i += len + 1;
-		}
-		else if (s[i] == '\\')
-		{
-			if (i > 0 && count_backslash(s, i) % 2 != 0)
-			{
-				*ret = ft_strjoin_free_both(*ret, ft_substr(s, i, 1));
-			}
-		}
-		else if (s[i] == ' ' && count_backslash(s, i) % 2 == 0)
-		{
-			return (i);
-		}
-		else if (s[i] == '$' && count_backslash(s, i) % 2 == 0)
-		{
-			key = get_key(s + i + 1);
-			value = get_env(data->our_env, key);
-			*ret = ft_strjoin_free_s1(*ret, value);
-			i += ft_strlen(key);
-			free(key);
-		}
-		// else if (s[i] == '>' && count_backslash(s, i) % 2 == 0)
-		// {
-		// 	i += handle_redirection(data, s + i, c);
-		// }
-		else
-			*ret = ft_strjoin_char(*ret, s[i]);
-		i++;
-	}
-	return (i);
-}
-
-static char **get_arg(t_data *data, char *s, char c)
-{
+	char	**ret;
 	int		i;
 	int		loc;
 	int		size;
-	char	**arg;
 
-	i = 0;
-	loc = 0;
-	size = count_arguments(s, c);
-	arg = malloc(sizeof(char*) * (size + 1));
-	if (!arg)
+	size = count_arguments(s, control_operator);
+	ret = malloc(sizeof(char*) * (size + 1));
+	if (!ret)
 		exit(1);
-	while (i < size && size != 0)
+	loc = 0;
+	i = 0;
+	while (i < size)
 	{
-		loc += put_arg(data, &arg[i], s + loc, c);
+		ret[i] = ft_strdup("");
+		if (!ret[i])
+			exit(1);		
+		loc += get_arg(data, &ret[i], s + loc, control_operator);
 		i++;
 	}
-	arg[i] = NULL;
-	return (arg);	
+	ret[i] = NULL;
+	return (ret);
 }
 
-static int	tokenize(t_data *data, char *s, char c)
+static char	*get_command(t_data *data, char *s, char control_operator)
 {
-	int		lencmd;
-	int		lenarg;
-	t_token *tok;
+	char	*ret;
+	int		i;
 
-	lencmd = 0;
-	lenarg = 0;
-	tok = (t_token*)malloc(sizeof(t_token));
-	if (!tok)
+	i = 0;
+	while (s[i] && s[i] != control_operator)
+	{
+		i++;
+		if (is_metacharacter(s[i]))
+			break;
+	}
+	ret = ft_strdup("");
+	if (!ret)
 		exit(1);
-	skip_whitespaces(&s);
-	lencmd += skip_nonwhitespaces_int(s);
-	tok->cmd = ft_substr(s, 0, lencmd);
-	if (!tok->cmd)
-		exit(1);
-	lencmd += skip_whitespaces_int(s);
-	lenarg += skip_until_char(s + lencmd, c);
-	// if (!ft_strcmp(tok->cmd, "export"))
-	// 	tok->arg = get_export_arg(s + lencmd, data->our_env, c);
-	// else
-		tok->arg = get_arg(data, s + lencmd, c);
-	// if (!tok->arg)
-	// 	exit(1);
-	ft_lstadd_back(&data->token, ft_lstnew(tok));
-	return (lencmd + lenarg);
+	get_arg(data, &ret, s, s[i]);
+	return (ret);
 }
 
-void		get_token(t_data *data, char *s)
+static char	*get_control_operator(char *s)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	while (s[i] && is_control_operator(s[i]))
+		i++;
+	ret = ft_substr(s, 0, i);
+	if (!ret)
+		exit(1);
+	return (ret);
+}
+
+static int	tokenize(t_data *data, char *s, char *p_control_operator)
+{
+	int		loc;
+	t_token	*token;
+
+	loc = skip_whitespaces_int(s);
+	if (!s[loc])
+		return (0);
+	token = (t_token*)malloc(sizeof(t_token));
+	if (!token)
+		exit(1);
+	token->cmd = get_command(data, s + loc, *p_control_operator);
+	if (!token->cmd)
+		exit(1);
+	loc += skip_until_char_function(s + loc, is_metacharacter);
+	loc += skip_whitespaces_int(s + loc);
+	token->arg = get_arguments(data, s + loc, *p_control_operator);
+	if (!token->arg)
+		exit(1);
+	token->cop = get_control_operator(p_control_operator);
+	if (!token->cop)
+		exit(1);
+	ft_lstadd_back(&data->token, ft_lstnew(token));
+	return (ft_strlen(token->cop));
+}
+
+void	get_token(t_data *data, char *s)
 {
 	int		i;
-	int		saved;
-
+	int		token_start;
+	
 	if (count_quotes(s) == -1)
-		return (ft_putstr_fd("Multis command1\n", 2));
+		return (ft_putstr_fd("Multiline command1\n", 2));
 	if (count_backslash(s, ft_strlen(s)) % 2 != 0)
-		return (ft_putstr_fd("Multis command2\n", 2));
+		return (ft_putstr_fd("Multiline command2\n", 2));
+	if (ft_strlen(s) > 0 && s[ft_strlen(s) - 1] == '|')
+		return (ft_putstr_fd("Multiline command3\n", 2));
+	token_start = 0;
 	i = 0;
-	saved = 0;
 	while (s[i])
 	{
-		if (s[i] == ';')
-			saved += 1 + tokenize(data, s + saved, ';');
-		else if (s[i] == '|')
-			saved += 1 + tokenize(data, s + saved, '|');
-		else if (s[i] == '\'' && count_backslash(s, i) % 2 == 0)
-			i += skip_until_char(s + i + 1, '\'');
-		else if (s[i] == '\"' && count_backslash(s, i) % 2 == 0)
+		if (is_control_operator(s[i]) && !(count_backslash(s, i) % 2))
+		{
+			token_start += i + tokenize(data, s + token_start, s + i);
+			i = token_start;
+		}
+		else if (s[i] == '\'' && !(count_backslash(s, i) % 2))
+			i += skip_until_char_incl(s + i + 1, '\'');
+		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))
 			i += skip_doubleq(s + i + 1);
 		i++;
 	}
-	tokenize(data, s + saved, '\0');
+	tokenize(data, s + token_start, s + ft_strlen(s));
 }

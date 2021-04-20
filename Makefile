@@ -6,12 +6,13 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/03/10 16:07:39 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/04/01 13:41:05 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 SRCS		=	cd\
+				check_command\
 				count_quotes\
 				echo\
 				env\
@@ -21,15 +22,19 @@ SRCS		=	cd\
 				get_env\
 				main\
 				pwd\
+				redirection\
 				utils_export\
 				utils_list\
-				utils_string1\
-				utils_string2\
-				utils_string3\
+				utils_string_count\
+				utils_string_isthis\
+				utils_string_skip\
 				utils_string_strjoin\
-				utils_string_whitespaces\
+				utils_string\
 				unset\
-				token
+				token\
+				token_arg\
+				token_check\
+				token_handle_arg_chars
 CFILES		=	$(SRCS:%=%.c)
 OFILES		=	$(CFILES:.c=.o)
 INCLUDES	=	.
