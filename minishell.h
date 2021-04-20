@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/10 16:08:14 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/03/20 13:12:04 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <string.h>
+# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "./get_next_line/get_next_line.h"
@@ -43,6 +44,7 @@ typedef struct	s_data
 	int			env_size;
 	int			fd_count;
 	int			r;
+	int			exit_status;
 	t_list		*start;
 	t_list		*token;
 }				t_data;
@@ -60,7 +62,7 @@ void	ft_env(t_data *data);
 /*
 **--------------------------------EXECUTABLE.C----------------------------------
 */
-void	execute(t_data data);
+void	execute(t_data *data);
 
 /*
 **----------------------------------EXPORT.C------------------------------------
