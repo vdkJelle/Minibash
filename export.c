@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/29 14:27:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/20 15:10:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	print_export(char **our_env, int our_fd, int i, int j)
 	while (our_env[i])
 	{
 		j = 0;
+		ft_putstr_fd("declare -x ", 1);
 		while (our_env[i][j])
 		{
 			ft_putchar_fd(our_env[i][j], fd);

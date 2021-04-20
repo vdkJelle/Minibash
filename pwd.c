@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/01 14:00:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/20 14:59:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@ void	ft_pwd(t_data *data)
 		// printf("%s\n", strerror(errno));
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putchar_fd('\n', 2);
+		data->exit_status = 1;
 		return ;
+	// buf = getcwd(NULL, 0);
+	// if (!buf)
+	// {
+	// 	printf("%s\n", strerror(errno));
 	}
 	// printf("%s\n", buf);
 	ft_putstr_fd(buf, fd);

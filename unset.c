@@ -83,4 +83,5 @@ void	ft_unset(t_data *data)
 		check_for_entry(arg[i], &data->our_env, &data->env_size);
 		i++;
 	}
+	data->exit_status = 0;
 }

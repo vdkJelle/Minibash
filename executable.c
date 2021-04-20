@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/17 15:06:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/20 15:08:43 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,14 @@ void			execute(t_data *data, t_token *current)
 	char	**args;
 	builtin	cmd;
 	pid_t	pid;
+	pid_t	wpid;
 
 	pid = fork();
 	if (pid < 0)
 		return ;
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
 		args = final_arg(data, current);
 		if (!args)
 			exit(1);
@@ -108,7 +110,9 @@ void			execute(t_data *data, t_token *current)
 		free_array(args);
 	}
 	else
-		wait(NULL);
+		wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+	if (wpid == -1)
+		exit(-1);
 }
 
 // void		execute(t_data data)
