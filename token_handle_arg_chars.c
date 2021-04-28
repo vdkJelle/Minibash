@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/29 14:29:30 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/12 15:30:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 16:32:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,8 @@ int		handle_doublequotes(t_data *data, char **ret, char *s)
 	while (s[i] && (s[i] != '\"' || (s[i] == '\"' && count_backslash(s, i) % 2)))
 	{
 		if (s[i] == '\\' && s[i + 1] && ft_strchr("\\\"$", s[i + 1]))
-		{
-			handle_char(data, ret, s + i + 1);
-			i++;
-		}
-		else if (s[i] == '$' && count_backslash(s, i) % 2 == 0 && s[i + 1] && s[i + 1] != '\"' && !(s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
+			i += handle_char(data, ret, s + i + 1);
+		else if (s[i] == '$' && !(count_backslash(s, i) % 2) && s[i + 1] && s[i + 1] != '\"' && !(s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
 			i += handle_environment_variable(data, ret, s + i) - 1;
 		else
 			handle_char(data, ret, s + i);
@@ -48,7 +45,6 @@ int		handle_doublequotes(t_data *data, char **ret, char *s)
 	return (i + 1);
 }
 
-//Implement exit status
 int		handle_environment_variable(t_data *data, char **ret, char *s)
 {
 	char	*key;
@@ -57,7 +53,7 @@ int		handle_environment_variable(t_data *data, char **ret, char *s)
 
 	if (s[0] == '$' && s[1] == '?')
 	{
-		*ret = ft_strjoin_char(*ret, 0 + '0');
+		*ret = ft_strjoin_free_both(*ret, ft_itoa(data->exit_status));
 		if (!(*ret))
 			exit(1);
 		return (2);

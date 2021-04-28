@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 15:12:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 14:51:38 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,6 @@
 */
 
 #include "minishell.h"
-
-// static builtin	cody_catch_cmd(char *s)
-// {
-// 	builtin	cmd;
-
-// 	if (!ft_strcmp(s, "cd") || !ft_strcmp(s, "/usr/bin/cd"))
-// 		cmd = CD;
-// 	else if (!ft_strcmp(s, "echo") || !ft_strcmp(s, "/usr/bin/echo"))
-// 		cmd = ECHO;
-// 	else if (!ft_strcmp(s, "env") || !ft_strcmp(s, "/usr/bin/env"))
-// 		cmd = ENV;
-// 	else if (!ft_strcmp(s, "exit") || !ft_strcmp(s, "/usr/bin/exit"))
-// 		cmd = EXIT;
-// 	else if (!ft_strcmp(s, "export") || !ft_strcmp(s, "/usr/bin/export"))
-// 		cmd = EXPORT;
-// 	else if (!ft_strcmp(s, "pwd") || !ft_strcmp(s, "/usr/bin/pwd"))
-// 		cmd = PWD;
-// 	else if (!ft_strcmp(s, "unset") || !ft_strcmp(s, "/usr/bin/unset"))
-// 		cmd = UNSET;
-// 	else
-// 		cmd = NONE;
-// 	return (cmd);
-// }
 
 static void	signal_output(int sig)
 {
@@ -58,43 +35,32 @@ static void	ft_signal_handler(void)
 		exit(0);
 }
 
-//could maybe just make a function seperately and use ft_lstiter
 static void	cody_catch(t_data *data)
 {
-	// builtin		cmd;
-	// f_builtin	builtin[7];
 	t_list		*cur;
 	t_list		*prev;
+	t_list		*next;
 
-	// builtin[0] = ft_cd;
-    // builtin[1] = ft_echo;
-    // builtin[2] = ft_env;
-    // builtin[3] = ft_exit;
-    // builtin[4] = ft_export;
-    // builtin[5] = ft_pwd;
-    // builtin[6] = ft_unset;
-	cur = data->token;
 	prev = NULL;
+	cur = data->token;
+	if (cur)
+		next = cur->next;
 	while (cur)
 	{
-		if ((((t_token*)cur->content)->cop[0] == '|'))
+		if (((t_token*)cur->content)->cop[0] == '|')
 			printf("cur is pipe\n");
 		if (prev && ((t_token*)prev->content)->cop[0] == '|')
 			printf("prev is pipe\n");
-		// data->arg = final_arg(data, ((t_token*)cur->content));
-		// cmd = cody_catch_cmd(data->arg[0]);
-		// if (cmd == NONE && !check_command(data, data->arg[0]))
-		// 	execute(*data);
-		// else if (cmd != NONE)
-		// 	builtin[cmd](data);
+		if (next && ((t_token*)next->content)->cop[0] == '|')
+			printf("next is pipe\n");
 		execute(data, ((t_token*)cur->content));
 		prev = cur;
-		// free_array(data->arg);
 		cur = cur->next;
+		if (cur)
+			next = cur->next;
 	}
 }
 
-//malloc needs to be protected
 static void		initialize_env(char ***our_env, int *env_size)
 {
 	extern char	**environ;

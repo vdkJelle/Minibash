@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/20 14:38:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 17:57:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	check_in_dir(char *s, char *dir)
 	return (0);
 }
 
-int			check_command(t_data *data, char *s)
+command		check_command(t_data *data, char *s)
 {
 	command	cmd;
 	
@@ -79,17 +79,17 @@ int			check_command(t_data *data, char *s)
 		ft_putstr_fd("🐶 > ", 2);
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": Is a directory\n", 2);
-		(void)data; /*add exit status ? here */
-		return (1);
+		data->exit_status = 126;
+		cmd = ERROR;
 	}
-	if (cmd == NOT_FOUND)
+	else if (cmd == NOT_FOUND)
 	{
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		(void)data; /*add exit status 127 here */
-		return (1);
+		data->exit_status = 127;
+		cmd = ERROR;
 	}
-	return (0);
+	return (cmd);
 }
 
 // int			check_command(t_data *data, char *s)

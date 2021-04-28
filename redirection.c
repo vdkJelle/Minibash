@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/12 15:37:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 14:52:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	handle_redirection(t_data *data, char **arg, int i)
 	int		fd;
 
 	filename = arg[i + 1];
+	fd = 0;
 	if (!ft_strcmp(arg[i], ">\0"))
 		fd = open(filename, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	else if (!ft_strcmp(arg[i], ">>\0"))

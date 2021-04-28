@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/20 15:10:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 15:10:06 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	ft_echo(t_data *data)
 	int		fd;
 	char	**arguments;
 
-	// arguments = ((t_token*)data->token->content)->arg;
-	arguments = data->arg;	
+	arguments = data->arg;
 	fd = data->our_fd[1];
 	i = 1;
 	if (arguments[i] && !ft_strcmp(arguments[i], "-n"))

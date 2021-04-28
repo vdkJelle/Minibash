@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 15:08:43 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 17:57:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,82 @@ void			execute_builtin(t_data *data, builtin cmd, char **args)
 	builtin[cmd](data);
 }
 
-static char		*get_path_to_executable(char *arg)
+static char		*get_path_to_executable(char *arg, command cmd)
 {
 	char	*ret;
 	
-	if (!ft_strncmp(arg, "./", 2) || !ft_strncmp(arg, "/", 1) || !ft_strncmp(arg, "..", 2))
-		ret = ft_strdup(arg);
-	else
+	if (cmd == BIN)
 		ret = ft_strjoin("/bin/", arg);
+	else if (cmd == BIN)
+		ret = ft_strjoin("/usr/bin/", arg);
+	else
+	{
+		if (!ft_strncmp(arg, "./", 2) || !ft_strncmp(arg, "/", 1) || !ft_strncmp(arg, "..", 2))
+			ret = ft_strdup(arg);
+		else
+			ret = ft_strjoin("./", arg);
+	}
 	if (!ret)
 		exit(1);
 	return (ret);
 }
 
+// void			execute_nonbuiltin(t_data *data, char **args)
+// {
+// 	char	*path;
+// 	int		ret;
+
+// 	if (!args[0])
+// 		return ;
+// 	path = get_path_to_executable(args[0]);
+// 	if (!path)
+// 		exit(1);
+// 	ret = execve(path, args, data->our_env);
+// 	if (ret < 0)
+// 	{
+// 		ft_putstr_fd(strerror(errno), 2);
+// 		ft_putchar_fd('\n', 1);
+// 		exit(1);
+// 	}
+// 	free(path);
+// }
+
+// static void		parent_process()
+
 void			execute_nonbuiltin(t_data *data, char **args)
 {
 	char	*path;
+	command	cmd;
 	int		ret;
+	pid_t	pid;
+	pid_t	wpid;
 
-	if (!args[0])
+	cmd = check_command(data, args[0]);
+	if (cmd == ERROR)
 		return ;
-	path = get_path_to_executable(args[0]);
-	if (!path)
-		exit(1);
-	ret = execve(path, args, data->our_env);
-	if (ret < 0)
+	wpid = 0;
+	pid = fork();
+	if (pid < 0)
+		return ; // print error message?
+	if (pid == 0)
 	{
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putchar_fd('\n', 1);
-		exit(1);
+		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
+		path = get_path_to_executable(args[0], cmd);
+		if (!path)
+			exit(1);
+		ret = execve(path, args, data->our_env);
+		if (ret < 0)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putchar_fd('\n', 1);
+			exit(1);
+		}
+		free(path);
 	}
-	free(path);
+	else
+		wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+	if (wpid == -1)
+		exit(-1);
 }
 
 static builtin	identify_command(char *s)
@@ -83,58 +128,54 @@ static builtin	identify_command(char *s)
 	return (cmd);
 }
 
-//ft_exit no longer works because we are exiting from the child
 void			execute(t_data *data, t_token *current)
 {
 	char	**args;
 	builtin	cmd;
-	pid_t	pid;
-	pid_t	wpid;
 
-	pid = fork();
-	if (pid < 0)
-		return ;
-	if (pid == 0)
+	args = final_arg(data, current);
+	if (!args)
+		exit(1);
+	if (!args[0])
 	{
-		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
-		args = final_arg(data, current);
-		if (!args)
-			exit(1);
-		if (!args[0])
-			exit(0);
-		cmd = identify_command(args[0]);
-		if (cmd == NON_BUILTIN && !check_command(data, args[0]))
-			execute_nonbuiltin(data, args);
-		else if (cmd != NON_BUILTIN)
-			execute_builtin(data, cmd, args);
-		free_array(args);
-	}
+		data->exit_status = 0;
+		return ;
+	}	
+	cmd = identify_command(args[0]);
+	if (cmd == NON_BUILTIN)
+		execute_nonbuiltin(data, args);
 	else
-		wpid = waitpid(pid, &data->exit_status, WUNTRACED);
-	if (wpid == -1)
-		exit(-1);
+		execute_builtin(data, cmd, args);
+	free_array(args);
 }
 
-// void		execute(t_data data)
+// void			execute(t_data *data, t_token *current)
 // {
-// 	char	*path;
 // 	char	**args;
-// 	int		ret;
+// 	builtin	cmd;
 // 	pid_t	pid;
+// 	pid_t	wpid;
+
 // 	pid = fork();
+// 	if (pid < 0)
+// 		return ;
 // 	if (pid == 0)
 // 	{
-// 		path = get_path_to_executable(data);
-// 		args = data.arg;
-// 		ret = execve(path, args, data.our_env);
-// 		if (ret < 0)
-// 		{
-// 			printf("%s\n", strerror(errno));
+// 		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
+// 		args = final_arg(data, current);
+// 		if (!args)
 // 			exit(1);
-// 		}
+// 		if (!args[0])
+// 			exit(0);
+// 		cmd = identify_command(args[0]);
+// 		if (cmd == NON_BUILTIN && !check_command(data, args[0]))
+// 			execute_nonbuiltin(data, args);
+// 		else if (cmd != NON_BUILTIN)
+// 			execute_builtin(data, cmd, args);
+// 		free_array(args);
 // 	}
-// 	if (pid < 0)
-// 		printf("%s\n", strerror(errno));
 // 	else
-// 		wait(NULL);
+// 		wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+// 	if (wpid == -1)
+// 		exit(-1);
 // }

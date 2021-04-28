@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 15:01:46 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 17:56:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 
 typedef			enum
 {
+				ERROR = -1,
 				STANDARD = 0,
 				BIN = 1,
 				USR_BIN = 2,
@@ -234,7 +235,7 @@ int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
 
-int		check_command(t_data *data, char *s);
+command	check_command(t_data *data, char *s);
 void	execute(t_data *data, t_token *current);
 
 #endif

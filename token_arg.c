@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/12 15:01:48 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/04/28 16:25:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ arg_characters	get_arg_characters(char *s, int i)
 		ac = DOUBLEQUOTE;
 	else if (s[i] == '\\' && !(count_backslash(s, i) % 2))
 		ac = BACKSLASH;
-	else if (s[i] == '$' && !(count_backslash(s, i) % 2) && !(s[i + 1] && s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
+	else if (s[i] == '$' && !(count_backslash(s, i) % 2) && !is_control_operator(s[i + 1]) && !(s[i + 1] != '_' && s[i + 1] != '?' && !ft_isalpha(s[i + 1])))
 		ac = ENVIRONMENT_VARIABLE;
 	else if (is_metacharacter(s[i]) && !(count_backslash(s, i) % 2))
 		ac = METACHARACTER;
