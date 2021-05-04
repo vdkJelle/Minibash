@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 21:02:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/04 16:46:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,14 @@ static int	check_if_exists(char *arg, char ***our_env)
 		j = 0;
 		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
 			j++;
-		if (!ft_strncmp((*our_env)[i], arg, j))
+		if (!ft_strncmp((*our_env)[i], arg, skip_until_char_excl(arg, '=')))
 		{
 			if (ft_strchr(arg, '='))
-				replace_entry(arg, our_env, i);
+			{
+				free((*our_env)[i]);
+				(*our_env)[i] = NULL;
+				(*our_env)[i] = ft_strdup(arg);
+			}
 			return (1);
 		}
 		i++;
@@ -72,12 +76,18 @@ static void	append_key_value(char *arg, char ***our_env, int *env_size)
 		return ;
 	i = 0;
 	tmp = (char **)malloc(sizeof(char *) * ((*env_size) + 2));
+	if (!tmp)
+		exit(1);
 	while ((*our_env)[i])
 	{
 		tmp[i] = ft_strdup((*our_env)[i]);
+		if (!tmp[i])
+			exit(1);
 		i++;
 	}
 	tmp[i] = ft_strdup(arg);
+	if (!tmp[i])
+		exit(1);
 	tmp[i + 1] = NULL;
 	(*env_size)++;
 	free_array(*our_env);
@@ -105,10 +115,8 @@ void		ft_export(t_data *data)
 	int		i;
 	char	**arg;
 
-	// arg = ((t_token*)data->token->content)->arg;
 	arg = data->arg;
 	if (!arg[1])
-		// print_export(data->our_env, 0, 0);
 		print_export(data->our_env, data->our_fd[1]);
 	else
 	{

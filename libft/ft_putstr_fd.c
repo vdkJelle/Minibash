@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 10:36:08 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/05 10:36:27 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/04 16:50:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 
 void		ft_putstr_fd(char *s, int fd)
 {
-	int i;
-
-	if (s == 0)
+	if (!s)
 		return ;
-	i = 0;
-	while (s[i])
-	{
-		ft_putchar_fd(s[i], fd);
-		i++;
-	}
+	write(fd, &s[0], ft_strlen(s));
 }
