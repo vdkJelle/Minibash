@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/09 12:35:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 17:02:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*get_command(t_data *data, char *s, char control_operator)
 	{
 		i++;
 		if (is_metacharacter(s[i]))
-			break;
+			break ;
 	}
 	ret = ft_strdup("");
 	if (!ret)

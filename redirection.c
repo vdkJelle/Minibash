@@ -6,26 +6,50 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 14:52:13 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 18:31:26 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_export_edgecase(char *arg, char **ret)
+static char	**cleanup(char **p, int pi)
+{
+	int	i;
+
+	i = 0;
+	while (i < pi)
+	{
+		free(p[i]);
+		i++;
+	}
+	free(p);
+	return (NULL);
+}
+
+static int	append_arg(char *arg, char **ret, char *cmd)
 {
 	int		i;
 
-	i = skip_until_char_incl(arg, '=');
-	*ret = ft_substr(arg, 0, i);
-	while (arg[i])
+	if (!ft_strcmp(cmd, "export"))
 	{
-		if (arg[i] == '\\')
-			*ret = ft_strjoin_free_s1(*ret, "\\\\");
-		else
-			*ret = ft_strjoin_char(*ret, arg[i]);
-		i++;
+		i = skip_until_char_incl(arg, '=');
+		*ret = ft_substr(arg, 0, i);
+		while (arg[i])
+		{
+			if (arg[i] == '\\')
+				*ret = ft_strjoin_free_s1(*ret, "\\\\");
+			else
+				*ret = ft_strjoin_char(*ret, arg[i]);
+			i++;
+		}
 	}
+	else
+	{
+		*ret = ft_strdup(arg);
+		if (!(*ret))
+			exit (1);
+	}
+	return (1);
 }
 
 static int	handle_redirection(t_data *data, char **arg, int i)
@@ -81,27 +105,28 @@ char		**final_arg(t_data *data, t_token *token)
 {
 	char	**ret;
 	int		i;
-	int		size;
+	int		j;
 
-	size = get_new_size(token->arg);
-	ret = malloc(sizeof(char*) * (size + 2));
+	ret = malloc(sizeof(char *) * (get_new_size(token->arg) + 2));
 	if (!ret)
 		exit(1);
 	ret[0] = ft_strdup(token->cmd);
+	if (!ret[0])
+		exit(1);
 	i = 0;
+	j = 1;
 	while (token->arg[i])
 	{
 		if (!ft_strcmp(token->arg[i], "<\0") || !ft_strcmp(token->arg[i], ">\0") || !ft_strcmp(token->arg[i], ">>\0") || !ft_strcmp(token->arg[i], "<>\0"))
-			i += handle_redirection(data, token->arg, i);
-		else
 		{
-			if (!ft_strcmp(ret[0], "export"))
-				handle_export_edgecase(token->arg[i], &ret[i + 1]);
-			else
-				ret[i + 1] = ft_strdup(token->arg[i]);
+			if (handle_redirection(data, token->arg, i) == -1)
+				return (cleanup(ret, j));
+			i++;
 		}
+		else
+			j += append_arg(token->arg[i], &ret[j], ret[0]);
 		i++;
 	}
-	ret[size + 1] = NULL;
+	ret[j] = NULL;
 	return (ret);
 }
