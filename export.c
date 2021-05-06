@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 15:10:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 13:54:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,8 @@ void		ft_export(t_data *data)
 	int		i;
 	char	**arg;
 
-	// arg = ((t_token*)data->token->content)->arg;
 	arg = data->arg;
 	if (!arg[1])
-		// print_export(data->our_env, 0, 0);
 		print_export(data->our_env, data->our_fd[1], 0, 0);
 	else
 	{

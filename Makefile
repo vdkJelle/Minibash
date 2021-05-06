@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/04/01 13:41:05 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/05/04 16:44:38 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS		=	cd\
 				main\
 				pwd\
 				redirection\
+				utils_error\
 				utils_export\
 				utils_list\
 				utils_string_count\

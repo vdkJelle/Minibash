@@ -6,12 +6,19 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 17:57:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 17:52:09 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <dirent.h>
+
+static int	closedir_error(DIR **dir_p)
+{
+	if (closedir(*dir_p) == -1)
+		return (print_errno_int());
+	return (print_errno_int());
+}
 
 static int	check_if_valid_dir(char *dir)
 {
@@ -20,16 +27,17 @@ static int	check_if_valid_dir(char *dir)
 
 	dir_p = opendir(dir);
 	if (!dir_p)
-		return (-1);
+		return (print_errno_int());
 	errno = 0;
 	dir_s = readdir(dir_p);
 	if (!dir_s && errno)
+		closedir_error(&dir_p);
+	if (dir_s)
 	{
-		ft_putstr_fd(strerror(errno), 2);
-		return (-1);
-	}
-	if (dir)
+		if (closedir(dir_p) == -1)
+			return (print_errno_int());
 		return (1);
+	}
 	return (0);
 }
 
@@ -40,23 +48,25 @@ static int	check_in_dir(char *s, char *dir)
 
 	dir_p = opendir(dir);
 	if (!dir_p)
-		return (-1);
+		return (print_errno_int());
 	errno = 0;
 	dir_s = readdir(dir_p);
 	if (!dir_s && errno)
-		return (-1); // handle error
+		closedir_error(&dir_p);
 	while (dir_s)
 	{
 		if (!ft_strcmp(s, dir_s->d_name))
 		{
 			if (closedir(dir_p) == -1)
-				return (-1); // handle error
+				return (print_errno_int());
 			return (1);
 		}
 		dir_s = readdir(dir_p);
+		if (!dir_s && errno)
+			closedir_error(&dir_p);
 	}
 	if (closedir(dir_p) == -1)
-		return (-1); // handle error
+		return (print_errno_int());
 	return (0);
 }
 
@@ -80,14 +90,12 @@ command		check_command(t_data *data, char *s)
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		data->exit_status = 126;
-		cmd = ERROR;
 	}
 	else if (cmd == NOT_FOUND)
 	{
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->exit_status = 127;
-		cmd = ERROR;
 	}
 	return (cmd);
 }

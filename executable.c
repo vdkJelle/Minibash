@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/28 17:57:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 18:57:07 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char		*get_path_to_executable(char *arg, command cmd)
 	
 	if (cmd == BIN)
 		ret = ft_strjoin("/bin/", arg);
-	else if (cmd == BIN)
+	else if (cmd == USR_BIN)
 		ret = ft_strjoin("/usr/bin/", arg);
 	else
 	{
@@ -78,12 +78,12 @@ void			execute_nonbuiltin(t_data *data, char **args)
 	pid_t	wpid;
 
 	cmd = check_command(data, args[0]);
-	if (cmd == ERROR)
+	if (cmd == DIRECTORY || cmd == NOT_FOUND)
 		return ;
 	wpid = 0;
 	pid = fork();
 	if (pid < 0)
-		return ; // print error message?
+		return (print_errno());
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
@@ -93,8 +93,10 @@ void			execute_nonbuiltin(t_data *data, char **args)
 		ret = execve(path, args, data->our_env);
 		if (ret < 0)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			ft_putchar_fd('\n', 1);
+			ft_putstr_fd("🐶 > ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ", 2);
+			print_errno();
 			exit(1);
 		}
 		free(path);
@@ -135,7 +137,7 @@ void			execute(t_data *data, t_token *current)
 
 	args = final_arg(data, current);
 	if (!args)
-		exit(1);
+		return ;
 	if (!args[0])
 	{
 		data->exit_status = 0;

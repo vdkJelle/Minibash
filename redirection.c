@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 14:52:13 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/04 18:54:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,29 +30,19 @@ static void	handle_export_edgecase(char *arg, char **ret)
 
 static int	handle_redirection(t_data *data, char **arg, int i)
 {
-	char	*filename;
-	int		fd;
-
-	filename = arg[i + 1];
-	fd = 0;
 	if (!ft_strcmp(arg[i], ">\0"))
-		fd = open(filename, O_RDWR | O_TRUNC | O_CREAT, 0644);
+		data->our_fd[1] = open(arg[i + 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	else if (!ft_strcmp(arg[i], ">>\0"))
-		fd = open(filename, O_RDWR | O_APPEND | O_CREAT, 0644);
+		data->our_fd[1] = open(arg[i + 1], O_RDWR | O_APPEND | O_CREAT, 0644);
 	else if (!ft_strcmp(arg[i], "<\0"))
-		fd = open(filename, O_RDONLY);
-	else if (!ft_strcmp(arg[i], "<>\0"))
+		data->our_fd[0] = open(arg[i + 1], O_RDONLY);
+	if (data->our_fd[0] == -1 || data->our_fd[1] == -1)
 	{
-		fd = open(filename, O_RDWR | O_TRUNC | O_CREAT, 0644);
-		if (fd == -1)
-			exit(1);
-		close(fd);
-		fd = 0;
+		data->exit_status = 1;
+		return (print_errno_int());
 	}
-	if (fd == -1)
-		exit(1);
-	data->our_fd[1] = fd;
-	printf("our fd = %d\n", data->our_fd[1]);
+	printf("our fd in = %d\n", data->our_fd[0]);
+	printf("our fd out = %d\n", data->our_fd[1]);
 	return (1);
 }
 
