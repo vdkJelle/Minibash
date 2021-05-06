@@ -6,40 +6,36 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/04 13:54:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/06 14:52:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_export(char **our_env, int our_fd, int i, int j)
+static void	print_export(char **our_env, int our_fd)
 {
-	int		fd;
+	int	i;
+	int	j;
 
-	fd = our_fd;
+	i = 0;
 	while (our_env[i])
 	{
 		j = 0;
 		ft_putstr_fd("declare -x ", 1);
 		while (our_env[i][j])
 		{
-			ft_putchar_fd(our_env[i][j], fd);
+			ft_putchar_fd(our_env[i][j], our_fd);
 			if (our_env[i][j] == '=')
 				break ;
 			j++;
 		}
 		if (our_env[i][j] == '=')
 		{
-			ft_putchar_fd('"', fd);
-			j++;
-			while (our_env[i][j])
-			{
-				ft_putchar_fd(our_env[i][j], fd);
-				j++;
-			}
-			ft_putchar_fd('"', fd);
+			ft_putchar_fd('"', our_fd);
+			ft_putstr_fd(our_env[i] + j + 1, our_fd);
+			ft_putchar_fd('"', our_fd);
 		}
-		ft_putchar_fd('\n', fd);
+		ft_putchar_fd('\n', our_fd);
 		i++;
 	}
 }
@@ -111,7 +107,8 @@ void		ft_export(t_data *data)
 
 	arg = data->arg;
 	if (!arg[1])
-		print_export(data->our_env, data->our_fd[1], 0, 0);
+		// print_export(data->our_env, 0, 0);
+		print_export(data->our_env, data->our_fd[1]);
 	else
 	{
 		i = 1;
