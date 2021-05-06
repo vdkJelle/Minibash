@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env.c                                              :+:    :+:            */
+/*   utils_error.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
+/*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/10 16:06:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/04 13:59:16 by tevan-de      ########   odam.nl         */
+/*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
+/*   Updated: 2021/05/04 17:05:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_data *data)
+int		print_errno_int(void)
 {
-	int 	fd;
-	int 	i;
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
+	return (-1);
+}
 
-	fd = data->our_fd[1];
-	i = 0;
-	while (data->our_env[i])
-	{
-		ft_putstr_fd(data->our_env[i], fd);
-		ft_putchar_fd('\n', fd);
-		i++;
-	}
+void	print_errno(void)
+{
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
 }
