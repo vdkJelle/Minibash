@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 20:43:17 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 22:06:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			execute_builtin(t_data *data, e_command cmd, t_execute exec)
+void			execute_builtin(t_data *data, e_command cmd, t_execute *exec)
 {
 	f_builtin	builtin[7];
 
@@ -23,20 +23,20 @@ void			execute_builtin(t_data *data, e_command cmd, t_execute exec)
 	builtin[4] = ft_export;
 	builtin[5] = ft_pwd;
 	builtin[6] = ft_unset;
-	data->args = exec.args;
-	if (exec.fd[0] == -2)
+	data->args = exec->args;
+	if (exec->fd[0] == -2)
 		data->our_fd[0] = 0;
 	else
-		data->our_fd[0] = exec.fd[0];
-	if (exec.fd[1] == -2)
+		data->our_fd[0] = exec->fd[0];
+	if (exec->fd[1] == -2)
 		data->our_fd[1] = 1;
 	else
-		data->our_fd[1] = exec.fd[1];
+		data->our_fd[1] = exec->fd[1];
 	builtin[cmd](data);
-	if (exec.fd[0] != -2)
-		close(exec.fd[0]);
-	if (exec.fd[1] != -2)
-		close(exec.fd[1]);
+	if (exec->fd[0] != -2)
+		close(exec->fd[0]);
+	if (exec->fd[1] != -2)
+		close(exec->fd[1]);
 }
 
 static char		*get_path(char *arg, e_path path)
@@ -59,19 +59,25 @@ static char		*get_path(char *arg, e_path path)
 	return (ret);
 }
 
-void			parent_process(t_data *data, pid_t pid)
+void			parent_process(t_data *data, pid_t pid, t_execute *cur, t_execute *prev)
 {
 	pid_t	wpid;
 
+	printf("wating in parent\n");
 	wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+	printf("exited from parent\n");
 	if (wpid == -1)
 	{
 		print_errno();
 		exit(1);
 	}
+	if (cur->piped == 0 && prev && prev->piped == 1)
+		close(prev->p_fd[0]);
+	if (prev && prev->piped == 1)
+		close(cur->p_fd[0]);
 }
 
-void			execute_nonbuiltin(t_data *data, t_execute cur, t_execute prev)
+void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
 {
 	pid_t	pid;
 
@@ -81,43 +87,39 @@ void			execute_nonbuiltin(t_data *data, t_execute cur, t_execute prev)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (cur.fd[0] == -2)
+		if (cur->fd[0] == -2)
 			dup(STDIN_FILENO);
 		else
-			dup2(cur.fd[0], STDIN_FILENO);
-		if (cur.fd[1] == -2)
+			dup2(cur->fd[0], STDIN_FILENO);
+		if (cur->fd[1] == -2)
 			dup(STDOUT_FILENO);
 		else
-			dup2(cur.fd[1], STDOUT_FILENO);
-		if (cur.piped == 1)
+			dup2(cur->fd[1], STDOUT_FILENO);
+		if (cur->piped == 1)
 		{
-			dup2(cur.p_fd[1], STDOUT_FILENO);
-			close(cur.p_fd[0]);
+			dup2(cur->p_fd[1], STDOUT_FILENO);
+			close(cur->p_fd[0]);
 		}
-		if (prev.piped == 1)
+		if (prev && prev->piped == 1)
 		{
-			dup2(prev.p_fd[0], STDIN_FILENO);
-			close(prev.p_fd[1]);
+			dup2(prev->p_fd[0], STDIN_FILENO);
+			close(prev->p_fd[1]);
 		}
-		if (execve(cur.path, cur.args, data->our_env) == -1)
+		if (execve(cur->path, cur->args, data->our_env) == -1)
 		{
 			ft_putstr_fd("🐶 > ", 2);
-			ft_putstr_fd(cur.path, 2);
+			ft_putstr_fd(cur->path, 2);
 			ft_putstr_fd(": ", 2);
 			print_errno();
 			exit(1);
 		}
 	}
 	else
-		parent_process(data, pid);
-	if (cur.fd[0] != -2)
-		close(cur.fd[0]);
-	if (cur.fd[1] != -2)
-		close(cur.fd[1]);
-	if (cur.piped == 0 && prev.piped == 1)
-		close(prev.p_fd[0]);
-	if (prev.piped == 1)
-		close(cur.p_fd[0]);
+		parent_process(data, pid, cur, prev);
+	if (cur->fd[0] != -2)
+		close(cur->fd[0]);
+	if (cur->fd[1] != -2)
+		close(cur->fd[1]);
 }
 
 static e_command	identify_command(char *s)
@@ -143,54 +145,25 @@ static e_command	identify_command(char *s)
 	return (cmd);
 }
 
-static int	initialize_exec(t_data *data, t_execute *exec, t_token *token)
-{
-	ft_bzero(exec, sizeof(*exec));
-	if (!token)
-		return (0);
-	if (token->cop[0] == '|')
-	{
-		if (pipe(exec->p_fd) == -1)
-		{
-			data->exit_status = 1;
-			return (print_errno_int());
-		}
-		exec->piped = 1;
-	}
-	exec->fd[0] = -2;
-	exec->fd[1] = -2;
-	final_args(data, token, exec);
-	if (!exec->args)
-		return (-1);
-	return (0);
-}
-
-int			execute(t_data *data, t_token *cur, t_token *prev)
+int			execute(t_data *data, t_execute *cur, t_execute *prev)
 {
 	e_command	cmd;
 	e_path		path;
-	t_execute	exec_cur;
-	t_execute	exec_prev;
 
-	if (initialize_exec(data, &exec_cur, cur) == -1 || initialize_exec(data, &exec_prev, prev) == -1)
-		return (-1);
-	cmd = identify_command(exec_cur.args[0]);
+	cmd = identify_command(cur->args[0]);
 	if (cmd == NON_BUILTIN)
 	{
-		path = check_path(data, exec_cur.args[0]);
+		path = check_path(data, cur->args[0]);
 		if (path == DIRECTORY || path == NOT_FOUND)
 			return (-1);
-		exec_cur.path = get_path(exec_cur.args[0], path);
-		if (!exec_cur.path)
+		cur->path = get_path(cur->args[0], path);
+		if (!cur->path)
 			exit(1);
-		execute_nonbuiltin(data, exec_cur, exec_prev);
-		free(exec_cur.path);
+		execute_nonbuiltin(data, cur, prev);
+		free(cur->path);
 	}
 	else
-		execute_builtin(data, cmd, exec_cur);
-	free_array(exec_cur.args);
-	if (prev)
-		free_array(exec_prev.args);
+		execute_builtin(data, cmd, cur);
 	return (0);
 }
 
@@ -200,27 +173,27 @@ int			execute(t_data *data, t_token *cur, t_token *prev)
 // 	t_execute	exec;
 
 // 	ft_bzero(&exec, sizeof(exec));
-// 	exec.fd[0] = -2;
-// 	exec.fd[1] = -2;
+// 	exec->fd[0] = -2;
+// 	exec->fd[1] = -2;
 // 	if (cur->cop[0] == '|' || (prev && prev->cop[0] == '|'))
 // 	{
-// 		if (pipe(exec.p_fd) == -1)
+// 		if (pipe(exec->p_fd) == -1)
 // 		{
 // 			data->exit_status = 1;
 // 			return (print_errno());
 // 		}
-// 		printf("read = %d\twrite = %d\n", exec.p_fd[0], exec.p_fd[1]);
-// 		exec.piped = 1;
+// 		printf("read = %d\twrite = %d\n", exec->p_fd[0], exec->p_fd[1]);
+// 		exec->piped = 1;
 // 	}
 // 	final_args(data, cur, &exec);
-// 	if (!exec.args)
+// 	if (!exec->args)
 // 		return ;
-// 	cmd = identify_command(exec.args[0]);
+// 	cmd = identify_command(exec->args[0]);
 // 	if (cmd == NON_BUILTIN)
 // 		execute_nonbuiltin(data, exec);
 // 	else
 // 		execute_builtin(data, cmd, exec);
-// 	free_array(exec.args);
+// 	free_array(exec->args);
 // }
 
 // void			execute(t_data *data, t_token *current)
@@ -284,10 +257,10 @@ int			execute(t_data *data, t_token *cur, t_token *prev)
 // 	pid_t	pid;
 // 	pid_t	wpid;
 
-// 	cmd = check_command(data, exec.args[0]);
+// 	cmd = check_command(data, exec->args[0]);
 // 	if (cmd == DIRECTORY || cmd == NOT_FOUND)
 // 		return ;
-// 	path = get_path_to_executable(exec.args[0], cmd);
+// 	path = get_path_to_executable(exec->args[0], cmd);
 // 	if (!path)
 // 		exit(1);
 // 	wpid = 0;
@@ -297,17 +270,17 @@ int			execute(t_data *data, t_token *cur, t_token *prev)
 // 	if (pid == 0)
 // 	{
 // 		signal(SIGINT, SIG_DFL); //siginterupt, sigdefault
-// 		if (exec.fd[0] == -2)
+// 		if (exec->fd[0] == -2)
 // 			dup(STDIN_FILENO);
 // 		else
-// 			dup2(exec.fd[0], STDIN_FILENO);
-// 		if (exec.fd[1] == -2)
+// 			dup2(exec->fd[0], STDIN_FILENO);
+// 		if (exec->fd[1] == -2)
 // 			dup(STDOUT_FILENO);
 // 		else
-// 			dup2(exec.fd[1], STDOUT_FILENO);
-// 		// ret = execve(path, exec.args, data->our_env);
+// 			dup2(exec->fd[1], STDOUT_FILENO);
+// 		// ret = execve(path, exec->args, data->our_env);
 // 		// if (ret < 0)
-// 		if (execve(path, exec.args, data->our_env) == -1)
+// 		if (execve(path, exec->args, data->our_env) == -1)
 // 		{
 // 			ft_putstr_fd("🐶 > ", 2);
 // 			ft_putstr_fd(path, 2);
@@ -321,5 +294,5 @@ int			execute(t_data *data, t_token *cur, t_token *prev)
 // 	if (wpid == -1)
 // 		exit(1);
 // 	free(path);
-// 	close_fd(data, exec.fd);
+// 	close_fd(data, exec->fd);
 // }

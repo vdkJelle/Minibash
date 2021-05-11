@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 18:11:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 21:38:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ int		is_redirection(char *s);
 int		is_whitespace(char c);
 
 e_path	check_path(t_data *data, char *s);
-int	execute(t_data *data, t_token *cur, t_token *prev);
+int		execute(t_data *data, t_execute *cur, t_execute *prev);
 void	print_errno(void);
 int		print_errno_int(void);
 

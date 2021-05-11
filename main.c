@@ -6,34 +6,69 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 18:11:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 21:53:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static t_execute	*initialize_exec(t_data *data, t_token *token)
+{
+	t_execute	*exec;
+
+	exec = malloc(sizeof(t_execute));
+	if (!exec)
+		exit(1);	
+	ft_bzero(exec, sizeof(*exec));
+	if (token->cop[0] == '|')
+	{
+		if (pipe(exec->p_fd) == -1)
+		{
+			data->exit_status = 1;
+			print_errno_int();
+			return (NULL);
+		}
+		printf("pipe read = %d\tpipe write = %d\n", exec->p_fd[0], exec->p_fd[1]);
+		exec->piped = 1;
+	}
+	exec->fd[0] = -2;
+	exec->fd[1] = -2;
+	final_args(data, token, exec);
+	if (!exec->args)
+		return (NULL);
+	return (exec);
+}
+
 static void	cody_catch(t_data *data)
 {
-	int			ret;
-	t_list		*cur;
-	t_list		*prev;
+	t_list		*temp;
+	t_execute	*cur;
+	t_execute	*prev;
+	t_execute	*temp_exec;
 
 	prev = NULL;
-	cur = data->token;
-	while (cur)
+	temp = data->token;
+	while (temp)
 	{
-		if (((t_token*)cur->content)->cop[0] == '|')
-			printf("cur is pipe\n");
-		if (prev && ((t_token*)prev->content)->cop[0] == '|')
-			printf("prev is pipe\n");
-		if (prev)
-			ret = execute(data, (t_token*)cur->content, (t_token*)prev->content);
-		else
-			ret = execute(data, (t_token*)cur->content, NULL);
-		if (ret == -1)
+		cur = initialize_exec(data, (t_token*)temp->content);
+		if (!cur)
+		{
+			printf("here1\n");
 			return ;
+		}
+		if (execute(data, cur, prev) == -1)
+		{
+			printf("here2\n");
+			return ;
+		}
+		temp_exec = prev;
 		prev = cur;
-		cur = cur->next;
+		if (temp_exec)
+		{
+			free_array(temp_exec->args);
+			free(temp_exec);
+		}
+		temp = temp->next;
 	}
 }
 
