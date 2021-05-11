@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/04 17:52:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 17:28:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,34 +70,34 @@ static int	check_in_dir(char *s, char *dir)
 	return (0);
 }
 
-command		check_command(t_data *data, char *s)
+e_path		check_path(t_data *data, char *s)
 {
-	command	cmd;
+	e_path	path;
 	
 	if (check_in_dir(s, "/bin/") == 1)
-		cmd = BIN;
+		path = BIN;
 	else if (check_in_dir(s, "/usr/bin/") == 1)
-		cmd = USR_BIN;
+		path = USR_BIN;
 	else if (s && s[ft_strlen(s) - 1] == '/' && check_if_valid_dir(s) == 1)
-		cmd = DIRECTORY;
+		path = DIRECTORY;
 	else if (!ft_strchr(s, '/'))
-		cmd = NOT_FOUND;
+		path = NOT_FOUND;
 	else
-		cmd = STANDARD;
-	if (cmd == DIRECTORY)
+		path = STANDARD;
+	if (path == DIRECTORY)
 	{
 		ft_putstr_fd("🐶 > ", 2);
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		data->exit_status = 126;
 	}
-	else if (cmd == NOT_FOUND)
+	else if (path == NOT_FOUND)
 	{
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->exit_status = 127;
 	}
-	return (cmd);
+	return (path);
 }
 
 // int			check_command(t_data *data, char *s)
@@ -137,32 +137,32 @@ command		check_command(t_data *data, char *s)
 
 // int			check_executable(char *s)
 // {
-// 	// char	*cmd;
+// 	// char	*path;
 // 	// char	*dir;
 // 	int		end;
-// 	int		start_cmd;
+// 	int		start_path;
 
 // 	end = ft_strlen(s);
-// 	start_cmd = -1;
+// 	start_path = -1;
 // 	while (end > 0)
 // 	{
 // 		if (s[end] == '/')
 // 		{
-// 			start_cmd = end + 1;
+// 			start_path = end + 1;
 // 			break ;
 // 		}
 // 		end--;
 // 	}
-// 	// if (start_cmd > -1)
+// 	// if (start_path > -1)
 // 	// {
-// 	// 	// cmd = ft_substr(s, start_cmd, ft_strlen(s) - start_cmd);
-// 	// 	// dir = ft_substr(s, 0, start_cmd);
-// 	// 	// printf("cmd = %s\tdir = %s\n", cmd, dir);
-// 	// 	// if (!cmd || !dir)
+// 	// 	// path = ft_substr(s, start_path, ft_strlen(s) - start_path);
+// 	// 	// dir = ft_substr(s, 0, start_path);
+// 	// 	// printf("path = %s\tdir = %s\n", path, dir);
+// 	// 	// if (!path || !dir)
 // 	// 	// 	exit(1);
-// 	// 	// return (check_in_dir(cmd, dir));
+// 	// 	// return (check_in_dir(path, dir));
 // 	// }
-// 	if (start_cmd == -1)
+// 	if (start_path == -1)
 // 		return (1);
 // 	else
 // 		return (0);

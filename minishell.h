@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/06 14:55:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/11 18:11:24 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@
 **------------------------------------ENUMS-------------------------------------
 */
 
+typedef 		enum
+{
+				NON_BUILTIN = -1,
+				CD = 0,
+				ECHO = 1,
+				ENV = 2,
+				EXIT = 3,
+				EXPORT = 4,
+				PWD = 5,
+				UNSET = 6,
+}				e_command;
+
 typedef			enum
 {
 				STANDARD = 0,
@@ -43,7 +55,7 @@ typedef			enum
 				USR_BIN = 2,
 				DIRECTORY = 3,
 				NOT_FOUND = 4,
-}				command;
+}				e_path;
 
 typedef 		enum
 {
@@ -55,32 +67,38 @@ typedef 		enum
 				BACKSLASH = 5,
 }				arg_characters;
 
-typedef 		enum
-{
-				NON_BUILTIN = -1,
-				CD = 0,
-				ECHO = 1,
-				ENV = 2,
-				EXIT = 3,
-				EXPORT = 4,
-				PWD = 5,
-				UNSET = 6,
-}				builtin;
+
 
 /*
 **-----------------------------------STRUCTS------------------------------------
 */
 
+typedef struct	s_execute
+{
+	char		**args;
+	char		*path;
+	int			fd[2];
+	int			p_fd[2];
+	int			piped;
+}				t_execute;
+
+typedef struct	s_word
+{
+	t_list		*word_segment;
+	char		*word;
+	int			metacharacter;
+}				t_word;
+
 typedef struct	s_token
 {
-	char		*cmd;
-	char		**arg;
+	t_word		*cmd;
+	t_word		**arg;
 	char		*cop;
 }				t_token;
 
 typedef struct	s_data
 {
-	char		**arg;
+	char		**args;
 	char		**our_env;
 	char		*input;
 	int			env_size;
@@ -94,7 +112,7 @@ typedef struct	s_data
 **----------------------------POINTERS TO FUNCTIONS-----------------------------
 */
 
-typedef int		(*f_arg_handler)(t_data *data, char **ret, char *s);
+typedef int		(*f_arg_handler)(t_data *data, t_word **word, char *s);
 typedef void	(*f_builtin)(t_data *data);
 
 /*
@@ -110,6 +128,7 @@ void	ft_env(t_data *data);
 /*
 **---------------------------------EXPORT.C-------------------------------------
 */
+void	append_key_value(char *arg, char ***our_env, int *env_size);
 void	ft_export(t_data *data);
 
 /*
@@ -141,12 +160,17 @@ char	*get_env(char **env, char *key);
 /*
 **-----------------------------HANDLE_ARG_CHARS.C-------------------------------
 */
-int		handle_char(t_data *data, char **ret, char *s);
-int		handle_doublequotes(t_data *data, char **ret, char *s);
-int		handle_environment_variable(t_data *data, char **ret, char *s);
-int		handle_metacharacter(t_data *data, char **ret, char *s);
-int		handle_singlequotes(t_data *data, char **ret, char *s);
+// int		handle_char(t_data *data, char **ret, char *s);
+// int		handle_doublequotes(t_data *data, char **ret, char *s);
+// int		handle_environment_variable(t_data *data, char **ret, char *s);
+// int		handle_metacharacter(t_data *data, char **ret, char *s);
+// int		handle_singlequotes(t_data *data, char **ret, char *s);
 
+int		handle_char(t_data *data, t_word **word, char *s);
+int		handle_doublequotes(t_data *data, t_word **word, char *s);
+int		handle_environment_variable(t_data *data, t_word **word, char *s);
+int		handle_metacharacter(t_data *data, t_word **word, char *s);
+int		handle_singlequotes(t_data *data, t_word **word, char *s);
 /*
 **----------------------------------MAIN.C--------------------------------------
 */
@@ -155,12 +179,14 @@ int		main(void);
 /*
 **--------------------------------REDIRECTION.C---------------------------------
 */
-char	**final_arg(t_data *data, t_token *token);
+// char	**final_arg(t_data *data, t_token *token);
+void	final_args(t_data *data, t_token *token, t_execute *exec);
 
 /*
 **--------------------------------TOKEN_ARG.C-----------------------------------
 */
-int		get_arg(t_data *data, char **ret, char *s, char control_op);
+// int		get_arg(t_data *data, char **ret, char *s, char control_op);
+int		get_arg(t_data *data, t_word **word, char *s, char control_op);
 
 /*
 **-------------------------------TOKEN_CHECK.C----------------------------------
@@ -229,9 +255,12 @@ int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
 
-command	check_command(t_data *data, char *s);
-void	execute(t_data *data, t_token *current);
+e_path	check_path(t_data *data, char *s);
+int	execute(t_data *data, t_token *cur, t_token *prev);
 void	print_errno(void);
 int		print_errno_int(void);
+
+void	signal_output(int sig);
+void	ft_signal_handler(void);
 
 #endif

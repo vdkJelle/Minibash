@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/23 21:45:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 11:11:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,13 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 	int 	j;
 
 	i = 0;
-	j = 0;
 	while ((*our_env)[i])
 	{
 		j = 0;
 		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
 			j++;
 		if (!ft_strncmp((*our_env)[i], arg, j))
-		{
-			destroy_entry(our_env, env_size, i);
-			return ;
-		}
+			return (destroy_entry(our_env, env_size, i));
 		i++;
 	}
 	return ;
@@ -63,25 +59,25 @@ static int	check_if_valid(char *input)
 
 void	ft_unset(t_data *data)
 {
+	char	**args;
+	int		exit_stats;
 	int		i;
-	char	**arg;
 
-	// arg = ((t_token*)data->token->content)->arg;
-	arg = data->arg;
+	args = data->args;
+	exit_stats = 0;
 	i = 1;
-	while (arg[i])
+	while (args[i])
 	{
-		if (check_if_valid(arg[i]))
+		if (check_if_valid(args[i]))
 		{
-			// printf("🐶: unset: `%s\': not a valid identifier\n", arg[i]);
 			ft_putstr_fd("🐶 > unset: `", 2);
-			write(2, &arg[i][0], 1);
-			ft_putstr_fd("': not a valid identifier\n", 2);			
-			i++;
-			continue ;
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			exit_stats = 1;
 		}
-		check_for_entry(arg[i], &data->our_env, &data->env_size);
+		else
+			check_for_entry(args[i], &data->our_env, &data->env_size);
 		i++;
 	}
-	data->exit_status = 0;
+	data->exit_status = exit_stats;
 }

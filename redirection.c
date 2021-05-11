@@ -6,13 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/06 14:54:09 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/10 20:02:27 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**cleanup(char **p, int pi)
+static void	cleanup(char **p, int pi)
 {
 	int	i;
 
@@ -23,7 +23,6 @@ static char	**cleanup(char **p, int pi)
 		i++;
 	}
 	free(p);
-	return (NULL);
 }
 
 static int	append_arg(char *arg, char **ret, char *cmd)
@@ -52,25 +51,49 @@ static int	append_arg(char *arg, char **ret, char *cmd)
 	return (1);
 }
 
-static int	handle_redirection(t_data *data, char **arg, int i)
+static int	handle_redirection(t_data *data, t_word **arg, int i, int fd[2])
 {
-	if (!ft_strcmp(arg[i], ">\0"))
-		data->our_fd[1] = open(arg[i + 1], O_RDWR | O_TRUNC | O_CREAT, 0644);
-	else if (!ft_strcmp(arg[i], ">>\0"))
-		data->our_fd[1] = open(arg[i + 1], O_RDWR | O_APPEND | O_CREAT, 0644);
-	else if (!ft_strcmp(arg[i], "<\0"))
-		data->our_fd[0] = open(arg[i + 1], O_RDONLY);
-	if (data->our_fd[0] == -1 || data->our_fd[1] == -1)
+	if (!ft_strcmp(arg[i]->word, ">\0"))
+	{
+		if (fd[1] != -2)
+		{
+			if (close(fd[1]) == -1)
+				return (print_errno_int());
+		}
+		fd[1] = open(arg[i + 1]->word, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	}
+	else if (!ft_strcmp(arg[i]->word, ">>\0"))
+	{
+		if (fd[1] != -2)
+		{
+			if (close(fd[1]) == -1)
+				return (print_errno_int());
+		}
+		fd[1] = open(arg[i + 1]->word, O_RDWR | O_APPEND | O_CREAT, 0644);
+	}
+	else if (!ft_strcmp(arg[i]->word, "<\0"))
+	{
+		if (fd[0] != -2)
+		{
+			if (close(fd[0]) == -1)
+				return (print_errno_int());
+		}
+		fd[0] = open(arg[i + 1]->word, O_RDONLY);
+	}	
+	if (fd[0] == -1 || fd[1] == -1)
 	{
 		data->exit_status = 1;
+		ft_putstr_fd("🐶 > ", 2);
+		ft_putstr_fd(arg[i + 1]->word, 2);
+		ft_putstr_fd(": ", 2);
 		return (print_errno_int());
 	}
-	printf("our fd in = %d\n", data->our_fd[0]);
-	printf("our fd out = %d\n", data->our_fd[1]);
-	return (1);
+	printf("fd in = %d\n", fd[0]);
+	printf("fd out = %d\n", fd[1]);
+	return (0);
 }
 
-static int	get_new_size(char **arg)
+static int	get_new_size(t_word **arg)
 {
 	int		i;
 	int		size;
@@ -81,7 +104,7 @@ static int	get_new_size(char **arg)
 	i = 0;	
 	while (arg[i])
 	{
-		if (!ft_strcmp(arg[i], "<\0") || !ft_strcmp(arg[i], ">\0") || !ft_strcmp(arg[i], ">>\0") || !ft_strcmp(arg[i], "<>\0"))
+		if (is_redirection(arg[i]->word) && arg[i]->metacharacter == 1)
 		{
 			size -= 2;
 			i++;
@@ -91,32 +114,30 @@ static int	get_new_size(char **arg)
 	return (size);
 }
 
-char		**final_arg(t_data *data, t_token *token)
+void		final_args(t_data *data, t_token *token, t_execute *exec)
 {
-	char	**ret;
 	int		i;
 	int		j;
 
-	ret = malloc(sizeof(char *) * (get_new_size(token->arg) + 2));
-	if (!ret)
+	exec->args = malloc(sizeof(char *) * (get_new_size(token->arg) + 2));
+	if (!exec->args)
 		exit(1);
-	ret[0] = ft_strdup(token->cmd);
-	if (!ret[0])
+	exec->args[0] = ft_strdup(token->cmd->word);
+	if (!exec->args[0])
 		exit(1);
 	i = 0;
 	j = 1;
 	while (token->arg[i])
 	{
-		if (!ft_strcmp(token->arg[i], "<\0") || !ft_strcmp(token->arg[i], ">\0") || !ft_strcmp(token->arg[i], ">>\0") || !ft_strcmp(token->arg[i], "<>\0"))
+		if (is_redirection(token->arg[i]->word) && token->arg[i]->metacharacter == 1)
 		{
-			if (handle_redirection(data, token->arg, i) == -1)
-				return (cleanup(ret, j));
+			if (handle_redirection(data, token->arg, i, exec->fd) == -1)
+				return (cleanup(exec->args, j));
 			i++;
 		}
 		else
-			j += append_arg(token->arg[i], &ret[j], ret[0]);
+			j += append_arg(token->arg[i]->word, &exec->args[j], exec->args[0]);
 		i++;
 	}
-	ret[j] = NULL;
-	return (ret);
+	exec->args[j] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/06 14:54:15 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/11 11:12:34 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	check_if_exists(char *arg, char ***our_env)
 	return (0);
 }
 
-static void	append_key_value(char *arg, char ***our_env, int *env_size)
+void		append_key_value(char *arg, char ***our_env, int *env_size)
 {
 	char	**tmp;
 	int		i;
@@ -113,24 +113,26 @@ static int	check_if_valid(char *input)
 void		ft_export(t_data *data)
 {
 	int		i;
-	char	**arg;
+	int		exit_stats;
+	char	**args;
 
-	arg = data->arg;
-	if (!arg[1])
+	args = data->args;
+	exit_stats = 0;
+	if (!args[1])
 		print_export(data->our_env, data->our_fd[1]);
-	else
+	i = 1;
+	while (args[i])
 	{
-		i = 1;
-		while (arg[i])
+		if (check_if_valid(args[i]))
 		{
-			if (check_if_valid(arg[i]))
-			{
-				printf("🐶: export: `%s\': not a valid identifier\n", arg[i]);
-				i++;
-				continue ;
-			}
-			append_key_value(arg[i], &data->our_env, &data->env_size);
-			i++;
+			ft_putstr_fd("🐶 > export: `", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			exit_stats = 1;
 		}
+		else
+			append_key_value(args[i], &data->our_env, &data->env_size);
+		i++;
 	}
+	data->exit_status = exit_stats;
 }

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 16:06:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/04 13:59:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 10:52:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	ft_env(t_data *data)
 		ft_putchar_fd('\n', fd);
 		i++;
 	}
+	data->exit_status = 0;
 }

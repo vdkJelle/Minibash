@@ -1,42 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   echo.c                                             :+:    :+:            */
+/*   signals.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/11 10:32:48 by tevan-de      ########   odam.nl         */
+/*   Created: 2021/05/11 10:10:31 by tevan-de      #+#    #+#                 */
+/*   Updated: 2021/05/11 10:22:28 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_data *data)
+void	signal_output(int sig)
 {
-	int		newline;
-	int		i;
-	int		fd;
-	char	**args;
+	if (sig == SIGINT)
+		write(1, "\n🐶 > ", sizeof("\n🐶 > "));
+	if (sig == SIGQUIT)
+	{
+		write(1, "\b\b  \b\bexit\n", 11);
+		exit(0);
+	}
+}
 
-	args = data->args;
-	fd = data->our_fd[1];
-	i = 1;
-	if (args[i] && !ft_strcmp(args[i], "-n"))
-	{
-		i++;
-		newline = 0;
-	}
-	else
-		newline = 1;
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], fd);
-		if (args[i + 1])
-			ft_putchar_fd(' ', fd);
-		i++;
-	}
-	if (newline == 1)
-		ft_putchar_fd('\n', fd);
-	data->exit_status = 0;
+void	ft_signal_handler(void)
+{
+	if (signal(SIGINT, &signal_output) == SIG_ERR || signal(SIGQUIT, &signal_output) == SIG_ERR)
+		exit(0);
 }

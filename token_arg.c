@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 16:25:17 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/07 13:49:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ arg_characters	get_arg_characters(char *s, int i)
 	return (ac);
 }
 
-int				get_arg(t_data *data, char **ret, char *s, char control_op)
+int				get_arg(t_data *data, t_word **word, char *s, char control_op)
 {
 	int				i;
 	arg_characters	ac;
@@ -43,7 +43,7 @@ int				get_arg(t_data *data, char **ret, char *s, char control_op)
 	arg_handler[3] = handle_metacharacter;
     arg_handler[4] = handle_singlequotes;
 	if (s[0] && is_metacharacter(s[0]))
-		return (arg_handler[3](data, ret, s));
+		return (arg_handler[3](data, word, s));
 	i = 0;
 	while (s[i] && s[i] != control_op)
 	{
@@ -53,7 +53,7 @@ int				get_arg(t_data *data, char **ret, char *s, char control_op)
 		else if (ac == METACHARACTER)
 			return (i + skip_whitespaces_int(s + i));
 		else
-			i += arg_handler[ac](data, ret, s + i);
+			i += arg_handler[ac](data, word, s + i);
 	}
 	return (i);
 }

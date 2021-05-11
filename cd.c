@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/05 15:08:59 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 10:32:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,24 @@
 void			ft_cd(t_data *data)
 {
 	int		ret;
-	char	*argument;
+	char	**args;
 
-	argument = data->arg[1];
-	if (!argument && data->our_fd[1] != -1) // could remove data->our_fd[1] != -1
+	args = data->args;
+	if (!args[1])
 		ret = chdir(get_env(data->our_env, "HOME"));
-	else if (argument[0] == '~') // remove tilde expansion
+	else if (args[1] && args[2] == NULL)
+		ret = chdir(args[1]);
+	else if (args[1] && args[2] != NULL)
 	{
-		argument = ft_strjoin((get_env(data->our_env, "HOME")), argument + 1);
-		ret = chdir(argument);
-		free(argument);
+		ft_putstr_fd("🐶 > cd: too many arguments\n", 2);
+		data->exit_status = 1;
+		return ;
 	}
-	else
-		ret = chdir(argument);
 	if (ret < 0)
 	{
 		print_errno();
 		data->exit_status = 1;
+		return ;
 	}
-	return ;
+	data->exit_status = 0;
 }

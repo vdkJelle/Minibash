@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 15:06:03 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/07 18:05:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,36 @@
 void	free_token(void *content)
 {
 	int		i;
+	t_token	*token;
 
 	i = 0;
-	free(((t_token*)content)->cmd);
-	while (((t_token*)content)->arg[i])
+	token = (t_token*)content;
+	ft_lstclear(&token->cmd->word_segment, free);
+	free(token->cmd->word);
+	free(token->cmd);
+	while (token->arg[i])
 	{
-		free(((t_token*)content)->arg[i]);
+		ft_lstclear(&token->arg[i]->word_segment, free);
+		free(token->arg[i]->word);
+		free(token->arg[i]);
 		i++;
 	}
-	free(((t_token*)content)->arg);
-	free(((t_token*)content)->cop);
+	free(token->arg);
+	free(token->cop);
 	free(content);
+	content = NULL;
 }
+
 
 void	print_token(void *content)
 {
 	int		i;
 
 	i = 0;
-	printf("cmd = %s\n", ((t_token*)content)->cmd);
+	printf("cmd = %s\n", ((t_token*)content)->cmd->word);
 	while (((t_token*)content)->arg[i])
 	{
-		printf("arg = %s\n", ((t_token*)content)->arg[i]);
+		printf("arg = %s\n", ((t_token*)content)->arg[i]->word);
 		i++;
 	}
 	if (!ft_strcmp(((t_token*)content)->cop, "\0"))
