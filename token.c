@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/11 10:07:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 23:08:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	t_word	**args;
 
 	size = count_arguments(s, control_operator);
-	printf("size = %d\n", size);
 	args = malloc(sizeof(t_word*) * (size + 1));
 	if (!args)
 		exit(1);

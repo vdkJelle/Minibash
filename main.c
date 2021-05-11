@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 21:53:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 23:23:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,9 @@ static void	cody_catch(t_data *data)
 	{
 		cur = initialize_exec(data, (t_token*)temp->content);
 		if (!cur)
-		{
-			printf("here1\n");
 			return ;
-		}
 		if (execute(data, cur, prev) == -1)
-		{
-			printf("here2\n");
 			return ;
-		}
 		temp_exec = prev;
 		prev = cur;
 		if (temp_exec)
@@ -69,6 +63,11 @@ static void	cody_catch(t_data *data)
 			free(temp_exec);
 		}
 		temp = temp->next;
+		if (!temp)
+		{
+			free_array(cur->args);
+			free(cur);
+		}
 	}
 }
 
@@ -141,7 +140,7 @@ int				main(void)
 		if (data.r == -1)
 			exit(1);
 		get_token(&data, data.input);
-		ft_lstiter(data.token, print_token);
+		// ft_lstiter(data.token, print_token);
 		if (!check_token(&data))
 			cody_catch(&data);
 		else

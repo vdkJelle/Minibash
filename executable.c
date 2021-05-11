@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 22:06:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/11 23:29:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,30 @@ void			parent_process(t_data *data, pid_t pid, t_execute *cur, t_execute *prev)
 {
 	pid_t	wpid;
 
-	printf("wating in parent\n");
 	wpid = waitpid(pid, &data->exit_status, WUNTRACED);
-	printf("exited from parent\n");
 	if (wpid == -1)
 	{
 		print_errno();
 		exit(1);
 	}
-	if (cur->piped == 0 && prev && prev->piped == 1)
-		close(prev->p_fd[0]);
+	if (cur->piped == 1)// || (prev && prev->piped == 1))
+		// close(cur->p_fd[1]);
+	{
+		printf("cur->p_fd[1] closed = %d\n", cur->p_fd[1]);
+		close(cur->p_fd[1]);
+	}
+	// if (cur->piped == 0 && (prev && prev->piped == 1))
+	// 	// close(cur->p_fd[0]);
+	// {
+	// 	printf("cur->p_fd[0] closed = %d\n", cur->p_fd[0]);
+	// 	close(cur->p_fd[0]);
+	// }
 	if (prev && prev->piped == 1)
-		close(cur->p_fd[0]);
+		// close(prev->p_fd[0]);
+	{
+		printf("prev->p_fd[0] closed = %d\n", prev->p_fd[0]);
+		close(prev->p_fd[0]);
+	}
 }
 
 void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
@@ -117,9 +129,15 @@ void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
 	else
 		parent_process(data, pid, cur, prev);
 	if (cur->fd[0] != -2)
+	{
+		printf("fd closed = %d\n", cur->fd[0]);
 		close(cur->fd[0]);
+	}
 	if (cur->fd[1] != -2)
+	{
+		printf("fd closed = %d\n", cur->fd[1]);
 		close(cur->fd[1]);
+	}
 }
 
 static e_command	identify_command(char *s)
