@@ -6,24 +6,26 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 10:32:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 21:22:52 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Changes the directory according to path using chdir
+** Changes the directory according to the path using chdir
+** If there are too many arguments the error is printed
+** If no arguments are provided path is set to the home directory
 ** If chdir is successful the directory is changed to the path
-** Else the error is printed
+** If chdir is unsuccessful
+**		the directory is unchanged
+**		the error is printed
 ** No return value
-** Exit status is set in accordance to success or failure
 */
-
 void			ft_cd(t_data *data)
 {
-	int		ret;
 	char	**args;
+	int		ret;
 
 	args = data->args;
 	if (!args[1])
@@ -32,14 +34,12 @@ void			ft_cd(t_data *data)
 		ret = chdir(args[1]);
 	else if (args[1] && args[2] != NULL)
 	{
-		ft_putstr_fd("🐶 > cd: too many arguments\n", 2);
-		data->exit_status = 1;
+		print_error(data, 1, 1, "🐶 > cd: too many arguments");
 		return ;
 	}
 	if (ret < 0)
 	{
-		print_errno();
-		data->exit_status = 1;
+		print_error(data, 1, 1, strerror(errno));
 		return ;
 	}
 	data->exit_status = 0;

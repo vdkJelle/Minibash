@@ -6,15 +6,22 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 11:11:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 21:26:39 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+** Removes an environmental variable
+** Frees the string and moves the other strings up one place
+** Decrements the size of the array
+** No return value
+*/
 static void	destroy_entry(char ***our_env, int *env_size, int i)
 {
 	free((*our_env)[i]);
+	(*our_env)[i] = NULL;
 	while ((*our_env)[i])
 	{
 		(*our_env)[i] = (*our_env)[i + 1];
@@ -23,6 +30,11 @@ static void	destroy_entry(char ***our_env, int *env_size, int i)
 	(*env_size)--;
 }
 
+/*
+** Checks if there is a match between the key and an environmental variable
+** If the key is a match the environmental variable is destroyed
+** No return value
+*/
 static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 {
 	int		i;
@@ -41,6 +53,14 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 	return ;
 }
 
+/*
+** Checks if the identifier is valid
+** An argument is invalid if 
+**		the first character is not a letter or '_'
+** 		the following characters up to the '=' are not alphanumerical or '_'
+** Returns 0 if the argument is valid
+** Returns 1 if the argument is invalid
+*/
 static int	check_if_valid(char *input)
 {
 	int		i;
@@ -57,27 +77,28 @@ static int	check_if_valid(char *input)
 	return (0);
 }
 
+/*
+** Removes environmental variables
+** An environmental variable is removed from the array if
+**		the argument is valid
+**		the key exists
+** No return value
+*/
 void	ft_unset(t_data *data)
 {
 	char	**args;
-	int		exit_stats;
 	int		i;
 
 	args = data->args;
-	exit_stats = 0;
+	data->exit_status = 0;
 	i = 1;
 	while (args[i])
 	{
 		if (check_if_valid(args[i]))
-		{
-			ft_putstr_fd("🐶 > unset: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			exit_stats = 1;
-		}
+			print_error(data, 1, 3,
+			"🐶 > unset: `", args[i], "': not a valid identifier");
 		else
 			check_for_entry(args[i], &data->our_env, &data->env_size);
 		i++;
 	}
-	data->exit_status = exit_stats;
 }

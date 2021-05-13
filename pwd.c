@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/04/20 14:59:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 21:25:45 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 /*
 ** Prints the working directory using getcwd
-** If successful the working directory is printed
-** Else the error is printed
+** If getcwd is successful the working directory is printed
+** If getcwd is unsuccessful the error is printed
 ** No return value
 */
-
-/*add exit status*/
 void	ft_pwd(t_data *data)
 {
 	char	*buf;
@@ -30,19 +28,11 @@ void	ft_pwd(t_data *data)
 	fd = data->our_fd[1];
 	if (!buf)
 	{
-		// printf("%s\n", strerror(errno));
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putchar_fd('\n', 2);
-		data->exit_status = 1;
+		print_error(data, 1, 1, strerror(errno));
 		return ;
-	// buf = getcwd(NULL, 0);
-	// if (!buf)
-	// {
-	// 	printf("%s\n", strerror(errno));
 	}
-	// printf("%s\n", buf);
 	ft_putstr_fd(buf, fd);
 	ft_putchar_fd('\n', fd);	
 	free(buf);
-	return ;
+	data->exit_status = 0;
 }

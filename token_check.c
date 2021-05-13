@@ -6,44 +6,43 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/11 11:18:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 21:26:23 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	print_syntax_error(char *s)
-{
-	ft_putstr_fd("🐶 > syntax error near unexpected token `", 2);
-	ft_putstr_fd(s, 2);
-	ft_putstr_fd("'\n", 2);
-	return (1);
-}
-
-static int	check_argument(t_word **arg, char *control_op, int i)
+static int	check_argument(t_data *data, t_word **arg, char *control_op, int i)
 {
 	if (!is_redirection(arg[i]->word))
 	{
-		ft_putstr_fd("Parser error\n", 2);
+		print_error(data, 2, 1, "🐶 > Parser error");
 		return (1);
 	}
 	if (!arg[i + 1])
 	{
 		if (control_op[0] == '\0')
-			return (print_syntax_error("newline"));
+			print_error(data, 2, 1,
+			"🐶 > syntax error near unexpected token `newline'");
 		else
-			return (print_syntax_error(control_op));
+			print_error(data, 2, 3,
+			"🐶 > syntax error near unexpected token `", control_op, "'");
+		return (1);
 	}
 	else if (arg[i + 1] && arg[i + 1]->metacharacter == 1)
-		return (print_syntax_error(arg[i + 1]->word));
+	{
+		print_error(data, 2, 3,
+		"🐶 > syntax error near unexpected token `", arg[i + 1]->word, "'");
+		return (1);
+	}
 	return (0);
 }
 
-static int	check_control_operator(char *s)
+static int	check_control_operator(t_data *data, char *s)
 {
 	if (!(!ft_strcmp(s, "|\0") || !ft_strcmp(s, ";\0") || s[0] == '\0'))
 	{
-		ft_putstr_fd("Parser error\n", 2);
+		print_error(data, 2, 1, "🐶 > Parser error");
 		return (1);
 	}
 	return (0);
@@ -58,14 +57,14 @@ int		check_token(t_data *data)
 	temp = data->token;
 	while (temp)
 	{
-		token = (t_token*)data->token->content;
-		if (check_control_operator(token->cop))
+		token = temp->content;
+		if (check_control_operator(data, token->cop))
 			return (1);
 		i = 0;
 		while (token->arg[i])
 		{
 			if (token->arg[i]->metacharacter == 1
-			&& check_argument(token->arg, token->cop, i))
+			&& check_argument(data, token->arg, token->cop, i))
 				return (1);
 			i++;
 		}

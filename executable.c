@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 23:29:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 23:27:49 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,31 +61,35 @@ static char		*get_path(char *arg, e_path path)
 
 void			parent_process(t_data *data, pid_t pid, t_execute *cur, t_execute *prev)
 {
+	int		wstatus;
 	pid_t	wpid;
 
-	wpid = waitpid(pid, &data->exit_status, WUNTRACED);
+	wpid = waitpid(pid, &wstatus, WUNTRACED);
+	data->exit_status = WEXITSTATUS(wstatus);
 	if (wpid == -1)
 	{
 		print_errno();
 		exit(1);
 	}
-	if (cur->piped == 1)// || (prev && prev->piped == 1))
-		// close(cur->p_fd[1]);
+	if (cur->piped == 1)
 	{
 		printf("cur->p_fd[1] closed = %d\n", cur->p_fd[1]);
 		close(cur->p_fd[1]);
 	}
-	// if (cur->piped == 0 && (prev && prev->piped == 1))
-	// 	// close(cur->p_fd[0]);
-	// {
-	// 	printf("cur->p_fd[0] closed = %d\n", cur->p_fd[0]);
-	// 	close(cur->p_fd[0]);
-	// }
 	if (prev && prev->piped == 1)
-		// close(prev->p_fd[0]);
 	{
 		printf("prev->p_fd[0] closed = %d\n", prev->p_fd[0]);
 		close(prev->p_fd[0]);
+	}
+	if (cur->fd[0] != -2)
+	{
+		printf("cur fd[0] closed = %d\n", cur->fd[0]);
+		close(cur->fd[0]);
+	}
+	if (cur->fd[1] != -2)
+	{
+		printf("cur fd[1] closed = %d\n", cur->fd[1]);
+		close(cur->fd[1]);
 	}
 }
 
@@ -99,14 +103,6 @@ void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (cur->fd[0] == -2)
-			dup(STDIN_FILENO);
-		else
-			dup2(cur->fd[0], STDIN_FILENO);
-		if (cur->fd[1] == -2)
-			dup(STDOUT_FILENO);
-		else
-			dup2(cur->fd[1], STDOUT_FILENO);
 		if (cur->piped == 1)
 		{
 			dup2(cur->p_fd[1], STDOUT_FILENO);
@@ -117,47 +113,38 @@ void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
 			dup2(prev->p_fd[0], STDIN_FILENO);
 			close(prev->p_fd[1]);
 		}
+		if (cur->fd[0] != -2)
+			dup2(cur->fd[0], STDIN_FILENO);
+		if (cur->fd[1] != -2)
+			dup2(cur->fd[1], STDOUT_FILENO);
 		if (execve(cur->path, cur->args, data->our_env) == -1)
 		{
-			ft_putstr_fd("🐶 > ", 2);
-			ft_putstr_fd(cur->path, 2);
-			ft_putstr_fd(": ", 2);
-			print_errno();
+			print_error(data, 1, 4, "🐶 > ", cur->path, ": ", strerror(errno));
 			exit(1);
 		}
 	}
 	else
 		parent_process(data, pid, cur, prev);
-	if (cur->fd[0] != -2)
-	{
-		printf("fd closed = %d\n", cur->fd[0]);
-		close(cur->fd[0]);
-	}
-	if (cur->fd[1] != -2)
-	{
-		printf("fd closed = %d\n", cur->fd[1]);
-		close(cur->fd[1]);
-	}
 }
 
 static e_command	identify_command(char *s)
 {
 	e_command	cmd;
 
-	if (!ft_strcmp(s, "cd"))// || !ft_strcmp(s, "/bin/cd") || !ft_strcmp(s, "/usr/bin/cd"))
-		cmd = CD; //none
-	else if (!ft_strcmp(s, "echo") || !ft_strcmp(s, "/bin/echo") || !ft_strcmp(s, "/usr/bin/echo"))
-		cmd = ECHO; //both
-	else if (!ft_strcmp(s, "env") || !ft_strcmp(s, "/bin/env") || !ft_strcmp(s, "/usr/bin/env"))
-		cmd = ENV; //both
-	else if (!ft_strcmp(s, "exit"))// || !ft_strcmp(s, "/bin/exit") || !ft_strcmp(s, "/usr/bin/exit"))
-		cmd = EXIT; //none
-	else if (!ft_strcmp(s, "export"))// || !ft_strcmp(s, "/bin/export") || !ft_strcmp(s, "/usr/bin/export"))
-		cmd = EXPORT; //none
-	else if (!ft_strcmp(s, "pwd") || !ft_strcmp(s, "/bin/pwd") || !ft_strcmp(s, "/usr/bin/pwd"))
-		cmd = PWD; //both
-	else if (!ft_strcmp(s, "unset"))// || !ft_strcmp(s, "/bin/unset") || !ft_strcmp(s, "/usr/bin/unset"))
-		cmd = UNSET; //none
+	if (!ft_strcmp(s, "cd"))
+		cmd = CD;
+	else if (!ft_strcmp(s, "echo"))
+		cmd = ECHO;
+	else if (!ft_strcmp(s, "env"))
+		cmd = ENV;
+	else if (!ft_strcmp(s, "exit"))
+		cmd = EXIT;
+	else if (!ft_strcmp(s, "export"))
+		cmd = EXPORT;
+	else if (!ft_strcmp(s, "pwd"))
+		cmd = PWD;
+	else if (!ft_strcmp(s, "unset"))
+		cmd = UNSET;
 	else
 		cmd = NON_BUILTIN;
 	return (cmd);
@@ -172,8 +159,8 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 	if (cmd == NON_BUILTIN)
 	{
 		path = check_path(data, cur->args[0]);
-		if (path == DIRECTORY || path == NOT_FOUND)
-			return (-1);
+		if (path == DIRECTORY || path == NOT_FOUND || path == NO_FILE)
+			return (1);
 		cur->path = get_path(cur->args[0], path);
 		if (!cur->path)
 			exit(1);

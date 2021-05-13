@@ -6,28 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/20 16:18:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/13 16:04:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_array(char **array)
-{
-	int		i;
-	int		size;
-
-	size = 0;
-	while (array[size])
-		size++;
-	i = 0;
-	while (i <= size)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
 
 void	ft_exit(t_data *data)
 {

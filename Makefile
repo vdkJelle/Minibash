@@ -6,19 +6,20 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/05/11 10:10:50 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/05/13 23:47:00 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 SRCS		=	cd\
 				check_command\
-				count_quotes\
+				check_multiline_command\
 				echo\
 				env\
 				executable\
 				export\
 				exit\
+				final_args\
 				get_env\
 				main\
 				pwd\

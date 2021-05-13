@@ -6,12 +6,16 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 16:06:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 10:52:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 16:26:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+** Prints all environmetal variables
+** No return value
+*/
 void	ft_env(t_data *data)
 {
 	int 	fd;

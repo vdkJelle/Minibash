@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 21:38:42 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 23:46:14 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 // # define STDOUT 1
 // # define READ 0
 // # define WRITE 1
+// # define UNSET -2
 
 /*
 **------------------------------GLOBAL VARIABLES--------------------------------
@@ -55,6 +56,7 @@ typedef			enum
 				USR_BIN = 2,
 				DIRECTORY = 3,
 				NOT_FOUND = 4,
+				NO_FILE = 5,
 }				e_path;
 
 typedef 		enum
@@ -111,14 +113,8 @@ typedef struct	s_data
 /*
 **----------------------------POINTERS TO FUNCTIONS-----------------------------
 */
-
 typedef int		(*f_arg_handler)(t_data *data, t_word **word, char *s);
 typedef void	(*f_builtin)(t_data *data);
-
-/*
-**-------------------------------COUNT_QUOTES.C---------------------------------
-*/
-int		count_quotes(char *line);
 
 /*
 **-----------------------------------ENV.C--------------------------------------
@@ -145,7 +141,6 @@ void	ft_echo(t_data *data);
 **---------------------------------FT_EXIT.C------------------------------------
 */
 void	ft_exit(t_data *data);
-void	free_array(char **array);
 
 /*
 **---------------------------------FT_PWD.C-------------------------------------
@@ -160,17 +155,12 @@ char	*get_env(char **env, char *key);
 /*
 **-----------------------------HANDLE_ARG_CHARS.C-------------------------------
 */
-// int		handle_char(t_data *data, char **ret, char *s);
-// int		handle_doublequotes(t_data *data, char **ret, char *s);
-// int		handle_environment_variable(t_data *data, char **ret, char *s);
-// int		handle_metacharacter(t_data *data, char **ret, char *s);
-// int		handle_singlequotes(t_data *data, char **ret, char *s);
-
 int		handle_char(t_data *data, t_word **word, char *s);
 int		handle_doublequotes(t_data *data, t_word **word, char *s);
 int		handle_environment_variable(t_data *data, t_word **word, char *s);
 int		handle_metacharacter(t_data *data, t_word **word, char *s);
 int		handle_singlequotes(t_data *data, t_word **word, char *s);
+
 /*
 **----------------------------------MAIN.C--------------------------------------
 */
@@ -179,13 +169,11 @@ int		main(void);
 /*
 **--------------------------------REDIRECTION.C---------------------------------
 */
-// char	**final_arg(t_data *data, t_token *token);
-void	final_args(t_data *data, t_token *token, t_execute *exec);
+int	handle_redirection(t_data *data, t_word **arg, int i, int fd[2]);
 
 /*
 **--------------------------------TOKEN_ARG.C-----------------------------------
 */
-// int		get_arg(t_data *data, char **ret, char *s, char control_op);
 int		get_arg(t_data *data, t_word **word, char *s, char control_op);
 
 /*
@@ -206,22 +194,28 @@ void	ft_unset(t_data *data);
 /*
 **--------------------------------UTILS_LIST.C----------------------------------
 */
+void	free_array(char **array);
+void	free_array_part(char **array, int i);
 void	free_token(void *content);
+char	*join_word(t_word *arg);
 void 	print_token(void *content);
 
 /*
 **-----------------------------UTILS_STRING_SKIP.C-------------------------------
 */
-int		skip_doubleq(char *line);
+int		skip_until_next_doubleq(char *s);
+int		skip_until_next_singleq(char *s);
 int		skip_until_char_excl(char *s, char c);
 int		skip_until_char_incl(char *s, char c);
-int		skip_whitespaces_int(char *s);
-int		skip_until_metacharacter_excl(char *s);
-int		skip_until_char_function(char *s, int (*ft_isthis)(char c));
+int		skip_while_char(char *s, int (*ft_isthis)(char c));
+int		skip_while_not_char(char *s, int (*ft_isthis)(char c));
+// int		skip_until_f_int(char *s, int (*ft_isthis)(int c));
 // int		skip_until_metacharacter_incl(char *s);
 // int		skip_chars_int(char *s, char c);
 // int		skip_metacharacters_int(char *s);
 // int		skip_nonwhitespaces_int(char *s);
+// int		skip_whitespaces_int(char *s);
+// int		skip_until_metacharacterexcl(char *s);
 // void	skip_char(char **s, char c);
 // void	skip_chars(char **s, char c);
 // void	skip_whitespaces(char **s);
@@ -231,7 +225,7 @@ int		skip_until_char_function(char *s, int (*ft_isthis)(char c));
 **-----------------------------UTILS_STRING_COUNT.C------------------------------
 */
 int		count_arguments(char *s, char c);
-int		count_backslash(char *line, int loc);
+int		count_backslash(char *s, int loc);
 // int		count_words(char const *s, char c);
 
 /*
@@ -257,10 +251,17 @@ int		is_whitespace(char c);
 
 e_path	check_path(t_data *data, char *s);
 int		execute(t_data *data, t_execute *cur, t_execute *prev);
+
 void	print_errno(void);
 int		print_errno_int(void);
+void	print_error(t_data *data, int exit_status, int n, ...);
+// void	print_error_message(t_data *data, int exit_status, char *s1, char *s2);
 
 void	signal_output(int sig);
 void	ft_signal_handler(void);
+
+int		check_multiline_command(t_data *data, char *s);
+
+void	final_args(t_data *data, t_token *token, t_execute *exec);
 
 #endif

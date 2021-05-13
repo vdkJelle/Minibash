@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/07 13:49:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 15:29:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int				get_arg(t_data *data, t_word **word, char *s, char control_op)
 		if (ac == BACKSLASH)
 			i++;
 		else if (ac == METACHARACTER)
-			return (i + skip_whitespaces_int(s + i));
+			return (i + skip_while_char(s + i, is_whitespace));
 		else
 			i += arg_handler[ac](data, word, s + i);
 	}

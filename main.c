@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/11 23:23:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 22:57:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	cody_catch(t_data *data)
 	t_list		*temp;
 	t_execute	*cur;
 	t_execute	*prev;
-	t_execute	*temp_exec;
 
 	prev = NULL;
 	temp = data->token;
@@ -53,15 +52,13 @@ static void	cody_catch(t_data *data)
 		cur = initialize_exec(data, (t_token*)temp->content);
 		if (!cur)
 			return ;
-		if (execute(data, cur, prev) == -1)
-			return ;
-		temp_exec = prev;
-		prev = cur;
-		if (temp_exec)
+		execute(data, cur, prev);
+		if (prev)
 		{
-			free_array(temp_exec->args);
-			free(temp_exec);
+			free_array(prev->args);
+			free(prev);
 		}
+		prev = cur;
 		temp = temp->next;
 		if (!temp)
 		{
@@ -140,11 +137,9 @@ int				main(void)
 		if (data.r == -1)
 			exit(1);
 		get_token(&data, data.input);
-		// ft_lstiter(data.token, print_token);
+		ft_lstiter(data.token, print_token);
 		if (!check_token(&data))
 			cody_catch(&data);
-		else
-			data.exit_status = 1;
 		ft_lstclear(&data.token, free_token);
 		free(data.input);
 		data.input = NULL;

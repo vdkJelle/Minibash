@@ -58,9 +58,6 @@ int		handle_environment_variable(t_data *data, t_word **word, char *s)
 
 	if (s[0] == '$' && s[1] == '?')
 	{
-		// *ret = ft_strjoin_free_both(*ret, ft_itoa(data->exit_status));
-		// if (!(*ret))
-		// 	exit(1);
 		ft_lstadd_back(&(*word)->word_segment, ft_lstnew(ft_itoa(data->exit_status)));
 		if (!(*word)->word_segment)
 			exit(1);
@@ -76,12 +73,9 @@ int		handle_environment_variable(t_data *data, t_word **word, char *s)
 	free(key);
 	if (!value || value[0] == '\0')
 		return (len + 1);
-	// *ret = ft_strjoin_free_s1(*ret, value);
-	// if (!(*ret))
-	// 	exit(1);
 	ft_lstadd_back(&((*word)->word_segment), ft_lstnew(ft_strdup(value)));
 	if (!(*word)->word_segment)
-		exit(1);	
+		exit(1);
 	return (len + 1);
 }
 
@@ -90,14 +84,14 @@ int		handle_metacharacter(t_data *data, t_word **word, char *s)
 	int		i;
 
 	(void)data;
-	i = skip_whitespaces_int(s);
+	i = skip_while_char(s, is_whitespace);
 	while (is_metacharacter(s[i]) && !is_whitespace(s[i]) && !is_control_operator(s[i]))
 	{
 		handle_char(data, word, s + i);
 		(*word)->metacharacter = 1;
 		i++;
 	}
-	i += skip_whitespaces_int(s + i);
+	i += skip_while_char(s + i, is_whitespace);
 	return (i);
 }
 
@@ -113,7 +107,6 @@ int		handle_singlequotes(t_data *data, t_word **word, char *s)
 	len = skip_until_char_excl(s + 1, '\'');
 	if (len > 0)
 	{
-		// *ret = ft_strjoin_free_both(*ret, ft_substr(s, 1, len));
 		ft_lstadd_back(&((*word)->word_segment), ft_lstnew(ft_substr(s, 1, len)));
 		if (!(*word)->word_segment)
 			exit(1);

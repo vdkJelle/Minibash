@@ -6,11 +6,39 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/07 18:05:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 17:13:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_array(char **array)
+{
+	int		i;
+	int		size;
+
+	size = 0;
+	while (array[size])
+		size++;
+	i = 0;
+	while (i <= size)
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	free_array_part(char **array, int i)
+{
+	i--;
+	while (i < 0)
+	{
+		free(array[i]);
+		i--;
+	}
+	free(array);
+}
 
 void	free_token(void *content)
 {
@@ -35,6 +63,30 @@ void	free_token(void *content)
 	content = NULL;
 }
 
+char	*join_word(t_word *arg)
+{
+	char	*word;
+	int		size;
+	t_list	*temp;
+
+	temp = arg->word_segment;
+	size = 0;
+	while (temp)
+	{
+		size += ft_strlen(((char*)temp->content));
+		temp = temp->next;
+	}
+	word = ft_calloc(size + 1, sizeof(char));
+	if (!word)
+		exit(1);
+	temp = arg->word_segment;
+	while (temp)
+	{
+		ft_strlcat(word, (char*)temp->content, size + 1);
+		temp = temp->next;
+	}
+	return (word);
+}
 
 void	print_token(void *content)
 {
