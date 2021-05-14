@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 16:23:09 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 16:09:27 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 12:59:30 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Finds the value of an environmental variable based on the key
 ** Returns a pointer to a string where the value starts if it finds a match
 ** Returns NULL if it doesn't find a match
-** Returns NULL if the environmental variable doens't have a value
+** Returns NULL if the environmental variable doesn't have a value
 */
 char	*get_env(char **our_env, char *key)
 {

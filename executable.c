@@ -6,37 +6,68 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 23:27:49 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 18:43:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			execute_builtin(t_data *data, e_command cmd, t_execute *exec)
+static void		child_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
 {
-	f_builtin	builtin[7];
+	signal(SIGINT, SIG_DFL);
+	if (cur->piped == 1)
+	{
+		dup2(cur->p_fd[WRITE], STDOUT_FILENO);
+		close(cur->p_fd[READ]);
+	}
+	if (prev && prev->piped == 1)
+	{
+		dup2(prev->p_fd[READ], STDIN_FILENO);
+		close(prev->p_fd[WRITE]);
+	}
+	if (cur->fd[READ] != NO_REDIRECTION)
+		dup2(cur->fd[READ], STDIN_FILENO);
+	if (cur->fd[WRITE] != NO_REDIRECTION)
+		dup2(cur->fd[WRITE], STDOUT_FILENO);
+	if (cmd != NON_BUILTIN)
+		execute_builtin_pipe(data, cmd, cur);
+	else if (execve(cur->path, cur->args, data->our_env) == -1)
+	{
+		print_error(data, 1, 4, "🐶 > ", cur->path, ": ", strerror(errno));
+		exit(1);
+	}
+}
 
-	builtin[0] = ft_cd;
-	builtin[1] = ft_echo;
-	builtin[2] = ft_env;
-	builtin[3] = ft_exit;
-	builtin[4] = ft_export;
-	builtin[5] = ft_pwd;
-	builtin[6] = ft_unset;
-	data->args = exec->args;
-	if (exec->fd[0] == -2)
-		data->our_fd[0] = 0;
+static void		parent_process(t_data *data, pid_t pid)
+{
+	int		wstatus;
+	pid_t	wpid;
+
+	wpid = waitpid(pid, &wstatus, WUNTRACED);
+	data->exit_status = WEXITSTATUS(wstatus);
+	if (wpid == -1)
+		print_error(data, 1, 1, strerror(errno));
+}
+
+static void		create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (print_error(data, 1, 1, strerror(errno)));
+	else if (pid == CHILD)
+		child_process(data, cmd, cur, prev);
 	else
-		data->our_fd[0] = exec->fd[0];
-	if (exec->fd[1] == -2)
-		data->our_fd[1] = 1;
-	else
-		data->our_fd[1] = exec->fd[1];
-	builtin[cmd](data);
-	if (exec->fd[0] != -2)
-		close(exec->fd[0]);
-	if (exec->fd[1] != -2)
-		close(exec->fd[1]);
+		parent_process(data, pid);
+	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
+		return (print_error(data, 1, 1, strerror(errno)));
+	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
+		return (print_error(data, 1, 1, strerror(errno)));
+	if (cur->fd[READ] != NO_REDIRECTION && close(cur->fd[READ]) == -1)
+		return (print_error(data, 1, 1, strerror(errno)));
+	if (cur->fd[WRITE] != NO_REDIRECTION && close(cur->fd[WRITE]) == -1)
+		return (print_error(data, 1, 1, strerror(errno)));
 }
 
 static char		*get_path(char *arg, e_path path)
@@ -57,74 +88,6 @@ static char		*get_path(char *arg, e_path path)
 	if (!ret)
 		exit(1);
 	return (ret);
-}
-
-void			parent_process(t_data *data, pid_t pid, t_execute *cur, t_execute *prev)
-{
-	int		wstatus;
-	pid_t	wpid;
-
-	wpid = waitpid(pid, &wstatus, WUNTRACED);
-	data->exit_status = WEXITSTATUS(wstatus);
-	if (wpid == -1)
-	{
-		print_errno();
-		exit(1);
-	}
-	if (cur->piped == 1)
-	{
-		printf("cur->p_fd[1] closed = %d\n", cur->p_fd[1]);
-		close(cur->p_fd[1]);
-	}
-	if (prev && prev->piped == 1)
-	{
-		printf("prev->p_fd[0] closed = %d\n", prev->p_fd[0]);
-		close(prev->p_fd[0]);
-	}
-	if (cur->fd[0] != -2)
-	{
-		printf("cur fd[0] closed = %d\n", cur->fd[0]);
-		close(cur->fd[0]);
-	}
-	if (cur->fd[1] != -2)
-	{
-		printf("cur fd[1] closed = %d\n", cur->fd[1]);
-		close(cur->fd[1]);
-	}
-}
-
-void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		return (print_errno());
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		if (cur->piped == 1)
-		{
-			dup2(cur->p_fd[1], STDOUT_FILENO);
-			close(cur->p_fd[0]);
-		}
-		if (prev && prev->piped == 1)
-		{
-			dup2(prev->p_fd[0], STDIN_FILENO);
-			close(prev->p_fd[1]);
-		}
-		if (cur->fd[0] != -2)
-			dup2(cur->fd[0], STDIN_FILENO);
-		if (cur->fd[1] != -2)
-			dup2(cur->fd[1], STDOUT_FILENO);
-		if (execve(cur->path, cur->args, data->our_env) == -1)
-		{
-			print_error(data, 1, 4, "🐶 > ", cur->path, ": ", strerror(errno));
-			exit(1);
-		}
-	}
-	else
-		parent_process(data, pid, cur, prev);
 }
 
 static e_command	identify_command(char *s)
@@ -164,13 +127,36 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 		cur->path = get_path(cur->args[0], path);
 		if (!cur->path)
 			exit(1);
-		execute_nonbuiltin(data, cur, prev);
-		free(cur->path);
+		create_process(data, cmd, cur, prev);
 	}
+	else if (cmd != NON_BUILTIN && (cur->piped == 1 || (prev && prev->piped == 1)))
+		create_process(data, cmd, cur, prev);
 	else
-		execute_builtin(data, cmd, cur);
+		execute_builtin_no_pipe(data, cmd, cur);
 	return (0);
 }
+
+// int			execute(t_data *data, t_execute *cur, t_execute *prev)
+// {
+// 	e_command	cmd;
+// 	e_path		path;
+
+// 	cmd = identify_command(cur->args[0]);
+// 	if (cmd == NON_BUILTIN)
+// 	{
+// 		path = check_path(data, cur->args[0]);
+// 		if (path == DIRECTORY || path == NOT_FOUND || path == NO_FILE)
+// 			return (1);
+// 		cur->path = get_path(cur->args[0], path);
+// 		if (!cur->path)
+// 			exit(1);
+// 		execute_nonbuiltin(data, cur, prev);
+// 		free(cur->path);
+// 	}
+// 	else
+// 		execute_builtin(data, cmd, cur);
+// 	return (0);
+// }
 
 // void			execute(t_data *data, t_token *cur, t_token *prev)
 // {
@@ -300,4 +286,42 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // 		exit(1);
 // 	free(path);
 // 	close_fd(data, exec->fd);
+// }
+
+// void			execute_nonbuiltin(t_data *data, t_execute *cur, t_execute *prev)
+// {
+// 	pid_t	pid;
+
+// 	pid = fork();
+// 	if (pid < 0)
+// 		return (print_errno());
+// 	if (pid == 0)
+// 	{
+// 		signal(SIGINT, SIG_DFL);
+// 		if (cur->piped == 1)
+// 		{
+// 			dup2(cur->p_fd[WRITE], STDOUT_FILENO);
+// 			close(cur->p_fd[READ]);
+// 		}
+// 		if (prev && prev->piped == 1)
+// 		{
+// 			dup2(prev->p_fd[READ], STDIN_FILENO);
+// 			close(prev->p_fd[WRITE]);
+// 		}
+// 		if (cur->fd[0] != -2)
+// 		{
+// 			dup2(cur->fd[READ], STDIN_FILENO);
+// 		}
+// 		if (cur->fd[1] != -2)
+// 		{
+// 			dup2(cur->fd[WRITE], STDOUT_FILENO);
+// 		}
+// 		if (execve(cur->path, cur->args, data->our_env) == -1)
+// 		{
+// 			print_error(data, 1, 4, "🐶 > ", cur->path, ": ", strerror(errno));
+// 			exit(1);
+// 		}
+// 	}
+// 	else
+// 		parent_process(data, pid, cur, prev);
 // }

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 23:45:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 18:44:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	append_arg(char *arg, char **ret)
 		exit(1);
 	return (1);
 }
-
 
 static int	get_new_size(t_word **arg)
 {
@@ -56,7 +55,7 @@ void		final_args(t_data *data, t_token *token, t_execute *exec)
 	{
 		if (is_redirection(token->arg[i]->word) && token->arg[i]->metacharacter == 1)
 		{
-			if (handle_redirection(data, token->arg, i, exec->fd) == -1)
+			if (redirection(data, token->arg, i, exec->fd) == -1)
 				return (free_array_part(exec->args, j));
 			i++;
 		}

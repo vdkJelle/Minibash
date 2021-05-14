@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/05/13 23:47:00 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/05/14 18:45:07 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS		=	cd\
 				echo\
 				env\
 				executable\
+				execute_builtin\
 				export\
 				exit\
 				final_args\
@@ -26,6 +27,7 @@ SRCS		=	cd\
 				redirection\
 				signals\
 				utils_error\
+				utils_free\
 				utils_list\
 				utils_string_count\
 				utils_string_isthis\

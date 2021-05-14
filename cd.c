@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:22:52 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 19:43:38 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 /*
 ** Changes the directory according to the path using chdir
-** If there are too many arguments the error is printed
 ** If no arguments are provided path is set to the home directory
 ** If chdir is successful the directory is changed to the path
 ** If chdir is unsuccessful
 **		the directory is unchanged
 **		the error is printed
+** If there is more than one argument the error is printed and the directory is
+**		not changed
 ** No return value
 */
 void			ft_cd(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:23:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/13 23:51:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,6 @@ e_path		check_path(t_data *data, char *s)
 		print_error(data, 126, 3, "🐶 > ", s, ": No such file or directory");
 	else if (path == NOT_FOUND)
 		print_error(data, 126, 2, s, ": command not found");
-	// if (path == DIRECTORY)
-	// 	print_error_message(data, 126, s, ": Is a directory\n");
-	// else if (path == NO_FILE)
-	// 	print_error_message(data, 127, s, ": No such file or directory");
-	// else if (path == NOT_FOUND)
-	// 	print_error_message(data, 127, s, ": command not found\n");
 	return (path);
 }
 

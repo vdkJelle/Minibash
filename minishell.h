@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 23:46:14 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 18:05:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 
-// # define STDIN 0
-// # define STDOUT 1
-// # define READ 0
-// # define WRITE 1
-// # define UNSET -2
+# define READ 0
+# define WRITE 1
+# define NO_REDIRECTION -2
+
+# define CHILD 0
 
 /*
 **------------------------------GLOBAL VARIABLES--------------------------------
@@ -75,7 +75,7 @@ typedef 		enum
 **-----------------------------------STRUCTS------------------------------------
 */
 
-typedef struct	s_execute
+typedef struct	s_exec
 {
 	char		**args;
 	char		*path;
@@ -169,7 +169,7 @@ int		main(void);
 /*
 **--------------------------------REDIRECTION.C---------------------------------
 */
-int	handle_redirection(t_data *data, t_word **arg, int i, int fd[2]);
+int		redirection(t_data *data, t_word **arg, int i, int fd[2]);
 
 /*
 **--------------------------------TOKEN_ARG.C-----------------------------------
@@ -196,6 +196,7 @@ void	ft_unset(t_data *data);
 */
 void	free_array(char **array);
 void	free_array_part(char **array, int i);
+void	free_exec(t_execute *exec);
 void	free_token(void *content);
 char	*join_word(t_word *arg);
 void 	print_token(void *content);
@@ -263,5 +264,8 @@ void	ft_signal_handler(void);
 int		check_multiline_command(t_data *data, char *s);
 
 void	final_args(t_data *data, t_token *token, t_execute *exec);
+
+void	execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec);
+void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
 
 #endif

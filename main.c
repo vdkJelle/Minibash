@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 22:57:13 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/14 17:47:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ static t_execute	*initialize_exec(t_data *data, t_token *token)
 			print_errno_int();
 			return (NULL);
 		}
-		printf("pipe read = %d\tpipe write = %d\n", exec->p_fd[0], exec->p_fd[1]);
 		exec->piped = 1;
 	}
-	exec->fd[0] = -2;
-	exec->fd[1] = -2;
+	exec->fd[READ] = NO_REDIRECTION;
+	exec->fd[WRITE] = NO_REDIRECTION;
 	final_args(data, token, exec);
 	if (!exec->args)
 		return (NULL);
@@ -54,17 +53,11 @@ static void	cody_catch(t_data *data)
 			return ;
 		execute(data, cur, prev);
 		if (prev)
-		{
-			free_array(prev->args);
-			free(prev);
-		}
+			free_exec(prev);
 		prev = cur;
 		temp = temp->next;
 		if (!temp)
-		{
-			free_array(cur->args);
-			free(cur);
-		}
+			free_exec(cur);
 	}
 }
 
