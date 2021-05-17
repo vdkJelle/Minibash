@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/14 18:05:56 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/17 16:27:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <dirent.h>
+# include <sys/stat.h>
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 
 # define READ 0
 # define WRITE 1
 # define NO_REDIRECTION -2
-
-# define CHILD 0
 
 /*
 **------------------------------GLOBAL VARIABLES--------------------------------
@@ -51,17 +51,18 @@ typedef 		enum
 
 typedef			enum
 {
-				STANDARD = 0,
+				ERROR = -1,
+				REGULAR = 0,
 				BIN = 1,
 				USR_BIN = 2,
 				DIRECTORY = 3,
 				NOT_FOUND = 4,
-				NO_FILE = 5,
-}				e_path;
+				NOT_EXECUTABLE = 5,
+}				e_file;
 
 typedef 		enum
 {
-				NORMAL = 0,
+				CHAR = 0,
 				DOUBLEQUOTE = 1,
 				ENVIRONMENT_VARIABLE = 2,
 				METACHARACTER = 3,
@@ -157,7 +158,7 @@ char	*get_env(char **env, char *key);
 */
 int		handle_char(t_data *data, t_word **word, char *s);
 int		handle_doublequotes(t_data *data, t_word **word, char *s);
-int		handle_environment_variable(t_data *data, t_word **word, char *s);
+int		handle_environment_variable(t_data *d, t_word **word, char *s);
 int		handle_metacharacter(t_data *data, t_word **word, char *s);
 int		handle_singlequotes(t_data *data, t_word **word, char *s);
 
@@ -250,7 +251,7 @@ int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
 
-e_path	check_path(t_data *data, char *s);
+e_file	check_file(t_data *data, char *s);
 int		execute(t_data *data, t_execute *cur, t_execute *prev);
 
 void	print_errno(void);
@@ -267,5 +268,9 @@ void	final_args(t_data *data, t_token *token, t_execute *exec);
 
 void	execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec);
 void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
+
+void	create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev);
+
+void	cody_catch(t_data *data);
 
 #endif

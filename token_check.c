@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:26:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/17 14:48:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	check_control_operator(t_data *data, char *s)
 	return (0);
 }
 
-int		check_token(t_data *data)
+int			check_token(t_data *data)
 {
 	int		i;
 	t_list	*temp;

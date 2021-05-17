@@ -6,13 +6,13 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/05/14 18:45:07 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/05/17 13:01:42 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 SRCS		=	cd\
-				check_command\
+				check_file\
 				check_multiline_command\
 				echo\
 				env\
@@ -23,6 +23,7 @@ SRCS		=	cd\
 				final_args\
 				get_env\
 				main\
+				processes\
 				pwd\
 				redirection\
 				signals\

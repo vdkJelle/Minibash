@@ -6,71 +6,18 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/14 18:43:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/17 16:33:16 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		child_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
-{
-	signal(SIGINT, SIG_DFL);
-	if (cur->piped == 1)
-	{
-		dup2(cur->p_fd[WRITE], STDOUT_FILENO);
-		close(cur->p_fd[READ]);
-	}
-	if (prev && prev->piped == 1)
-	{
-		dup2(prev->p_fd[READ], STDIN_FILENO);
-		close(prev->p_fd[WRITE]);
-	}
-	if (cur->fd[READ] != NO_REDIRECTION)
-		dup2(cur->fd[READ], STDIN_FILENO);
-	if (cur->fd[WRITE] != NO_REDIRECTION)
-		dup2(cur->fd[WRITE], STDOUT_FILENO);
-	if (cmd != NON_BUILTIN)
-		execute_builtin_pipe(data, cmd, cur);
-	else if (execve(cur->path, cur->args, data->our_env) == -1)
-	{
-		print_error(data, 1, 4, "🐶 > ", cur->path, ": ", strerror(errno));
-		exit(1);
-	}
-}
+/*
+** 
+** No return value
+*/
 
-static void		parent_process(t_data *data, pid_t pid)
-{
-	int		wstatus;
-	pid_t	wpid;
-
-	wpid = waitpid(pid, &wstatus, WUNTRACED);
-	data->exit_status = WEXITSTATUS(wstatus);
-	if (wpid == -1)
-		print_error(data, 1, 1, strerror(errno));
-}
-
-static void		create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return (print_error(data, 1, 1, strerror(errno)));
-	else if (pid == CHILD)
-		child_process(data, cmd, cur, prev);
-	else
-		parent_process(data, pid);
-	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
-		return (print_error(data, 1, 1, strerror(errno)));
-	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
-		return (print_error(data, 1, 1, strerror(errno)));
-	if (cur->fd[READ] != NO_REDIRECTION && close(cur->fd[READ]) == -1)
-		return (print_error(data, 1, 1, strerror(errno)));
-	if (cur->fd[WRITE] != NO_REDIRECTION && close(cur->fd[WRITE]) == -1)
-		return (print_error(data, 1, 1, strerror(errno)));
-}
-
-static char		*get_path(char *arg, e_path path)
+static char			*get_path(char *arg, e_file path)
 {
 	char	*ret;
 	
@@ -90,41 +37,50 @@ static char		*get_path(char *arg, e_path path)
 	return (ret);
 }
 
+/*
+** 
+** No return value
+*/
+
 static e_command	identify_command(char *s)
 {
-	e_command	cmd;
-
 	if (!ft_strcmp(s, "cd"))
-		cmd = CD;
+		return (CD);
 	else if (!ft_strcmp(s, "echo"))
-		cmd = ECHO;
+		return (ECHO);
 	else if (!ft_strcmp(s, "env"))
-		cmd = ENV;
+		return (ENV);
 	else if (!ft_strcmp(s, "exit"))
-		cmd = EXIT;
+		return (EXIT);
 	else if (!ft_strcmp(s, "export"))
-		cmd = EXPORT;
+		return (EXPORT);
 	else if (!ft_strcmp(s, "pwd"))
-		cmd = PWD;
+		return (PWD);
 	else if (!ft_strcmp(s, "unset"))
-		cmd = UNSET;
+		return (UNSET);
 	else
-		cmd = NON_BUILTIN;
-	return (cmd);
+		return (NON_BUILTIN);
 }
 
-int			execute(t_data *data, t_execute *cur, t_execute *prev)
+/*
+** 
+** No return value
+*/
+
+static int		execute(t_data *data, t_execute *cur, t_execute *prev)
 {
 	e_command	cmd;
-	e_path		path;
+	e_file		file;
 
 	cmd = identify_command(cur->args[0]);
 	if (cmd == NON_BUILTIN)
 	{
-		path = check_path(data, cur->args[0]);
-		if (path == DIRECTORY || path == NOT_FOUND || path == NO_FILE)
+		file = check_file(data, cur->args[0]);
+		if (file == ERROR)
+			data->exit_status = 1;
+		if (file != BIN && file != USR_BIN && file != REGULAR)
 			return (1);
-		cur->path = get_path(cur->args[0], path);
+		cur->path = get_path(cur->args[0], file);
 		if (!cur->path)
 			exit(1);
 		create_process(data, cmd, cur, prev);
@@ -136,12 +92,75 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 	return (0);
 }
 
+/*
+** Initializes the execute struct
+** Creates a pipe if the control operator is a pipe
+** Sets the initial value of the file descriptors to no redirection
+** Calls final_args to create the final array and handle redirections
+** No return value
+*/
+
+static t_execute	*get_exec(t_data *data, t_token *token)
+{
+	t_execute	*exec;
+
+	exec = malloc(sizeof(t_execute));
+	if (!exec)
+		exit(1);	
+	ft_bzero(exec, sizeof(*exec));
+	if (token->cop[0] == '|')
+	{
+		if (pipe(exec->p_fd) == -1)
+		{
+			data->exit_status = 1;
+			print_errno_int();
+			return (NULL);
+		}
+		exec->piped = 1;
+	}
+	exec->fd[READ] = NO_REDIRECTION;
+	exec->fd[WRITE] = NO_REDIRECTION;
+	final_args(data, token, exec);
+	if (!exec->args)
+		return (NULL);
+	return (exec);
+}
+
+/*
+** Iterates over the linked list with tokens and executes them
+** No return value
+*/
+
+void				cody_catch(t_data *data)
+{
+	t_list		*temp;
+	t_execute	*cur;
+	t_execute	*prev;
+
+	prev = NULL;
+	temp = data->token;
+	while (temp)
+	{
+		cur = get_exec(data, (t_token*)temp->content);
+		if (!cur)
+			return ;
+		execute(data, cur, prev);
+		if (prev)
+			free_exec(prev);
+		prev = cur;
+		temp = temp->next;
+		if (!temp)
+			free_exec(cur);
+	}
+}
+
+
 // int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // {
 // 	e_command	cmd;
 // 	e_path		path;
 
-// 	cmd = identify_command(cur->args[0]);
+// 	return (identify_command(cur->args[0]);
 // 	if (cmd == NON_BUILTIN)
 // 	{
 // 		path = check_path(data, cur->args[0]);
@@ -179,7 +198,7 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // 	final_args(data, cur, &exec);
 // 	if (!exec->args)
 // 		return ;
-// 	cmd = identify_command(exec->args[0]);
+// 	return (identify_command(exec->args[0]);
 // 	if (cmd == NON_BUILTIN)
 // 		execute_nonbuiltin(data, exec);
 // 	else
@@ -205,7 +224,7 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // 			exit(1);
 // 		if (!args[0])
 // 			exit(0);
-// 		cmd = identify_command(args[0]);
+// 		return (identify_command(args[0]);
 // 		if (cmd == NON_BUILTIN && !check_command(data, args[0]))
 // 			execute_nonbuiltin(data, args);
 // 		else if (cmd != NON_BUILTIN)
@@ -248,7 +267,7 @@ int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // 	pid_t	pid;
 // 	pid_t	wpid;
 
-// 	cmd = check_command(data, exec->args[0]);
+// 	return (check_command(data, exec->args[0]);
 // 	if (cmd == DIRECTORY || cmd == NOT_FOUND)
 // 		return ;
 // 	path = get_path_to_executable(exec->args[0], cmd);

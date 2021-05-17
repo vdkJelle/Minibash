@@ -6,60 +6,11 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/14 17:47:18 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/17 16:21:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_execute	*initialize_exec(t_data *data, t_token *token)
-{
-	t_execute	*exec;
-
-	exec = malloc(sizeof(t_execute));
-	if (!exec)
-		exit(1);	
-	ft_bzero(exec, sizeof(*exec));
-	if (token->cop[0] == '|')
-	{
-		if (pipe(exec->p_fd) == -1)
-		{
-			data->exit_status = 1;
-			print_errno_int();
-			return (NULL);
-		}
-		exec->piped = 1;
-	}
-	exec->fd[READ] = NO_REDIRECTION;
-	exec->fd[WRITE] = NO_REDIRECTION;
-	final_args(data, token, exec);
-	if (!exec->args)
-		return (NULL);
-	return (exec);
-}
-
-static void	cody_catch(t_data *data)
-{
-	t_list		*temp;
-	t_execute	*cur;
-	t_execute	*prev;
-
-	prev = NULL;
-	temp = data->token;
-	while (temp)
-	{
-		cur = initialize_exec(data, (t_token*)temp->content);
-		if (!cur)
-			return ;
-		execute(data, cur, prev);
-		if (prev)
-			free_exec(prev);
-		prev = cur;
-		temp = temp->next;
-		if (!temp)
-			free_exec(cur);
-	}
-}
 
 static void		handle_shlvl(char ***our_env, int *env_size)
 {
@@ -129,6 +80,11 @@ int				main(void)
 		data.r = get_next_line(0, &data.input);
 		if (data.r == -1)
 			exit(1);
+		if (data.r == 0)
+		{
+			ft_putstr_fd("exit\n", 1);
+			exit(0);
+		}
 		get_token(&data, data.input);
 		ft_lstiter(data.token, print_token);
 		if (!check_token(&data))

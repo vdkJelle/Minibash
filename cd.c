@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/14 19:43:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/16 16:37:54 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void			ft_cd(t_data *data)
 	}
 	if (ret < 0)
 	{
-		print_error(data, 1, 1, strerror(errno));
+		print_error(data, 2, 4, "🐶 > cd: ", args[1], ": ", strerror(errno));
 		return ;
 	}
 	data->exit_status = 0;
