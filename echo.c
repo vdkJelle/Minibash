@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 16:24:23 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 10:54:19 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** Prints no newline if option -n is used
 ** No return value
 */
+
 void	ft_echo(t_data *data)
 {
 	int		fd;

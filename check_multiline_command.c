@@ -17,6 +17,7 @@
 ** Returns 0 if there is an even amount of double and single quotes
 ** Returns 1 if there is an uneven amount of double and single quotes
 */
+
 static int	count_quotes(char *s)
 {
 	int		i;
@@ -47,9 +48,10 @@ static int	count_quotes(char *s)
 ** Checks for multiline commands
 ** Returns 1 if there is an uneven amount of quotes
 ** Returns 1 if there is an uneven amount of backslashes at the end
-** Returns 1 if there is a control operator at the end that is not a ; or \0
+** Returns 1 if there is a pipe at the end
 ** Returns 0 if there are no multiline commands
 */
+
 int			check_multiline_command(t_data *data, char *s)
 {
 	int		len;
@@ -67,7 +69,7 @@ int			check_multiline_command(t_data *data, char *s)
 		ft_putstr_fd("Multiline command\n", 2);
 		return (1);
 	}
-	if (len > 0 && is_control_operator(s[len - 1]) && s[len - 1] != '\0' && s[len - 1] != ';')
+	if (len > 0 && s[len - 1] == '|')
 	{
 		data->exit_status = 1;
 		ft_putstr_fd("Multiline command\n", 2);

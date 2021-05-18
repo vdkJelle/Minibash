@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/17 14:03:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:11:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 **		the next character is the first character of a valid identifier
 ** Returns the type of character
 */
+
 arg_characters	get_arg_characters(char *s, int i)
 {
 	if (s[i] == '\'' && !(count_backslash(s, i) % 2))
@@ -52,6 +53,7 @@ arg_characters	get_arg_characters(char *s, int i)
 **		arg_handler function is called where word segments are added to the word
 ** Returns index of the end of the word
 */
+
 int				get_arg(t_data *data, t_word **word, char *s, char control_op)
 {
 	int				i;

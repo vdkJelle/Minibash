@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 11:33:09 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/03/18 16:29:15 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2021/05/14 16:18:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,5 @@ int	main(int argc, char **argv)
 		argc--;
 	}
 	while (1) {}
-	exit(21);
 	return (0);
 }

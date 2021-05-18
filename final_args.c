@@ -6,11 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/14 18:44:04 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 17:38:37 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Appends the command or argument to the array of strings
+** Returns 1
+*/
 
 static int	append_arg(char *arg, char **ret)
 {
@@ -19,6 +24,13 @@ static int	append_arg(char *arg, char **ret)
 		exit(1);
 	return (1);
 }
+
+/*
+** Gets the size of the new array
+** Determines the original size of the array
+** Substracts 2 of the original size of the array if it spots a redirection
+** Returns an integer with the size of the new array
+*/
 
 static int	get_new_size(t_word **arg)
 {
@@ -40,6 +52,18 @@ static int	get_new_size(t_word **arg)
 	}
 	return (size);
 }
+
+/*
+** Puts all information needed to execute the command into an array of strings
+** Calls get_new_size to get the correct size of the new array
+** The first string of the array is always the command
+** There can be none, one or multiple arguments following
+** If I/O is redirected
+**		the redirection and next argument not added
+**		redirection is called
+** Else the argument is appended to the array of strings
+** No return value
+*/
 
 void		final_args(t_data *data, t_token *token, t_execute *exec)
 {

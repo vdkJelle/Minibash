@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:26:39 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:12:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** Decrements the size of the array
 ** No return value
 */
+
 static void	destroy_entry(char ***our_env, int *env_size, int i)
 {
 	free((*our_env)[i]);
@@ -35,6 +36,7 @@ static void	destroy_entry(char ***our_env, int *env_size, int i)
 ** If the key is a match the environmental variable is destroyed
 ** No return value
 */
+
 static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 {
 	int		i;
@@ -61,6 +63,7 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 ** Returns 0 if the argument is valid
 ** Returns 1 if the argument is invalid
 */
+
 static int	check_if_valid(char *input)
 {
 	int		i;
@@ -84,6 +87,7 @@ static int	check_if_valid(char *input)
 **		the key exists
 ** No return value
 */
+
 void	ft_unset(t_data *data)
 {
 	char	**args;

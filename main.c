@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/17 16:21:01 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 18:16:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		handle_shlvl(char ***our_env, int *env_size)
 		else
 		{
 			n = ft_atoi(shlvl) + 1;
-			temp = ft_strjoin_free_both(ft_strdup("SHLVL="), ft_itoa(n));
+			temp = ft_strjoin_wrapper(ft_strdup("SHLVL="), ft_itoa(n), 3);
 		}
 	}
 	if (!temp)
@@ -80,13 +80,13 @@ int				main(void)
 		data.r = get_next_line(0, &data.input);
 		if (data.r == -1)
 			exit(1);
-		if (data.r == 0)
+		if (data.r == 0 && !*(data.input))
 		{
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
 		}
 		get_token(&data, data.input);
-		ft_lstiter(data.token, print_token);
+		// ft_lstiter(data.token, print_token);
 		if (!check_token(&data))
 			cody_catch(&data);
 		ft_lstclear(&data.token, free_token);

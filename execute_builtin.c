@@ -6,23 +6,17 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/17 13:32:30 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:01:13 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** Changes the directory according to the path using chdir
-** If no arguments are provided path is set to the home directory
-** If chdir is successful the directory is changed to the path
-** If chdir is unsuccessful
-**		the directory is unchanged
-**		the error is printed
-** If there is more than one argument the error is printed and the directory is
-**		not changed
+** Calls the builtin function based on the command
 ** No return value
 */
+
 static void	execute_builtin(t_data *data, e_command cmd, t_execute *exec)
 {
 	f_builtin	builtin[7];
@@ -48,6 +42,7 @@ static void	execute_builtin(t_data *data, e_command cmd, t_execute *exec)
 ** Closed the fd after execute_builtin in case of a redirection
 ** No return value
 */
+
 void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 {
 	if (exec->fd[READ] == NO_REDIRECTION)
@@ -72,6 +67,7 @@ void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 ** Without the syscall to exit the child process will not terminate normally
 ** No return value
 */
+
 void		execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec)
 {
 	data->our_fd[READ] = STDIN_FILENO;

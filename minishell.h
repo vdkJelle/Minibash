@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/17 16:27:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 18:16:45 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdarg.h>
 # include <dirent.h>
 # include <sys/stat.h>
 # include "./get_next_line/get_next_line.h"
@@ -234,6 +235,7 @@ int		count_backslash(char *s, int loc);
 **-------------------------------UTILS_STRING.C---------------------------------
 */
 int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strjoin_wrapper(char *s1, char *s2, int mode);
 // char	*put_in_singlequotes(char *s);
 
 /*
@@ -252,7 +254,7 @@ int		is_redirection(char *s);
 int		is_whitespace(char c);
 
 e_file	check_file(t_data *data, char *s);
-int		execute(t_data *data, t_execute *cur, t_execute *prev);
+// int		execute(t_data *data, t_execute *cur, t_execute *prev);
 
 void	print_errno(void);
 int		print_errno_int(void);

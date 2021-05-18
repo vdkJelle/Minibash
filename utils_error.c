@@ -6,12 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:28:06 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 17:59:40 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdarg.h>
+
+/*
+** Prints the error message to STDERR using strerror(errno)
+** Returns -1
+*/
 
 int		print_errno_int(void)
 {
@@ -20,11 +24,22 @@ int		print_errno_int(void)
 	return (-1);
 }
 
+/*
+** Prints the error message to STDERR using strerror(errno)
+** No return value
+*/
+
 void	print_errno(void)
 {
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putchar_fd('\n', 2);
 }
+
+/*
+** Prints the error message
+** Prints all the strings to STDERR and sets the exit status
+** No return value
+*/
 
 void	print_error(t_data *data, int exit_status, int n, ...)
 {
@@ -44,13 +59,3 @@ void	print_error(t_data *data, int exit_status, int n, ...)
 	data->exit_status = exit_status;
 	va_end(strings);
 }
-
-// void	print_error_message(t_data *data, int exit_status, char *s1, char *s2)
-// {
-// 	ft_putstr_fd("🐶 > ", 2);
-// 	if (s1)
-// 		ft_putstr_fd(s1, 2);
-// 	if (s2)
-// 		ft_putstr_fd(s2, 2);
-// 	data->exit_status = exit_status;
-// }

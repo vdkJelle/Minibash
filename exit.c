@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/14 19:52:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:09:42 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 **		not terminated
 ** No return value
 */
+
 void	ft_exit(t_data *data)
 {
 	char	**args;

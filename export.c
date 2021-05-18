@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:24:18 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:09:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 ** Prints baskslashes of the value double
 ** No return value
 */
+
 static void	print_export(char *our_env, int our_fd)
 {
 	int		i;

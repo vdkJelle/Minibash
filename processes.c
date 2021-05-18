@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/17 16:23:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/17 17:07:03 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 ** If there is a pipe and a redirection the redirection takes precedent
 **		dup2 closes the STDIN_FILENO/STDOUT_FILENO of the piped fd
 **		the fd of the redirection is duplicated into STDIN_FILENO/STDOUT_FILENO
+** No return value
 */
 
 static void	child_process
@@ -86,7 +87,6 @@ static void	parent_process
 	else if (WTERMSIG(wstatus) == SIGINT)
 	{
 		data->exit_status = 128 + WTERMSIG(wstatus);
-		write(1, "\n🐶 > ", sizeof("\n🐶 > "));
 	}
 	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
 		return (print_error(data, 1, 1, strerror(errno)));

@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   executable.c                                       :+:    :+:            */
+/*   execute.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/17 16:33:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 11:10:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** 
-** No return value
+** Gets the path to the executable based on file status
+** Returns a malloced string to the path of the executable
 */
 
-static char			*get_path(char *arg, e_file path)
+static char			*get_path(char *arg, e_file file)
 {
 	char	*ret;
 	
-	if (path == BIN)
+	if (file == BIN)
 		ret = ft_strjoin("/bin/", arg);
-	else if (path == USR_BIN)
+	else if (file == USR_BIN)
 		ret = ft_strjoin("/usr/bin/", arg);
 	else
 	{
@@ -38,33 +38,45 @@ static char			*get_path(char *arg, e_file path)
 }
 
 /*
-** 
-** No return value
+** Look up table for builtin command
+** Returns an enum with the type of command
 */
 
 static e_command	identify_command(char *s)
 {
-	if (!ft_strcmp(s, "cd"))
-		return (CD);
-	else if (!ft_strcmp(s, "echo"))
-		return (ECHO);
-	else if (!ft_strcmp(s, "env"))
-		return (ENV);
-	else if (!ft_strcmp(s, "exit"))
-		return (EXIT);
-	else if (!ft_strcmp(s, "export"))
-		return (EXPORT);
-	else if (!ft_strcmp(s, "pwd"))
-		return (PWD);
-	else if (!ft_strcmp(s, "unset"))
-		return (UNSET);
-	else
-		return (NON_BUILTIN);
+	int					i;
+	static const char	*builtins[7] = {
+		[CD] = "cd",
+		[ECHO] = "echo",
+		[ENV] = "env",
+		[EXIT] = "exit",
+		[EXPORT] = "export",
+		[PWD] = "pwd",
+		[UNSET] = "unset"
+	};
+	
+	i = 0;
+	while (i < 7)
+	{
+		if (!ft_strcmp(s, builtins[i]))
+			return (i);
+		i++;
+	}
+	return (NON_BUILTIN);
 }
 
 /*
-** 
-** No return value
+** Executes a command
+** Calls identify_command to check if the command is a builtin
+** If command is not a builtin
+**		the file status is checked with check_file
+**		the path to the executable is obtained with get_path
+**		calls create process
+** If command is a builtin
+**		calls execute_builtin_no_pipe if there is no pipe
+**		calls create process if there is a pipe
+** Returns 0 if execute was successful
+** Returns 1 if the file can't be executed
 */
 
 static int		execute(t_data *data, t_execute *cur, t_execute *prev)
@@ -85,7 +97,8 @@ static int		execute(t_data *data, t_execute *cur, t_execute *prev)
 			exit(1);
 		create_process(data, cmd, cur, prev);
 	}
-	else if (cmd != NON_BUILTIN && (cur->piped == 1 || (prev && prev->piped == 1)))
+	else if (cmd != NON_BUILTIN
+	&& (cur->piped == 1 || (prev && prev->piped == 1)))
 		create_process(data, cmd, cur, prev);
 	else
 		execute_builtin_no_pipe(data, cmd, cur);
@@ -95,9 +108,10 @@ static int		execute(t_data *data, t_execute *cur, t_execute *prev)
 /*
 ** Initializes the execute struct
 ** Creates a pipe if the control operator is a pipe
-** Sets the initial value of the file descriptors to no redirection
+** Sets the initial value of the file descriptors to no redirection (-2)
 ** Calls final_args to create the final array and handle redirections
-** No return value
+** Returns a malloced execute struct
+** Returns NULL in case of an error
 */
 
 static t_execute	*get_exec(t_data *data, t_token *token)
@@ -128,6 +142,7 @@ static t_execute	*get_exec(t_data *data, t_token *token)
 
 /*
 ** Iterates over the linked list with tokens and executes them
+** Saves a pointer to the previous token to use in case of a pipe
 ** No return value
 */
 
@@ -153,7 +168,6 @@ void				cody_catch(t_data *data)
 			free_exec(cur);
 	}
 }
-
 
 // int			execute(t_data *data, t_execute *cur, t_execute *prev)
 // {

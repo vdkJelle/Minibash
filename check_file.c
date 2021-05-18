@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/17 13:18:36 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 10:54:10 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** Called when something went wrong with readdir
 ** Returns -1 and prints errno
 */
+
 static int	closedir_error(DIR **dir_p)
 {
 	if (closedir(*dir_p) == -1)
@@ -31,6 +32,7 @@ static int	closedir_error(DIR **dir_p)
 ** Returns 1 if the file was found in the directory
 ** Returns -1 if an error occured
 */
+
 static int	check_in_dir(char *s, char *dir)
 {
 	struct dirent	*dir_s;
@@ -65,8 +67,9 @@ static int	check_in_dir(char *s, char *dir)
 ** Uses check_in_dir
 ** If a command doesn't have a '/' and is not present in /bin/ or /usr/bin
 **		it cannot be found
-** Returns the type of file or an error
+** Returns an enum with the type of file or an error
 */
+
 e_file		check_bin(t_data *data, char *s)
 {
 	int		bin;
@@ -91,6 +94,7 @@ e_file		check_bin(t_data *data, char *s)
 ** Files in the /bin/ or /usr/bin/ directory and regular files can be executed
 ** Returns the type of file or an error
 */
+
 e_file		check_file(t_data *data, char *s)
 {
 	struct stat sb;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/13 21:25:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 10:59:20 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** If getcwd is unsuccessful the error is printed
 ** No return value
 */
+
 void	ft_pwd(t_data *data)
 {
 	char	*buf;

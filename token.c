@@ -6,11 +6,19 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 17:13:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 15:45:01 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Gets the arguments
+** Calls count_arguments to get the size of the array of arguments
+** Calls get_arg to get the word segements of the argument
+** Calls join word to merge the word segments of the command into one word
+** Returns an malloced array of malloced t_word structs
+*/
 
 static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 {
@@ -38,6 +46,13 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	return (args);
 }
 
+/*
+** Gets the command
+** Calls get arg to get the word segements of the command
+** Calls join word to merge the word segments of the command into one word
+** Returns a malloced t_word struct
+*/
+
 static t_word	*get_command(t_data *data, char *s, char control_operator)
 {
 	int		i;
@@ -58,6 +73,11 @@ static t_word	*get_command(t_data *data, char *s, char control_operator)
 	return (command);
 }
 
+/*
+** Gets the control operator
+** Returns a malloced string with the control operator
+*/
+
 static char	*get_control_operator(char *s)
 {
 	char	*ret;
@@ -67,6 +87,17 @@ static char	*get_control_operator(char *s)
 		exit(1);
 	return (ret);
 }
+
+/*
+** Adds a token set to the linked list
+** Each token set consists of
+**		a command, one word
+**		arguments, none, one or more words
+**		control operator, a string with one or a combinations of ; | ( ) & \0
+** Words are seperated by metacharacters
+** Returns an index to the end of the token set
+** Returns 0 if the input is empty or only consists of whitespaces
+*/
 
 static int	tokenize(t_data *data, char *s, char *p_control_operator)
 {
@@ -96,6 +127,13 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 	ft_lstadd_back(&data->token, ft_lstnew(token));
 	return (ft_strlen(token->cop));
 }
+
+/*
+** Creates token sets from the input
+** Calls check_multiline_command to check for multiline commands
+** Each token set is seperated by control operators
+** No return value
+*/
 
 void	get_token(t_data *data, char *s)
 {

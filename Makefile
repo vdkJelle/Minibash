@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/05/17 13:01:42 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/05/18 18:28:49 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS		=	cd\
 				check_multiline_command\
 				echo\
 				env\
-				executable\
+				execute\
 				execute_builtin\
 				export\
 				exit\
@@ -33,7 +33,6 @@ SRCS		=	cd\
 				utils_string_count\
 				utils_string_isthis\
 				utils_string_skip\
-				utils_string_strjoin\
 				utils_string\
 				unset\
 				token\
@@ -53,7 +52,7 @@ LIBRARIES	=	libft/libft.a\
 all:	$(NAME)
 
 $(NAME): $(OFILES) $(LIBRARIES)
-	@gcc $(FLAGS) $^ -o $(NAME)
+	@$(CC) $(FLAGS) $^ -o $(NAME)
 
 $(LIBRARIES):
 	@echo "Compiling libft"
@@ -61,7 +60,7 @@ $(LIBRARIES):
 	@echo "Compiling get_next_line"
 	@$(MAKE) -C get_next_line
 
-%.o:	%.c
+%.o: %.c
 	@echo "Compiling... $^"
 	@gcc $(FLAGS) -I $(INCLUDES) -c $^
 
@@ -71,12 +70,12 @@ clean:
 	@make clean -C get_next_line
 	@make clean -C libft
 
-fclean:		clean
+fclean: clean
 	@echo "Extra cleaning..."
 	@rm -f $(NAME)
 	@make fclean -C get_next_line
 	@make fclean -C libft
 
-re:			fclean all
+re: fclean all
 
 .PHONY: all clean fclean re

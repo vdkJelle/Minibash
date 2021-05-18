@@ -16,6 +16,7 @@
 ** Saves a single character as a word segment
 ** Returns 1
 */
+
 int		handle_char(t_data *data, t_word **word, char *s)
 {
 	char	*single_char;
@@ -44,6 +45,7 @@ int		handle_char(t_data *data, t_word **word, char *s)
 **		the next character is the first character of a valid identifier
 ** Returns index of the end of the word segment
 */
+
 int		handle_doublequotes(t_data *data, t_word **word, char *s)
 {
 	int		i;
@@ -74,6 +76,7 @@ int		handle_doublequotes(t_data *data, t_word **word, char *s)
 ** If no value is found nothing is saved
 ** Returns index of the end of the key
 */
+
 int		handle_environment_variable(t_data *d, t_word **word, char *s)
 {
 	char	*key;
@@ -109,6 +112,7 @@ int		handle_environment_variable(t_data *d, t_word **word, char *s)
 ** Whitespaces are never saved
 ** Returns index of the end of the word + potentially skipped whitespaces
 */
+
 int		handle_metacharacter(t_data *data, t_word **word, char *s)
 {
 	int		i;
@@ -131,6 +135,7 @@ int		handle_metacharacter(t_data *data, t_word **word, char *s)
 ** If the next character is a single quote, nothing is saved
 ** Returns index of the end of the word segment
 */
+
 int		handle_singlequotes(t_data *data, t_word **word, char *s)
 {
 	int		i;
