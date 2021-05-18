@@ -6,11 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/14 18:45:38 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 18:36:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Frees an array of strings
+** No return value
+*/
 
 void	free_array(char **array)
 {
@@ -29,6 +34,11 @@ void	free_array(char **array)
 	free(array);
 }
 
+/*
+** Frees an array of strings starting from a specific string
+** No return value
+*/
+
 void	free_array_part(char **array, int i)
 {
 	i--;
@@ -40,12 +50,22 @@ void	free_array_part(char **array, int i)
 	free(array);
 }
 
+/*
+** Frees a t_execute struct
+** No return value
+*/
+
 void	free_exec(t_execute *exec)
 {
 	free_array(exec->args);
 	free(exec->path);
 	free(exec);
 }
+
+/*
+** Frees a t_token struct
+** No return value
+*/
 
 void	free_token(void *content)
 {

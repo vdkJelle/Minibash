@@ -6,11 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/14 18:45:16 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 18:37:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Joins the word segments into a word
+** Returns a malloced string with the word
+*/
 
 char	*join_word(t_word *arg)
 {
@@ -36,6 +41,11 @@ char	*join_word(t_word *arg)
 	}
 	return (word);
 }
+
+/*
+** Prints the contents of a token set
+** No return value
+*/
 
 void	print_token(void *content)
 {

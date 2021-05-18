@@ -6,11 +6,20 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 18:16:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 18:47:15 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Adds the correct shell level to the array of environmental variables
+** If SHLVL is not set the value it is set to 1
+** If SHLVL is set but the value is not numeric the value is set to 1
+** If SHLVL is set correctly the value is incremented
+** Calls append_key_value to add the key and value to the array of env variables
+** No return value
+*/
 
 static void		handle_shlvl(char ***our_env, int *env_size)
 {
@@ -41,6 +50,13 @@ static void		handle_shlvl(char ***our_env, int *env_size)
 	free(temp);
 }
 
+/*
+** Copies the environmental variables of the shell environment
+** Uses an external char **environ
+** Calls handle_shlvl to set the correct value of the key SHLVL
+** No return value
+*/
+
 static void		initialize_env(char ***our_env, int *env_size)
 {
 	extern char	**environ;
@@ -64,6 +80,16 @@ static void		initialize_env(char ***our_env, int *env_size)
 	(*env_size) = i;
 	handle_shlvl(our_env, env_size);
 }
+
+/*
+** Main of the amazing Codyshell 🐶
+** Prints prompt
+** Reads from the terminal
+** Calls get_token to tokenize and parse the input for the terminal
+** Calls check_token to make sure the token is valid
+** Calls cody_catch where the commands are executed
+** Returns 0
+*/
 
 int				main(void)
 {
