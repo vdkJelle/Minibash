@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 11:08:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 15:33:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 19:08:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
 ** Returns location of the next double quote, doesn't skip over it

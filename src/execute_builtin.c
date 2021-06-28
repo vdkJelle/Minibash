@@ -6,12 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 11:01:13 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 19:07:30 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
+#include "../includes/minishell.h"
 /*
 ** Calls the builtin function based on the command
 ** No return value

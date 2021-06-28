@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/05/18 18:28:49 by tevan-de      ########   odam.nl          #
+#    Updated: 2021/06/28 13:09:58 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,9 +39,9 @@ SRCS		=	cd\
 				token_arg\
 				token_check\
 				token_handle_arg_chars
-CFILES		=	$(SRCS:%=%.c)
-OFILES		=	$(CFILES:.c=.o)
-INCLUDES	=	.
+CFILES		=	$(SRCS:%=src/%.c)
+OFILES		=	$(SRCS:%=obj/%.o)
+INCLUDES	=	./includes/.
 FLAGS		=	-Wall -Wextra -Werror
 ifdef DEBUG
 FLAGS += -g -fsanitize=address
@@ -52,29 +52,32 @@ LIBRARIES	=	libft/libft.a\
 all:	$(NAME)
 
 $(NAME): $(OFILES) $(LIBRARIES)
+	@echo "Compiling minishell executable"
 	@$(CC) $(FLAGS) $^ -o $(NAME)
+	@echo "Your minishell executable has been created!"
 
 $(LIBRARIES):
 	@echo "Compiling libft"
-	@$(MAKE) bonus -C libft
+	@$(MAKE) bonus -sC libft
 	@echo "Compiling get_next_line"
-	@$(MAKE) -C get_next_line
+	@$(MAKE) -sC get_next_line
 
-%.o: %.c
+obj/%.o: src/%.c
+	@mkdir -p $(@D)
 	@echo "Compiling... $^"
-	@gcc $(FLAGS) -I $(INCLUDES) -c $^
+	@gcc $(FLAGS) -I $(INCLUDES) -c $^ -o $@
 
 clean:
 	@echo "Cleaning..."
 	@rm -f $(OFILES) $(BOFILES)
-	@make clean -C get_next_line
-	@make clean -C libft
+	@make clean -sC get_next_line
+	@make clean -sC libft
 
 fclean: clean
 	@echo "Extra cleaning..."
 	@rm -f $(NAME)
-	@make fclean -C get_next_line
-	@make fclean -C libft
+	@make fclean -sC get_next_line
+	@make fclean -sC libft
 
 re: fclean all
 

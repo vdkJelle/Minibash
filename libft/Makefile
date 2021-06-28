@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/01 11:16:05 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/03/09 15:50:01 by jelvan-d      ########   odam.nl          #
+#    Updated: 2021/06/28 13:05:05 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,23 +68,19 @@ all:	$(NAME)
 
 $(NAME):	$(OFILES)
 	@ar rc $(NAME) $(OFILES)
-	@echo "Library exluding bonus"
 
 %.o:	%.c
 	@echo "Compiling... $^"
 	@gcc $(FLAGS) -I $(INCLUDES) -c $^
 
 clean:
-	@echo "Cleaning..."
 	@rm -f $(OFILES) $(BOFILES)
 
 fclean:		clean
-	@echo "Extra cleaning..."
 	@rm -f $(NAME)
 
 re:			fclean all
 
 bonus:		$(OFILES) $(BOFILES)
-	@echo "Library including bonus"
 	@ar rc $(NAME) $^
 	@ranlib $(NAME)

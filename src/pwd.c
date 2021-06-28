@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env.c                                              :+:    :+:            */
+/*   pwd.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/10 16:06:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 10:54:23 by tevan-de      ########   odam.nl         */
+/*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
+/*   Updated: 2021/05/18 19:07:58 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
-** Prints all environmetal variables
+** Prints the working directory using getcwd
+** If getcwd is successful the working directory is printed
+** If getcwd is unsuccessful the error is printed
 ** No return value
 */
 
-void	ft_env(t_data *data)
+void	ft_pwd(t_data *data)
 {
-	int 	fd;
-	int 	i;
+	char	*buf;
+	int		fd;
 
+	buf = NULL;
+	buf = getcwd(buf, 0);
 	fd = data->our_fd[1];
-	i = 0;
-	while (data->our_env[i])
+	if (!buf)
 	{
-		ft_putstr_fd(data->our_env[i], fd);
-		ft_putchar_fd('\n', fd);
-		i++;
+		print_error(data, 1, 1, strerror(errno));
+		return ;
 	}
+	ft_putstr_fd(buf, fd);
+	ft_putchar_fd('\n', fd);	
+	free(buf);
 	data->exit_status = 0;
 }

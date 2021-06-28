@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 18:16:45 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 19:09:24 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdarg.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include "./get_next_line/get_next_line.h"
-# include "./libft/libft.h"
+# include "../get_next_line/get_next_line.h"
+# include "../libft/libft.h"
 
 # define READ 0
 # define WRITE 1

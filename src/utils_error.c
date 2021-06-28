@@ -6,11 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 17:59:40 by tevan-de      ########   odam.nl         */
+/*   Updated: 2021/05/18 19:08:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 /*
 ** Prints the error message to STDERR using strerror(errno)
