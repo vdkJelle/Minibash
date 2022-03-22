@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:19 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 12:01:32 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void			ft_cd(t_data *data)
 	int		ret;
 
 	args = data->args;
+	ret = 0;
 	if (!args[1])
 		ret = chdir(get_env(data->our_env, "HOME"));
 	else if (args[1] && args[2] == NULL)
