@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:37:20 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 ** No return value
 */
 
-static void	execute_builtin(t_data *data, e_command cmd, t_execute *exec)
+static void	execute_builtin(t_data *data, t_command cmd, t_execute *exec)
 {
-	f_builtin	builtin[7];
+	t_builtin	builtin[7];
 
 	builtin[CD] = ft_cd;
 	builtin[ECHO] = ft_echo;
@@ -42,7 +42,7 @@ static void	execute_builtin(t_data *data, e_command cmd, t_execute *exec)
 ** No return value
 */
 
-void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
+void		execute_builtin_no_pipe(t_data *data, t_command cmd, t_execute *exec)
 {
 	if (exec->fd[READ] == NO_REDIRECTION)
 		data->our_fd[READ] = STDIN_FILENO;
@@ -67,7 +67,7 @@ void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 ** No return value
 */
 
-void		execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec)
+void		execute_builtin_pipe(t_data *data, t_command cmd, t_execute *exec)
 {
 	data->our_fd[READ] = STDIN_FILENO;
 	data->our_fd[WRITE] = STDOUT_FILENO;

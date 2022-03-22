@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/01 13:07:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/20 15:53:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:49:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*p;

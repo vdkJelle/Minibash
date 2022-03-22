@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:37:20 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** Returns the type of character
 */
 
-arg_characters	get_arg_characters(char *s, int i)
+t_arg_characters	get_arg_characters(char *s, int i)
 {
 	if (s[i] == '\'' && !(count_backslash(s, i) % 2))
 		return (SINGLEQUOTE);
@@ -57,8 +57,8 @@ arg_characters	get_arg_characters(char *s, int i)
 int				get_arg(t_data *data, t_word **word, char *s, char control_op)
 {
 	int				i;
-	arg_characters	ac;
-	f_arg_handler	arg_handler[5];
+	t_arg_characters	ac;
+	t_arg_handler	arg_handler[5];
 
 	arg_handler[CHAR] = handle_char;
     arg_handler[DOUBLEQUOTE] = handle_doublequotes;

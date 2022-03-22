@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/07 10:00:51 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 18:42:26 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:47:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static char	**write_malloc(char const *s, char c, char **p, int wc)
 	return (0);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	int		wc;
 	char	**p;

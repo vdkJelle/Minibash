@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/28 13:12:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/10/31 19:20:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:48:42 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 

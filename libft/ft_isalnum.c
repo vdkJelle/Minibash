@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/28 15:51:00 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/10/29 14:01:18 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:44:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isalnum(int c)
+int	ft_isalnum(int c)
 {
 	if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z')
 		|| (c >= 'a' && c <= 'z'))

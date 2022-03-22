@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/01 11:33:27 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/04 12:04:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:46:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (n > i)

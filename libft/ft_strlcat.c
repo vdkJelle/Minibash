@@ -6,16 +6,16 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 14:05:41 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/14 14:35:03 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:48:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = ft_strlen(dst);
 	j = 0;

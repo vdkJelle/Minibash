@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 11:49:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/13 15:28:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:49:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*result(char *str, int nc, long num, int sign)
 
 static int	numcount(long n)
 {
-	int nc;
+	int	nc;
 
 	nc = 1;
 	if (n < 0)
@@ -44,7 +44,7 @@ static int	numcount(long n)
 	return (nc);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*str;
 	long	num;

@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/28 13:58:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/10/29 14:01:25 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:44:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isalpha(int c)
+int	ft_isalpha(int c)
 {
 	if (c >= 'a' && c <= 'z')
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/03/22 12:14:25 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:30:04 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 */
 
 static void	child_process
-(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
+(t_data *data, t_command cmd, t_execute *cur, t_execute *prev)
 {
 	signal(SIGINT, SIG_DFL);
 	if (cur->piped == 1)
@@ -106,7 +106,7 @@ static void	parent_process
 */
 
 void		create_process
-(t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
+(t_data *data, t_command cmd, t_execute *cur, t_execute *prev)
 {
 	pid_t	pid;
 

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/01 13:37:39 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/02/26 23:45:23 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:49:34 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static const char	*begin_location(const char *s1, const char *set)
 
 static const char	*end_location(const char *s1, const char *set)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 0;
 	n = 0;
@@ -53,7 +53,7 @@ static const char	*end_location(const char *s1, const char *set)
 	return (&s1[i]);
 }
 
-char				*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	int			i;
 	char		*p;

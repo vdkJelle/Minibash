@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/30 09:48:35 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/10/30 12:49:51 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:47:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])

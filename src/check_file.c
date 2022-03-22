@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:21 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:31:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	check_in_dir(char *s, char *dir)
 ** Returns an enum with the type of file or an error
 */
 
-e_file		check_bin(t_data *data, char *s)
+t_file		check_bin(t_data *data, char *s)
 {
 	int		bin;
 	int		usr_bin;
@@ -95,7 +95,7 @@ e_file		check_bin(t_data *data, char *s)
 ** Returns the type of file or an error
 */
 
-e_file		check_file(t_data *data, char *s)
+t_file		check_file(t_data *data, char *s)
 {
 	struct stat sb;
 

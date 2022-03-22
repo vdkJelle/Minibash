@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:09:24 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 15:41:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,46 +38,44 @@
 **------------------------------------ENUMS-------------------------------------
 */
 
-typedef 		enum
+typedef enum e_command
 {
-				NON_BUILTIN = -1,
-				CD = 0,
-				ECHO = 1,
-				ENV = 2,
-				EXIT = 3,
-				EXPORT = 4,
-				PWD = 5,
-				UNSET = 6,
-}				e_command;
+	NON_BUILTIN = -1,
+	CD = 0,
+	ECHO = 1,
+	ENV = 2,
+	EXIT = 3,
+	EXPORT = 4,
+	PWD = 5,
+	UNSET = 6,
+}	t_command;
 
-typedef			enum
+typedef enum e_file
 {
-				ERROR = -1,
-				REGULAR = 0,
-				BIN = 1,
-				USR_BIN = 2,
-				DIRECTORY = 3,
-				NOT_FOUND = 4,
-				NOT_EXECUTABLE = 5,
-}				e_file;
+	ERROR = -1,
+	REGULAR = 0,
+	BIN = 1,
+	USR_BIN = 2,
+	DIRECTORY = 3,
+	NOT_FOUND = 4,
+	NOT_EXECUTABLE = 5,
+}	t_file;
 
-typedef 		enum
+typedef enum e_arg_characters
 {
-				CHAR = 0,
-				DOUBLEQUOTE = 1,
-				ENVIRONMENT_VARIABLE = 2,
-				METACHARACTER = 3,
-				SINGLEQUOTE = 4,
-				BACKSLASH = 5,
-}				arg_characters;
-
-
+	CHAR = 0,
+	DOUBLEQUOTE = 1,
+	ENVIRONMENT_VARIABLE = 2,
+	METACHARACTER = 3,
+	SINGLEQUOTE = 4,
+	BACKSLASH = 5,
+}	t_arg_characters;
 
 /*
 **-----------------------------------STRUCTS------------------------------------
 */
 
-typedef struct	s_exec
+typedef struct s_exec
 {
 	char		**args;
 	char		*path;
@@ -86,21 +84,21 @@ typedef struct	s_exec
 	int			piped;
 }				t_execute;
 
-typedef struct	s_word
+typedef struct s_word
 {
 	t_list		*word_segment;
 	char		*word;
 	int			metacharacter;
 }				t_word;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	t_word		*cmd;
 	t_word		**arg;
 	char		*cop;
 }				t_token;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	char		**args;
 	char		**our_env;
@@ -115,8 +113,8 @@ typedef struct	s_data
 /*
 **----------------------------POINTERS TO FUNCTIONS-----------------------------
 */
-typedef int		(*f_arg_handler)(t_data *data, t_word **word, char *s);
-typedef void	(*f_builtin)(t_data *data);
+typedef int		(*t_arg_handler)(t_data *data, t_word **word, char *s);
+typedef void	(*t_builtin)(t_data *data);
 
 /*
 **-----------------------------------ENV.C--------------------------------------
@@ -201,7 +199,7 @@ void	free_array_part(char **array, int i);
 void	free_exec(t_execute *exec);
 void	free_token(void *content);
 char	*join_word(t_word *arg);
-void 	print_token(void *content);
+void	print_token(void *content);
 
 /*
 **-----------------------------UTILS_STRING_SKIP.C-------------------------------
@@ -253,7 +251,7 @@ int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
 
-e_file	check_file(t_data *data, char *s);
+t_file	check_file(t_data *data, char *s);
 // int		execute(t_data *data, t_execute *cur, t_execute *prev);
 
 void	print_errno(void);
@@ -268,10 +266,14 @@ int		check_multiline_command(t_data *data, char *s);
 
 void	final_args(t_data *data, t_token *token, t_execute *exec);
 
-void	execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec);
-void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
+void	execute_builtin_pipe(t_data *data, t_command cmd, t_execute *exec);
+void	execute_builtin_no_pipe(t_data *data, t_command cmd, t_execute *exec);
 
-void	create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev);
+void	create_process(
+			t_data *data,
+			t_command cmd,
+			t_execute *cur,
+			t_execute *prev);
 
 void	cody_catch(t_data *data);
 
