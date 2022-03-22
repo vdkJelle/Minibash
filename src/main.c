@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:50 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/03/22 12:14:48 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int				main(void)
 	ft_bzero(&data, sizeof(data));
 	ft_putstr_fd("Welcome to the amazing Codyshell!\n", 1);
 	initialize_env(&data.our_env, &data.env_size);
-	signal(SIGINT, SIG_IGN);
 	while (1)
 	{
 		write(1, "🐶 > ", sizeof("🐶 > "));
