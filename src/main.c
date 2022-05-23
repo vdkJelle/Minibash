@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/03/22 12:14:48 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/23 13:48:00 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,15 @@ int				main(void)
 	initialize_env(&data.our_env, &data.env_size);
 	while (1)
 	{
-		write(1, "🐶 > ", sizeof("🐶 > "));
 		ft_signal_handler();
-		data.r = get_next_line(0, &data.input);
-		if (data.r == -1)
-			exit(1);
-		if (data.r == 0 && !*(data.input))
+		data.input = readline("🐶 > ");
+		if (!data.input)
 		{
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
 		}
+		if (*data.input)
+			add_history(data.input);
 		get_token(&data, data.input);
 		// ft_lstiter(data.token, print_token);
 		if (!check_token(&data))

@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/06/28 15:03:40 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/05/23 13:50:37 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,7 @@ FLAGS		=	-Wall -Wextra -Werror
 ifdef DEBUG
 FLAGS += -g -fsanitize=address
 endif
-LIBRARIES	=	libft/libft.a\
-				get_next_line/gnl.a
+LIBRARIES	=	libft/libft.a
 
 all:	announce $(NAME)
 
@@ -61,7 +60,7 @@ announce:
 	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
 
 $(NAME): $(OFILES) $(LIBRARIES)
-	@$(CC) $(FLAGS) $^ -o $(NAME)
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline
 
 $(LIBRARIES):
 	@echo "   _                   ____    _____  _____" 
@@ -72,14 +71,6 @@ $(LIBRARIES):
 	@echo "  //  \\\\\.-,_|___|_,-._|| \\\\\_  )(\\\\\,- _// \\\\\_"
 	@echo " (_\")(\"_)\\_)-' '-(_/(__) (__)(__)(_/(__) (__)" 
 	@$(MAKE) bonus -sC libft
-	@echo "   ____  U _____ u  _____        _   _   U _____ u __  __    _____         _                  _   _   U _____ u"
-	@echo "U /\"___|u\| ___\"|/ |_ \" _|      | \\ |\"|  \\| ___\"|/ \\ \\/\"/   |_ \" _|       |\"|        ___     | \\ |\"|  \\| ___\"|/"
-	@echo "\\| |  _ / |  _|\"     | |       <|  \\| |>  |  _|\"   /\\  /\\     | |       U | | u     |_\"_|   <|  \\| |>  |  _|\""
-	@echo " | |_| |  | |___    /| |\\      U| |\\  |u  | |___  U /  \\ u   /| |\\       \\| |/__     | |    U| |\\  |u  | |___"
-	@echo "  \\____|  |_____|  u |_|U       |_| \\_|   |_____|  /_/\\_\\   u |_|U        |_____|  U/| |\\u   |_| \\_|   |_____|"  
-	@echo "  _)(|_   <<   >>  _// \\\\\_      ||   \\\\\,-.<<   >>,-,>> \\\\\_  _// \\\\\_       //  \\\\\.-,_|___|_,-.||   \\\\\,-.<<   >>"
-	@echo " (__)__) (__) (__)(__) (__)     (_\")  (_/(__) (__)\_)  (__)(__) (__)     (_\")(\"_)\_)-' '-(_/ (_\")  (_/(__) (__) "
-	@$(MAKE) -sC get_next_line
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
@@ -89,13 +80,11 @@ obj/%.o: src/%.c
 clean:
 	@echo "Cleaning..."
 	@rm -f $(OFILES) $(BOFILES)
-	@make clean -sC get_next_line
 	@make clean -sC libft
 
 fclean: clean
 	@echo "Extra cleaning..."
 	@rm -f $(NAME)
-	@make fclean -sC get_next_line
 	@make fclean -sC libft
 
 re: fclean all

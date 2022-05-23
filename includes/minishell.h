@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:09:24 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/23 13:49:21 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <stdarg.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include "../get_next_line/get_next_line.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../libft/libft.h"
 
 # define READ 0
@@ -107,7 +108,6 @@ typedef struct	s_data
 	char		*input;
 	int			env_size;
 	int			our_fd[2];
-	int			r;
 	int			exit_status;
 	t_list		*token;
 }				t_data;

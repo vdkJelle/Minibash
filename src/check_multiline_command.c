@@ -14,8 +14,8 @@
 
 /*
 ** Counts the amount of double and single quotes
-** Returns 0 if there is an even amount of double and single quotes
-** Returns 1 if there is an uneven amount of double and single quotes
+** Returns 0 if there is an even amount of double or single quotes
+** Returns 1 if there is an uneven amount of double or single quotes
 */
 
 static int	count_quotes(char *s)

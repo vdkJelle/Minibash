@@ -40,7 +40,7 @@ int		handle_char(t_data *data, t_word **word, char *s)
 ** If the next character is a double quote, nothing is saved
 ** If there is a backslash and the next character is a backslash, double quote
 **		or dollar sign, the next character is saved instead of the current
-** If there is a dollar sign environmental variables have to be handles if
+** If there is a dollar sign environmental variables have to be handled if
 **		the next character is not a double quote
 **		the next character is the first character of a valid identifier
 ** Returns index of the end of the word segment
