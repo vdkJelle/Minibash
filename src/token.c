@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:44:48 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/24 13:54:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 	t_token	*token;
 
 	loc = skip_while_char(s, is_whitespace);
-	if (!s[loc] || s[loc] == ';')
+	if (!s[loc] || (s[loc] && s[loc + 1] && s[loc + 1] != ';'))
 	{	
 		data->exit_status = 0;
 		return (1);
