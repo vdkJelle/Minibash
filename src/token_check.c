@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:08 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 13:42:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,17 @@ static int	check_control_operator(t_data *data, char *s)
 	return (0);
 }
 
+static int	check_next_control_operator(t_data *data, t_token *cur, t_token *next)
+{
+	if (!ft_strcmp(cur->cop, "|") && !next->cmd)
+	{
+		print_error(data, 2, 3,
+			"🐶 > syntax error near unexpected token `", cur->cop, "'");
+		return (1);
+	}
+	return (0);
+}
+
 /*
 ** Checks the token sets for validity and syntax errors
 ** Calls check_control_operator to check for errors in the control operator
@@ -83,6 +94,8 @@ int			check_token(t_data *data)
 	{
 		token = temp->content;
 		if (check_control_operator(data, token->cop))
+			return (1);
+		if (temp->next && check_next_control_operator(data, token, temp->next->content))
 			return (1);
 		i = 0;
 		while (token->arg[i])

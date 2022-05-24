@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/03/22 12:14:25 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/23 22:08:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ static void	parent_process
 		return (print_error(data, 1, 1, strerror(errno)));
 	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
 		return (print_error(data, 1, 1, strerror(errno)));
-	if (cur->fd[READ] != NO_REDIRECTION && close(cur->fd[READ]) == -1)
+	if (cur->fd[READ] != NO_REDIRECTION && cur->fd[READ] != -1 && close(cur->fd[READ]) == -1)
 		return (print_error(data, 1, 1, strerror(errno)));
-	if (cur->fd[WRITE] != NO_REDIRECTION && close(cur->fd[WRITE]) == -1)
+	if (cur->fd[WRITE] != NO_REDIRECTION && cur->fd[WRITE] != -1 && close(cur->fd[WRITE]) == -1)
 		return (print_error(data, 1, 1, strerror(errno)));
 }
 
@@ -105,7 +105,7 @@ static void	parent_process
 ** No return value
 */
 
-void		create_process
+void	create_process
 (t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
 {
 	pid_t	pid;
@@ -114,7 +114,12 @@ void		create_process
 	if (pid == -1)
 		return (print_error(data, 1, 1, strerror(errno)));
 	else if (!pid)
+	{
+		if (cmd == CMD_ERROR)
+			exit(data->exit_status);
+		if (cmd)
 		child_process(data, cmd, cur, prev);
+	}
 	else
 		parent_process(data, pid, cur, prev);
 }

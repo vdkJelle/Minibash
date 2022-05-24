@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/20 14:55:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 13:44:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	i = 0;
 	while (i < size)
 	{
-		args[i] = ft_calloc(1, sizeof(t_word));
+		args[i] = ft_calloc(sizeof(t_word), 1);
 		if (!args[i])
 			exit(1);
 		loc += get_arg(data, &args[i], s + loc, control_operator);
@@ -58,7 +58,7 @@ static t_word	*get_command(t_data *data, char *s, char control_operator)
 	int		i;
 	t_word	*command;
 
-	command = ft_calloc(1, sizeof(t_word));
+	command = ft_calloc(sizeof(t_word), 1);
 	if (!command)
 		exit(1);
 	i = 0;
@@ -104,26 +104,25 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 	int		loc;
 	t_token	*token;
 
-	loc = skip_while_char(s, is_metacharacter);
-	if (!s[loc])
+	loc = skip_while_char(s, is_whitespace);
+	if (!s[loc] || s[loc] == ';')
 	{	
 		data->exit_status = 0;
-		return (0);
+		return (1);
 	}
-	token = (t_token*)malloc(sizeof(t_token));
+	token = ft_calloc(sizeof(t_token), 1);
+	token->cmd = NULL;
+	token->arg = NULL;
 	if (!token)
 		exit(1);
-	token->cmd = get_command(data, s + loc, *p_control_operator);
-	if (!token->cmd)
-		exit(1);
-	loc += skip_while_not_char(s + loc, is_metacharacter);
-	loc += skip_while_char(s + loc, is_whitespace);
-	token->arg = get_arguments(data, s + loc, *p_control_operator);
-	if (!token->arg)
-		exit(1);
+	if (s[loc] != '|')
+	{
+		token->cmd = get_command(data, s + loc, *p_control_operator);
+		loc += skip_while_not_char(s + loc, is_metacharacter);
+		loc += skip_while_char(s + loc, is_whitespace);
+		token->arg = get_arguments(data, s + loc, *p_control_operator);
+	}
 	token->cop = get_control_operator(p_control_operator);
-	if (!token->cop)
-		exit(1);
 	ft_lstadd_back(&data->token, ft_lstnew(token));
 	return (ft_strlen(token->cop));
 }
@@ -139,6 +138,7 @@ void	get_token(t_data *data, char *s)
 {
 	int		i;
 	int		token_start;
+	char	*substring;
 	
 	if (check_multiline_command(data, s))
 		return ;
@@ -148,7 +148,9 @@ void	get_token(t_data *data, char *s)
 	{
 		if (is_control_operator(s[i]) && !(count_backslash(s, i) % 2))
 		{
-			i += tokenize(data, s + token_start, s + i);
+			substring = ft_substr(s, token_start, i - token_start + 1);
+			i += tokenize(data, substring, s + i);
+			free(substring);
 			token_start = i;
 		}
 		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))

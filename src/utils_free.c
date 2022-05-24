@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:20 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 13:39:47 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	free_array(char **array)
 	int		i;
 	int		size;
 
+	if (!array)
+		return ;
 	size = 0;
 	while (array[size])
 		size++;
@@ -39,15 +41,15 @@ void	free_array(char **array)
 ** No return value
 */
 
-void	free_array_part(char **array, int i)
+void	free_array_part(char ***array, int i)
 {
-	i--;
-	while (i < 0)
+	while (i > 0)
 	{
-		free(array[i]);
 		i--;
+		free((*array)[i]);
 	}
-	free(array);
+	free(*array);
+	*array = NULL;
 }
 
 /*
@@ -74,15 +76,21 @@ void	free_token(void *content)
 
 	i = 0;
 	token = (t_token*)content;
-	ft_lstclear(&token->cmd->word_segment, free);
-	free(token->cmd->word);
-	free(token->cmd);
-	while (token->arg[i])
+	if (token->cmd)
 	{
-		ft_lstclear(&token->arg[i]->word_segment, free);
-		free(token->arg[i]->word);
-		free(token->arg[i]);
-		i++;
+		ft_lstclear(&token->cmd->word_segment, free);
+		free(token->cmd->word);
+		free(token->cmd);
+	}
+	if (token->arg)
+	{
+		while (token->arg[i])
+		{
+			ft_lstclear(&token->arg[i]->word_segment, free);
+			free(token->arg[i]->word);
+			free(token->arg[i]);
+			i++;
+		}
 	}
 	free(token->arg);
 	free(token->cop);

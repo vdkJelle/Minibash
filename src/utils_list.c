@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 13:30:04 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,21 @@ void	print_token(void *content)
 	int		i;
 
 	i = 0;
-	printf("cmd = %s\n", ((t_token*)content)->cmd->word);
-	while (((t_token*)content)->arg[i])
+	// printf("HERE\n");
+	if (((t_token*)content)->cmd)
+		printf("cmd = %s\n", ((t_token*)content)->cmd->word);
+	else
+		printf("cmd = empty\n");
+	// printf("HERE2\n");
+	if (((t_token*)content)->arg)
 	{
-		printf("arg = %s\n", ((t_token*)content)->arg[i]->word);
-		i++;
+		while (((t_token*)content)->arg[i])
+		{
+			printf("arg = %s\n", ((t_token*)content)->arg[i]->word);
+			i++;
+		}
 	}
+	// printf("HERE3\n");
 	if (!ft_strcmp(((t_token*)content)->cop, "\0"))
 		printf("cop = null terminator\n");
 	else if (!ft_strcmp(((t_token*)content)->cop, ";\0"))
@@ -66,4 +75,5 @@ void	print_token(void *content)
 		printf("cop = pipe\n");
 	else
 		printf("illegal cop = %s\n", ((t_token*)content)->cop);
+	// printf("HERE4\n");
 }

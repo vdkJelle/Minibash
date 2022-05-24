@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 12:19:07 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:27 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 12:39:35 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 ** Checks if the character is a control operator
 ** A control operator is a token that performs a control function
 **		and seperates token sets from each other
-** Returns 0 if the character is not a whitespace
-** Returns 1 if the character is a whitespace
+** Returns 0 if the character is not a control operator
+** Returns 1 if the character is a control operator
 */
 
 int		is_control_operator(char c)
