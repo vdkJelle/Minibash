@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 12:55:44 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 16:13:29 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ static int	check_control_operator(t_data *data, char *s)
 
 static int	check_next_control_operator(t_data *data, t_token *cur, t_token *next)
 {
+	if (!ft_strcmp(cur->cop, "|") && !cur->arg)
+	{
+		print_error(data, 2, make_array("🐶 > syntax error near unexpected token `", cur->cop, "'", NULL));
+		return (1);
+	}
 	if (!ft_strcmp(cur->cop, "|") && !next->arg)
 	{
 		print_error(data, 2, make_array("🐶 > syntax error near unexpected token `", cur->cop, "'", NULL));

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/25 13:43:09 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 16:11:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ int				main(void)
 		}
 		if (*data.input)
 			add_history(data.input);
-		get_token(&data, data.input);
+		if (!check_multiline_command(&data, data.input))
+			get_token(&data, data.input);
 		ft_lstiter(data.token, print_token);
 		if (!check_token(&data))
 			cody_catch(&data);

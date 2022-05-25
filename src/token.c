@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 13:42:11 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 16:10:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,17 @@ static char	*get_control_operator(char *s)
 }
 
 /*
-** Adds a token set to the linked list
+** Creates a token set and adds it to the to the linked list
 ** Each token set consists of
 **		arguments, none, one or more words
-**		control operator, a string with one or a combinations of ; | ( ) & \0
+**		control operator, a string with one or a combinations of ; | ( ) &
 ** Words are seperated by metacharacters
 ** Returns an index to the end of the token set
 ** Returns 0 if the input is empty or only consists of whitespaces
 ** Returns 1 if the input only consists of ; with nothing or whitespaces after it
 */
 
-static int	tokenize(t_data *data, char *s, char *p_control_operator)
+static int	create_token(t_data *data, char *s, char *p_control_operator)
 {
 	int		loc;
 	t_token	*token;
@@ -120,9 +120,26 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 	return (ft_strlen(token->cop));
 }
 
+static int	tokenize(t_data *data, char *s, int start, int end)
+{
+	int		i;
+	// char	*substring;
+	
+	i = end;
+	if (s[i] == ';')
+		i += create_token(data, s + start, s + end);
+	else
+	{
+		// substring = malloc_guard(ft_substr(s, start, end - start + 1));
+		// i += create_token(data, substring, s + end);
+		// free(substring);
+				i += create_token(data, s + start, s + end);
+	}
+	return (i);
+}
+
 /*
-** Creates token sets from the input
-** Calls check_multiline_command to check for multiline commands
+** Tokenizes and parses the input
 ** Each token set is seperated by control operators
 ** No return value
 */
@@ -131,30 +148,15 @@ void	get_token(t_data *data, char *s)
 {
 	int		i;
 	int		token_start;
-	char	*substring;
-	
-	if (check_multiline_command(data, s))
-		return ;
+
 	token_start = 0;
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == ';' && !(count_backslash(s, i) % 2))
+		i += skip_while_char(s + i, is_whitespace);
+		if (is_control_operator(s[i]) && !(count_backslash(s, i) % 2))
 		{
-			i += tokenize(data, s + token_start, s + i);
-			while (s[i] && s[i] == ';' && is_whitespace(s[i + 1]))
-			{
-				i++;
-				i += skip_while_char(s, is_whitespace);
-			}
-			token_start = i;
-			continue ;
-		}
-		else if (s[i] == '|' && !(count_backslash(s, i) % 2))
-		{
-			substring = malloc_guard(ft_substr(s, token_start, i - token_start + 1));
-			i += tokenize(data, substring, s + i);
-			free(substring);
+			i = tokenize(data, s, token_start, i);
 			token_start = i;
 		}
 		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))
@@ -164,5 +166,5 @@ void	get_token(t_data *data, char *s)
 		if (s[i])
 			i++;
 	}
-	i += tokenize(data, s + token_start, s + i);
+	i += tokenize(data, s, token_start, i);
 }

@@ -69,6 +69,8 @@ int			check_multiline_command(t_data *data, char *s)
 		ft_putstr_fd("Multiline command\n", 2);
 		return (1);
 	}
+	while (len > 0 && is_whitespace(s[len - 1]))
+		len--;
 	if (len > 0 && s[len - 1] == '|')
 	{
 		data->exit_status = 1;
