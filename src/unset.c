@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:15 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 18:39:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void	ft_unset(t_data *data)
 	while (args[i])
 	{
 		if (check_if_valid(args[i]))
-			print_error(data, 1, 3,
-			"🐶 > unset: `", args[i], "': not a valid identifier");
+			print_error(data, 1, make_array("🐶 > unset: `", args[i], "': not a valid identifier", NULL));
 		else
 			check_for_entry(args[i], &data->our_env, &data->env_size);
 		i++;

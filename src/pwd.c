@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:58 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 18:34:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_pwd(t_data *data)
 	fd = data->our_fd[1];
 	if (!buf)
 	{
-		print_error(data, 1, 1, strerror(errno));
+		print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 		return ;
 	}
 	ft_putstr_fd(buf, fd);

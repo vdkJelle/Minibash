@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 19:17:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,55 @@ void	print_errno(void)
 ** No return value
 */
 
-void	print_error(t_data *data, int exit_status, int n, ...)
+char	**make_array(char *s1, char *s2, char *s3, char *s4)
 {
-	char	*s;
-	int		i;
-	va_list	strings;
+	char	**ret;
+	int		count;
 
-	va_start(strings, n);
+	count = 1;
+	if (s2)
+		count++;
+	if (s3)
+		count++;
+	if (s4)
+		count++;
+	ret = ft_malloc(sizeof(char *) * (count + 1));
+	ret[count] = NULL;
+	ret[0] = malloc_guard(ft_strdup(s1));
+	if (s2)
+		ret[1] = malloc_guard(ft_strdup(s2));
+	if (s3)
+		ret[2] = malloc_guard(ft_strdup(s3));
+	if (s4)
+		ret[3] = malloc_guard(ft_strdup(s4));
+	return (ret);
+}
+
+void	print_error_exit(int exit_status, char **messages)
+{
+	int	i;
+
 	i = 0;
-	while (i < n)
+	while (messages[i])
 	{
-		s = va_arg(strings, char *);
-		ft_putstr_fd(s, 2);
+		ft_putstr_fd(messages[i], 2);
+		i++;
+	}
+	ft_putchar_fd('\n', 2);
+	exit(exit_status);
+}
+
+void	print_error(t_data *data, int exit_status, char **messages)
+{
+	int		i;
+
+	i = 0;
+	while (messages[i])
+	{
+		ft_putstr_fd(messages[i], 2);
 		i++;
 	}
 	ft_putchar_fd('\n', 2);
 	data->exit_status = exit_status;
-	va_end(strings);
+	free_array(messages);
 }

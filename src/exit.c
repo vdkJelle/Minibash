@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:35 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 18:23:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_exit(t_data *data)
 	args = data->args;
 	if (args[1] && args[2] != NULL)
 	{
-		print_error(data, 1, 1, "🐶 > exit: too many arguments");
+		print_error(data, 1, make_array("🐶 > exit: too many arguments", NULL, NULL, NULL));
 		return ;
 	}
 	ft_putstr_fd("exit\n", data->our_fd[1]);
@@ -42,8 +42,7 @@ void	ft_exit(t_data *data)
 		while (args[1][i] && ft_isdigit(args[1][i]))
 			i++;
 		if (args[1][i] != '\0')
-			print_error(data, 2, 3,
-			"🐶 > exit: ", args[1], ": numeric argument required");
+			print_error(data, 2, make_array("🐶 > exit: ", args[1], ": numeric argument required", NULL));
 		data->exit_status = ft_atoi(args[1]);
 	}
 	exit(data->exit_status);

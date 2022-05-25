@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/23 22:00:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/24 18:19:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ e_file		check_bin(t_data *data, char *s)
 		return (FILE_ERROR);
 	else if (usr_bin == 1)
 		return (USR_BIN);
-	print_error(data, 127, 2, s, ": command not found");
+	print_error(data, 127, make_array(s, ": command not found", NULL, NULL));
 	return (NOT_FOUND);
 }
 
@@ -105,22 +105,22 @@ e_file		check_file(t_data *data, char *s)
 	{
 		if (ENOENT)
 		{
-			print_error(data, 127, 3, "🐶 > ", s, ": No such file or directory");
+			print_error(data, 127, make_array("🐶 > ", s, ": No such file or directory", NULL));
 			return (NOT_FOUND);
 		}
-		print_error(data, 126, 4, "🐶 > ", s, ": ", strerror(errno));
+		print_error(data, 126, make_array("🐶 > ", s, ": ", strerror(errno)));
 		return (NOT_EXECUTABLE);
 	}
 	if (!(sb.st_mode & S_IXUSR))
 	{
-		print_error(data, 126, 3, "🐶 > ", s, ": Permission denied");
+		print_error(data, 126, make_array("🐶 > ", s, ": Permission denied", NULL));
 		return (NOT_EXECUTABLE);
 	}
 	if ((sb.st_mode & S_IFMT) == S_IFREG)
 		return (REGULAR);
 	if ((sb.st_mode & S_IFMT) == S_IFDIR)
 	{
-		print_error(data, 126, 3, "🐶 > ", s, ": Is a directory");
+		print_error(data, 126, make_array("🐶 > ", s, ": Is a directory", NULL));
 		return (DIRECTORY);
 	}
 	return (FILE_ERROR);

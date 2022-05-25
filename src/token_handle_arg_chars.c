@@ -24,9 +24,7 @@ int		handle_char(t_data *data, t_word **word, char *s)
 	(void)data;
 	if (!s)
 		return (-1);
-	single_char = malloc(sizeof(char) * 2);
-	if (!single_char)
-		exit(1);
+	single_char = ft_malloc(sizeof(char) * 2);
 	single_char[0] = s[0];
 	single_char[1] = '\0';
 	ft_lstadd_back(&((*word)->word_segment), ft_lstnew(single_char));
@@ -88,21 +86,17 @@ int		handle_environment_variable(t_data *d, t_word **word, char *s)
 		len = 0;
 		while (s[len + 1] && (s[len + 1] == '_' || ft_isalnum(s[len + 1])))
 			len++;
-		key = ft_substr(s, 1, len);
-		if (!key)
-			exit(1);
+		key = malloc_guard(ft_substr(s, 1, len));
 		value = get_env(d->our_env, key);
 		free(key);
 		if (!value || value[0] == '\0')
 			return (len + 1);
-		ft_lstadd_back(&((*word)->word_segment), ft_lstnew(ft_strdup(value)));
+		ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(malloc_guard(ft_strdup(value)))));
 		if (!(*word)->word_segment)
 			exit(1);
 		return (len + 1);
 	}
-	ft_lstadd_back(&(*word)->word_segment, ft_lstnew(ft_itoa(d->exit_status)));
-	if (!(*word)->word_segment)
-		exit(1);
+	ft_lstadd_back(&(*word)->word_segment, malloc_guard(ft_lstnew(malloc_guard(ft_itoa(d->exit_status)))));
 	return (2);
 }
 
@@ -147,10 +141,6 @@ int		handle_singlequotes(t_data *data, t_word **word, char *s)
 		return (2);
 	len = skip_until_char_excl(s + 1, '\'');
 	if (len > 0)
-	{
-		ft_lstadd_back(&((*word)->word_segment), ft_lstnew(ft_substr(s, 1, len)));
-		if (!(*word)->word_segment)
-			exit(1);
-	}
+		ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(malloc_guard(ft_substr(s, 1, len)))));
 	return (len + 2);
 }

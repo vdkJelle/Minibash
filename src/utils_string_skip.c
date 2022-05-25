@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 11:08:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:08:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 15:49:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,88 +86,3 @@ int		skip_while_not_char(char *s, int (*ft_isthis)(char c))
 		i++;
 	return (i);
 }
-
-// int		skip_until_metacharacter_excl(char *s)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (s[i] && !is_metacharacter(s[i]))
-// 		i++;
-// 	return (i);
-// }
-
-// int		skip_until_metacharacter_incl(char *s)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (s[i] && !is_metacharacter(s[i]))
-// 		i++;
-// 	if (s[i] && is_metacharacter(s[i]))
-// 		i++;
-// 	return (i);
-// }
-
-// void	skip_char(char **s, char c)
-// {
-// 	if (!(*s))
-// 		return ;
-// 	if (**s && **s == c)
-// 		(*s)++;
-// }
-
-// void	skip_chars(char **s, char c)
-// {
-// 	if (!(*s))
-// 		return ;
-// 	while (**s && **s == c)
-// 		(*s)++;
-// }
-
-// int		skip_chars_int(char *s, char c)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	if (!s)
-// 		return (0);
-// 	while (s[i] && s[i] == c)
-// 		i++;
-// 	return (i);
-// }
-
-// void	skip_whitespaces(char **s)
-// {
-// 	if (!(*s))
-// 		return ;
-// 	while (**s && is_whitespace(**s))
-// 		(*s)++;
-// }
-
-// void	skip_nonwhitespaces(char **s)
-// {
-// 	if (!(*s))
-// 		return ;
-// 	while (**s && is_whitespace(**s))
-// 		(*s)++;
-// }
-
-// int		skip_nonwhitespaces_int(char *s)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (s[i] && !is_whitespace(s[i]))
-// 		i++;
-// 	return (i);
-// }
-// int		skip_whitespaces_int(char *s)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (s[i] && is_whitespace(s[i]))
-// 		i++;
-// 	return (i);
-// }

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:38 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/24 19:08:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	check_if_exists(char *arg, char ***our_env)
 			{
 				free((*our_env)[i]);
 				(*our_env)[i] = NULL;
-				(*our_env)[i] = ft_strdup(arg);
+				(*our_env)[i] = malloc_guard(ft_strdup(arg));
 			}
 			return (1);
 		}
@@ -96,19 +96,15 @@ void		append_key_value(char *arg, char ***our_env, int *env_size)
 	if (check_if_exists(arg, our_env))
 		return ;
 	i = 0;
-	tmp = (char **)malloc(sizeof(char *) * ((*env_size) + 2));
+	tmp = ft_malloc(sizeof(char *) * ((*env_size) + 2));
 	if (!tmp)
 		exit(1);
 	while ((*our_env)[i])
 	{
-		tmp[i] = ft_strdup((*our_env)[i]);
-		if (!tmp[i])
-			exit(1);
+		tmp[i] = malloc_guard(ft_strdup((*our_env)[i]));
 		i++;
 	}
-	tmp[i] = ft_strdup(arg);
-	if (!tmp[i])
-		exit(1);
+	tmp[i] = malloc_guard(ft_strdup(arg));
 	tmp[i + 1] = NULL;
 	(*env_size)++;
 	free_array(*our_env);
@@ -130,16 +126,14 @@ static int	check_if_valid(t_data *data, char *s)
 	i = 0;
 	if (!ft_isalpha(s[i]) && s[i] != '_')
 	{
-		print_error(data, 1, 3,
-		"🐶 > export: `", s, "': not a valid identifier");
+		print_error(data, 1, make_array("🐶 > export: `", s, "': not a valid identifier", NULL));
 		return (1);
 	}
 	while (s[i] && s[i] != '=')
 	{
 		if (!ft_isalnum(s[i]) && s[i] != '_')
 		{
-			print_error(data, 1, 3,
-			"🐶 > export: `", s, "': not a valid identifier");
+			print_error(data, 1, make_array("🐶 > export: `", s, "': not a valid identifier", NULL));
 			return (1);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:03:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/24 19:10:34 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ static void		handle_shlvl(char ***our_env, int *env_size)
 	
 	shlvl = get_env(*our_env, "SHLVL");
 	if (!shlvl)
-		temp = ft_strdup("SHLVL=1");
+		temp = malloc_guard(ft_strdup("SHLVL=1"));
 	else
 	{
 		i = 0;
 		while (shlvl[i] && ft_isdigit(shlvl[i]))
 			i++;
 		if (shlvl[i] != '\0')
-			temp = ft_strdup("SHLVL=1");
+			temp = malloc_guard(ft_strdup("SHLVL=1"));
 		else
 		{
 			n = ft_atoi(shlvl) + 1;
-			temp = ft_strjoin_wrapper(ft_strdup("SHLVL="), ft_itoa(n), 3);
+			temp = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup("SHLVL=")), malloc_guard(ft_itoa(n)), 3));
 		}
 	}
 	if (!temp)
@@ -65,15 +65,11 @@ static void		initialize_env(char ***our_env, int *env_size)
 	i = 0;
 	while (environ[i])
 		i++;
-	*our_env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!(*our_env))
-		exit(1);
+	*our_env = ft_malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (environ[i])
 	{
-		(*our_env)[i] = ft_strdup(environ[i]);
-		if (!((*our_env)[i]))
-			exit(1);
+		(*our_env)[i] = malloc_guard(ft_strdup(environ[i]));
 		i++;
 	}
 	(*our_env)[i] = NULL;
@@ -110,7 +106,7 @@ int				main(void)
 		if (*data.input)
 			add_history(data.input);
 		get_token(&data, data.input);
-		ft_lstiter(data.token, print_token);
+		// ft_lstiter(data.token, print_token);
 		if (!check_token(&data))
 			cody_catch(&data);
 		ft_lstclear(&data.token, free_token);
