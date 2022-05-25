@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 12:57:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 13:42:11 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,12 @@ void	get_token(t_data *data, char *s)
 	{
 		if (s[i] == ';' && !(count_backslash(s, i) % 2))
 		{
-			substring = ft_substr(s, token_start, i - token_start + 1);
-			i += tokenize(data, substring, s + i);
-			free(substring);
-			while (is_whitespace(s[i]) && s[i + 1] && s[i + 1] == ';')
-				i = i + 2;
+			i += tokenize(data, s + token_start, s + i);
+			while (s[i] && s[i] == ';' && is_whitespace(s[i + 1]))
+			{
+				i++;
+				i += skip_while_char(s, is_whitespace);
+			}
 			token_start = i;
 			continue ;
 		}
@@ -163,7 +164,5 @@ void	get_token(t_data *data, char *s)
 		if (s[i])
 			i++;
 	}
-	substring = ft_substr(s, token_start, i - token_start + 1);
-	i += tokenize(data, substring, s + i);
-	free(substring);
+	i += tokenize(data, s + token_start, s + i);
 }

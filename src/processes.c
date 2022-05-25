@@ -6,28 +6,19 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 18:42:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:13:31 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+
 /*
-** Executes the command
-** If the command is a non-builtin execve is called
-** If the command is a builtin execute_builtin_pipe is called
+** Handles pipes
 ** If the current command is a pipe the
 **		fd of the write end of the current pipe is duplicated into STDOUT_FILENO
-**		fd of the read end of the current pipe is closed
 ** If the previous command is a pipe the
 **		fd of the read end of the previous pipe is duplicated into STDIN_FILENO
-**		fd of the write end of the previous pipe is closed
-** If the command is redirected the
-**		fd read is duplicated into STDIN_FILENO
-**		fd write is duplicated into STDOUT_FILENO
-** If there is a pipe and a redirection the redirection takes precedent
-**		dup2 closes the STDIN_FILENO/STDOUT_FILENO of the piped fd
-**		the fd of the redirection is duplicated into STDIN_FILENO/STDOUT_FILENO
 ** No return value
 */
 
@@ -37,17 +28,26 @@ static void	child_pipes(t_execute *cur, t_execute *prev)
 	{
 		if (dup2(cur->p_fd[WRITE], STDOUT_FILENO) == -1)
 			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
-		if (close(cur->p_fd[READ]) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 	}
 	if (prev && prev->piped == 1)
 	{
 		if (dup2(prev->p_fd[READ], STDIN_FILENO) == -1)
 			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
-		if (close(prev->p_fd[WRITE]) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 	}
 }
+
+/*
+** Executes the command
+** If the command is a non-builtin execve is called
+** If the command is a builtin execute_builtin_pipe is called
+** If the command is redirected the
+**		fd read is duplicated into STDIN_FILENO
+**		fd write is duplicated into STDOUT_FILENO
+** If there is a pipe and a redirection the redirection takes precedent
+**		dup2 closes the STDIN_FILENO/STDOUT_FILENO of the piped fd
+**		the fd of the redirection is duplicated into STDIN_FILENO/STDOUT_FILENO
+** No return value
+*/
 
 static void	child_process
 (t_data *data, e_command cmd, t_execute *cur, t_execute *prev)
@@ -98,9 +98,7 @@ static void	parent_process
 		write(1, "\b\b  \b\b^\\Quit\n", 13);
 	}
 	else if (WTERMSIG(wstatus) == SIGINT)
-	{
 		data->exit_status = 128 + WTERMSIG(wstatus);
-	}
 	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
 		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
@@ -114,6 +112,7 @@ static void	parent_process
 /*
 ** Uses fork to create a child process in which the command is executed
 ** Used when command is a non builtin or when there is a pipe
+** If there is an error (file has no permissions) or the command is empty exit is called
 ** No return value
 */
 
@@ -130,7 +129,7 @@ void	create_process
 		if (cmd == CMD_ERROR)
 			exit(data->exit_status);
 		if (cmd)
-		child_process(data, cmd, cur, prev);
+			child_process(data, cmd, cur, prev);
 	}
 	else
 		parent_process(data, pid, cur, prev);
