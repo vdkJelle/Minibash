@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/05/23 21:23:28 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/05/24 18:47:56 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS		=	cd\
 				utils_error\
 				utils_free\
 				utils_list\
+				utils_malloc_wrapper\
 				utils_string_count\
 				utils_string_isthis\
 				utils_string_skip\

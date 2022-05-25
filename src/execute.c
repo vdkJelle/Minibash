@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 23:56:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 12:55:10 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,16 @@ static char			*get_path(char *arg, e_file file)
 	char	*ret;
 	
 	if (file == BIN)
-		ret = ft_strjoin("/bin/", arg);
+		ret = malloc_guard(ft_strjoin("/bin/", arg));
 	else if (file == USR_BIN)
-		ret = ft_strjoin("/usr/bin/", arg);
+		ret = malloc_guard(ft_strjoin("/usr/bin/", arg));
 	else
 	{
 		if (arg[0] == '.' || arg[0] == '/')
-			ret = ft_strdup(arg);
+			ret = malloc_guard(ft_strdup(arg));
 		else
-			ret = ft_strjoin("./", arg);
+			ret = malloc_guard(ft_strjoin("./", arg));
 	}
-	if (!ret)
-		exit(1);
 	return (ret);
 }
 
@@ -119,9 +117,7 @@ static t_execute	*get_exec(t_data *data, t_token *token)
 {
 	t_execute	*exec;
 
-	exec = ft_calloc(sizeof(t_execute), 1);
-	if (!exec)
-		exit(1);
+	exec = malloc_guard(ft_calloc(sizeof(t_execute), 1));
 	exec->fd[READ] = NO_REDIRECTION;
 	exec->fd[WRITE] = NO_REDIRECTION;
 	get_final_args_and_handle_redirections(data, token, exec);

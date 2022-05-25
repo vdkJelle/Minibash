@@ -40,7 +40,7 @@ char	*ft_strjoin_wrapper(char *s1, char *s2, int mode)
 {
 	char	*s;
 	
-	s = ft_strjoin(s1, s2);
+	s = malloc_guard(ft_strjoin(s1, s2));
 	if (mode == 1)
 		free(s1);
 	else if (mode == 2)

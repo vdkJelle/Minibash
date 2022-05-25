@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/24 11:46:52 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 00:03:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 12:55:50 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ char	*join_word(t_word *arg)
 		size += ft_strlen(((char*)temp->content));
 		temp = temp->next;
 	}
-	word = ft_calloc(size + 1, sizeof(char));
-	if (!word)
-		exit(1);
+	word = malloc_guard(ft_calloc(size + 1, sizeof(char)));
 	temp = arg->word_segment;
 	while (temp)
 	{

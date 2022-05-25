@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/25 00:00:33 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 12:57:43 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <stdarg.h>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
@@ -250,13 +249,23 @@ int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
 
-e_file	check_file(t_data *data, char *s);
-// int		execute(t_data *data, t_execute *cur, t_execute *prev);
-
+/*
+**---------------------------------UTILS_ERROR.C--------------------------------
+*/
 void	print_errno(void);
 int		print_errno_int(void);
-void	print_error(t_data *data, int exit_status, int n, ...);
-// void	print_error_message(t_data *data, int exit_status, char *s1, char *s2);
+char	**make_array(char *s1, char *s2, char *s3, char *s4);
+void	print_error_exit(int exit_status, char **messages);
+void	print_error(t_data *data, int exit_status, char **messages);
+
+/*
+**----------------------------UTILS_MALLOC_WRAPPER.C----------------------------
+*/
+void	*malloc_guard(void *ret);
+void	*ft_malloc(size_t size);
+
+e_file	check_file(t_data *data, char *s);
+// int		execute(t_data *data, t_execute *cur, t_execute *prev);
 
 void	signal_output(int sig);
 void	ft_signal_handler(void);
@@ -274,7 +283,5 @@ void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
 void	create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev);
 
 void	cody_catch(t_data *data);
-
-// char	*get_path(char *arg, e_file file);
 
 #endif

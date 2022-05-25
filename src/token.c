@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 00:27:57 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 12:57:26 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,12 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	t_word	**args;
 
 	size = count_arguments(s, control_operator);
-	args = malloc(sizeof(t_word*) * (size + 1));
-	if (!args)
-		exit(1);
+	args = ft_malloc(sizeof(t_word*) * (size + 1));
 	loc = 0;
 	i = 0;
 	while (i < size)
 	{
-		args[i] = ft_calloc(sizeof(t_word), 1);
-		if (!args[i])
-			exit(1);
+		args[i] = malloc_guard(ft_calloc(sizeof(t_word), 1));
 		loc += get_arg(data, &args[i], s + loc, control_operator);
 		args[i]->word = join_word(args[i]);
 		i++;
@@ -82,9 +78,7 @@ static char	*get_control_operator(char *s)
 {
 	char	*ret;
 
-	ret = ft_substr(s, 0, skip_while_char(s, is_control_operator));
-	if (!ret)
-		exit(1);
+	ret = malloc_guard(ft_substr(s, 0, skip_while_char(s, is_control_operator)));
 	return (ret);
 }
 
@@ -109,7 +103,7 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 		return (0);
 	if ((s[loc] == ';' && (!s[loc + 1] || (s[loc + 1] && is_whitespace(s[loc + 1])))))
 		return (1);
-	token = ft_calloc(sizeof(t_token), 1);
+	token = malloc_guard(ft_calloc(sizeof(t_token), 1));
 	if (!token)
 		exit(1);
 	if (!is_control_operator(s[loc]))
@@ -157,7 +151,7 @@ void	get_token(t_data *data, char *s)
 		}
 		else if (s[i] == '|' && !(count_backslash(s, i) % 2))
 		{
-			substring = ft_substr(s, token_start, i - token_start + 1);
+			substring = malloc_guard(ft_substr(s, token_start, i - token_start + 1));
 			i += tokenize(data, substring, s + i);
 			free(substring);
 			token_start = i;

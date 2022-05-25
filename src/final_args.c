@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 23:59:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 12:55:32 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@
 
 static int	append_arg(char *arg, char **ret)
 {
-	*ret = ft_strdup(arg);
-	if (!(*ret))
-		exit(1);
+	*ret = malloc_guard(ft_strdup(arg));
 	return (1);
 }
 
@@ -72,9 +70,7 @@ void	get_final_args_and_handle_redirections(t_data *data,
 	int		j;
 
 	(void)data;
-	exec->args = malloc(sizeof(char *) * (get_new_size(token->arg) + 1));
-	if (!exec->args)
-		exit(1);
+	exec->args = ft_malloc(sizeof(char *) * (get_new_size(token->arg) + 2));
 	i = 0;
 	j = 0;
 	while (token->arg[i])
