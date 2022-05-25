@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:54:32 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 00:27:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,25 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 ** Returns a malloced t_word struct
 */
 
-static t_word	*get_command(t_data *data, char *s, char control_operator)
-{
-	int		i;
-	t_word	*command;
+// static t_word	*get_command(t_data *data, char *s, char control_operator)
+// {
+// 	int		i;
+// 	t_word	*command;
 
-	command = ft_calloc(sizeof(t_word), 1);
-	if (!command)
-		exit(1);
-	i = 0;
-	while (s[i] && s[i] != control_operator)
-	{
-		i++;
-		if (is_metacharacter(s[i]))
-			break ;
-	}
-	get_arg(data, &command, s, s[i]);
-	command->word = join_word(command);
-	return (command);
-}
+// 	command = ft_calloc(sizeof(t_word), 1);
+// 	if (!command)
+// 		exit(1);
+// 	i = 0;
+// 	while (s[i] && s[i] != control_operator)
+// 	{
+// 		if (is_metacharacter(s[i]))
+// 			break ;
+// 		i++;
+// 	}
+// 	get_arg(data, &command, s, s[i]);
+// 	command->word = join_word(command);
+// 	return (command);
+// }
 
 /*
 ** Gets the control operator
@@ -91,12 +91,12 @@ static char	*get_control_operator(char *s)
 /*
 ** Adds a token set to the linked list
 ** Each token set consists of
-**		a command, one word
 **		arguments, none, one or more words
 **		control operator, a string with one or a combinations of ; | ( ) & \0
 ** Words are seperated by metacharacters
 ** Returns an index to the end of the token set
 ** Returns 0 if the input is empty or only consists of whitespaces
+** Returns 1 if the input only consists of ; with nothing or whitespaces after it
 */
 
 static int	tokenize(t_data *data, char *s, char *p_control_operator)
@@ -105,24 +105,23 @@ static int	tokenize(t_data *data, char *s, char *p_control_operator)
 	t_token	*token;
 
 	loc = skip_while_char(s, is_whitespace);
-	if (!s[loc] || (s[loc] && s[loc + 1] && s[loc + 1] != ';'))
-	{	
-		data->exit_status = 0;
+	if (!s[loc])
+		return (0);
+	if ((s[loc] == ';' && (!s[loc + 1] || (s[loc + 1] && is_whitespace(s[loc + 1])))))
 		return (1);
-	}
 	token = ft_calloc(sizeof(t_token), 1);
-	token->cmd = NULL;
-	token->arg = NULL;
 	if (!token)
 		exit(1);
-	if (s[loc] != '|')
+	if (!is_control_operator(s[loc]))
 	{
-		token->cmd = get_command(data, s + loc, *p_control_operator);
-		loc += skip_while_not_char(s + loc, is_metacharacter);
-		loc += skip_while_char(s + loc, is_whitespace);
+		// token->cmd = get_command(data, s + loc, *p_control_operator);
+		// loc += skip_while_not_char(s + loc, is_metacharacter);
+		// loc += skip_while_char(s + loc, is_whitespace);
 		token->arg = get_arguments(data, s + loc, *p_control_operator);
+		token->cop = get_control_operator(p_control_operator);
 	}
-	token->cop = get_control_operator(p_control_operator);
+	else
+		token->cop = get_control_operator(s + loc);
 	ft_lstadd_back(&data->token, ft_lstnew(token));
 	return (ft_strlen(token->cop));
 }
@@ -146,7 +145,17 @@ void	get_token(t_data *data, char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (is_control_operator(s[i]) && !(count_backslash(s, i) % 2))
+		if (s[i] == ';' && !(count_backslash(s, i) % 2))
+		{
+			substring = ft_substr(s, token_start, i - token_start + 1);
+			i += tokenize(data, substring, s + i);
+			free(substring);
+			while (is_whitespace(s[i]) && s[i + 1] && s[i + 1] == ';')
+				i = i + 2;
+			token_start = i;
+			continue ;
+		}
+		else if (s[i] == '|' && !(count_backslash(s, i) % 2))
 		{
 			substring = ft_substr(s, token_start, i - token_start + 1);
 			i += tokenize(data, substring, s + i);
@@ -160,49 +169,7 @@ void	get_token(t_data *data, char *s)
 		if (s[i])
 			i++;
 	}
-	tokenize(data, s + token_start, s + ft_strlen(s));
+	substring = ft_substr(s, token_start, i - token_start + 1);
+	i += tokenize(data, substring, s + i);
+	free(substring);
 }
-
-// static char **get_arguments(t_data *data, char *s, char control_operator)
-// {
-// 	char	**ret;
-// 	int		i;
-// 	int		loc;
-// 	int		size;
-
-// 	size = count_arguments(s, control_operator);
-// 	ret = malloc(sizeof(char*) * (size + 1));
-// 	if (!ret)
-// 		exit(1);
-// 	loc = 0;
-// 	i = 0;
-// 	while (i < size)
-// 	{
-// 		ret[i] = ft_strdup("");
-// 		if (!ret[i])
-// 			exit(1);
-// 		loc += get_arg(data, &ret[i], s + loc, control_operator);
-// 		i++;
-// 	}
-// 	ret[i] = NULL;
-// 	return (ret);
-// }
-
-// static char	*get_command(t_data *data, char *s, char control_operator)
-// {
-// 	char	*ret;
-// 	int		i;
-
-// 	i = 0;
-// 	while (s[i] && s[i] != control_operator)
-// 	{
-// 		i++;
-// 		if (is_metacharacter(s[i]))
-// 			break ;
-// 	}
-// 	ret = ft_strdup("");
-// 	if (!ret)
-// 		exit(1);
-// 	get_arg(data, &ret, s, s[i]);
-// 	return (ret);
-// }

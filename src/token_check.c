@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:42:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/24 23:49:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	check_control_operator(t_data *data, char *s)
 
 static int	check_next_control_operator(t_data *data, t_token *cur, t_token *next)
 {
-	if (!ft_strcmp(cur->cop, "|") && !next->cmd)
+	if (!ft_strcmp(cur->cop, "|") && !next->arg)
 	{
 		print_error(data, 2, 3,
 			"🐶 > syntax error near unexpected token `", cur->cop, "'");
@@ -93,17 +93,19 @@ int			check_token(t_data *data)
 	while (temp)
 	{
 		token = temp->content;
-		if (check_control_operator(data, token->cop))
-			return (1);
-		if (temp->next && check_next_control_operator(data, token, temp->next->content))
+		if (check_control_operator(data, token->cop) || (temp->next &&
+			check_next_control_operator(data, token, temp->next->content)))
 			return (1);
 		i = 0;
-		while (token->arg[i])
+		if (token->arg)
 		{
-			if (token->arg[i]->metacharacter == 1
-			&& check_argument(data, token->arg, token->cop, i))
-				return (1);
-			i++;
+			while (token->arg[i])
+			{
+				if (token->arg[i]->metacharacter == 1
+				&& check_argument(data, token->arg, token->cop, i))
+					return (1);
+				i++;
+			}
 		}
 		temp = temp->next;
 	}

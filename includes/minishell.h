@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/23 21:55:26 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 00:00:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct	s_word
 
 typedef struct	s_token
 {
-	t_word		*cmd;
 	t_word		**arg;
 	char		*cop;
 }				t_token;

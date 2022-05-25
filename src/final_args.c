@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/23 21:52:20 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/24 23:59:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void	get_final_args_and_handle_redirections(t_data *data,
 	int		j;
 
 	(void)data;
-	exec->args = malloc(sizeof(char *) * (get_new_size(token->arg) + 2));
+	exec->args = malloc(sizeof(char *) * (get_new_size(token->arg) + 1));
 	if (!exec->args)
 		exit(1);
 	i = 0;
-	j = append_arg(token->cmd->word, &exec->args[0]);
+	j = 0;
 	while (token->arg[i])
 	{
 		if (is_redirection(token->arg[i]->word) && token->arg[i]->metacharacter == 1)

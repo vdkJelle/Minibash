@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 13:39:47 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/25 00:00:24 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,6 @@ void	free_token(void *content)
 
 	i = 0;
 	token = (t_token*)content;
-	if (token->cmd)
-	{
-		ft_lstclear(&token->cmd->word_segment, free);
-		free(token->cmd->word);
-		free(token->cmd);
-	}
 	if (token->arg)
 	{
 		while (token->arg[i])
