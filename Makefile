@@ -6,40 +6,41 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/05/24 18:47:56 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/06/01 14:24:24 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	cd\
+SRCS		=	builtins/cd\
+				builtins/echo\
+				builtins/env\
+				builtins/exit\
+				builtins/export\
+				builtins/pwd\
+				builtins/unset\
 				check_file\
 				check_multiline_command\
-				echo\
-				env\
 				execute\
 				execute_builtin\
-				export\
-				exit\
 				final_args\
 				get_env\
 				main\
+				parser_arg\
+				parser_check\
+				parser_handle_args\
+				parser\
 				processes\
-				pwd\
 				redirection\
 				signals\
-				utils_error\
-				utils_free\
-				utils_list\
-				utils_malloc_wrapper\
-				utils_string_count\
-				utils_string_isthis\
-				utils_string_skip\
-				utils_string\
-				unset\
-				token\
-				token_arg\
-				token_check\
-				token_handle_arg_chars
+				tokenizer\
+				utils/free\
+				utils/list\
+				utils/malloc_wrapper\
+				utils/print_error\
+				utils/string\
+				utils/string_count\
+				utils/string_isthis\
+				utils/string_skip_characters
 CFILES		=	$(SRCS:%=src/%.c)
 OFILES		=	$(SRCS:%=obj/%.o)
 INCLUDES	=	./includes/.

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils_free.c                                       :+:    :+:            */
+/*   free.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 00:00:24 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/01 14:25:14 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,25 +69,36 @@ void	free_exec(t_execute *exec)
 ** No return value
 */
 
+
 void	free_token(void *content)
 {
-	int		i;
 	t_token	*token;
 
-	i = 0;
 	token = (t_token*)content;
-	if (token->arg)
+	free(token->string);
+	free(token->control_operator);
+	free(content);
+}
+
+void	free_expression(void *content)
+{
+	int				i;
+	t_expression	*expression;
+
+	i = 0;
+	expression = (t_expression*)content;
+	if (expression->arg)
 	{
-		while (token->arg[i])
+		while (expression->arg[i])
 		{
-			ft_lstclear(&token->arg[i]->word_segment, free);
-			free(token->arg[i]->word);
-			free(token->arg[i]);
+			ft_lstclear(&expression->arg[i]->word_segment, free);
+			free(expression->arg[i]->word);
+			free(expression->arg[i]);
 			i++;
 		}
 	}
-	free(token->arg);
-	free(token->cop);
+	free(expression->arg);
+	free(expression->control_operator);
 	free(content);
 	content = NULL;
 }

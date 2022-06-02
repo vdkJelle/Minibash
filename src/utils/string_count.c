@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils_string_count.c                               :+:    :+:            */
+/*   string_count.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:38:31 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 15:49:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/01 14:24:59 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 ** Returns the index of the end of the word
 */
 
-static int	skip_non_metacharacters(char *s, char control_op, int *count)
+static int	skip_non_metacharacters(char *s, char control_operator, int *count)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	while (s[i] && s[i] != control_op && !is_metacharacter(s[i]))
+	while (s[i] && s[i] != control_operator && !is_metacharacter(s[i]))
 	{
 		if (s[i] == '\'' && !(count_backslash(s, i) % 2))
 			i += skip_until_next_singleq(s + i);
-		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))			
+		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))
 			i += skip_until_next_doubleq(s + i);
 		i++;
 		if (is_metacharacter(s[i]) && count_backslash(s, i) % 2)
@@ -47,10 +47,10 @@ static int	skip_non_metacharacters(char *s, char control_op, int *count)
 ** Returns an integer with the count
 */
 
-int			count_arguments(char *s, char control_op)
+int	count_arguments(char *s, char control_op)
 {
-	int		i;
-	int		count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -73,10 +73,10 @@ int			count_arguments(char *s, char control_op)
 ** Returns an integer with the count
 */
 
-int			count_backslash(char *s, int loc)
+int	count_backslash(char *s, int loc)
 {
-	int		i;
-	int		count;
+	int	i;
+	int	count;
 
 	i = loc - 1;
 	if (i < 0)

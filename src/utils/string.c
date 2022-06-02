@@ -1,12 +1,12 @@
- /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils_string.c                                     :+:    :+:            */
+/*   string.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/03 12:23:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 20:58:19 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/06/01 14:24:42 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/06/01 14:24:46 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 ** Returns an integer not equal to 0 if they are different
 */
 
-int		ft_strcmp(const char *s1, const char *s2)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while(s1[i] && s1[i] == s2[i])

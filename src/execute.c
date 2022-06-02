@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/25 12:55:10 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/05/29 19:55:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Returns a malloced string to the path of the executable
 */
 
-static char			*get_path(char *arg, e_file file)
+static char	*get_path(char *arg, e_file file)
 {
 	char	*ret;
 	
@@ -65,8 +65,8 @@ static e_command	identify_command(char *s)
 
 /*
 ** Executes a command
-** If something went wrong with redirections create process is called with
-** CMD_ERROR and will exit the child process immediately
+** If something went wrong with redirections or if there are no arguments
+**		create process is called with CMD_ERROR and will exit the child process immediately
 ** Calls identify_command to check if the command is a builtin
 ** If command is not a builtin
 **		the file status is checked with check_file
@@ -75,8 +75,7 @@ static e_command	identify_command(char *s)
 ** If command is a builtin
 **		calls execute_builtin_no_pipe if there is no pipe
 **		calls create process if there is a pipe
-** Returns 0 if execute was successful
-** Returns 1 if the file can't be executed
+** No return value
 */
 
 static void	execute(t_data *data, t_execute *cur, t_execute *prev)
@@ -106,22 +105,21 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 
 /*
 ** Initializes the execute struct
+** Sets the initial value of the file descriptors to no redirection
+** Calls get_final_args_and_handle_redirections to create the final array and handle redirections
 ** Creates a pipe if the control operator is a pipe
-** Sets the initial value of the file descriptors to no redirection (-2)
-** Calls final_args to create the final array and handle redirections
 ** Returns a malloced execute struct
-** Returns NULL in case of an error
 */
 
-static t_execute	*get_exec(t_data *data, t_token *token)
+static t_execute	*get_exec(t_data *data, t_expression *expression)
 {
 	t_execute	*exec;
 
 	exec = malloc_guard(ft_calloc(sizeof(t_execute), 1));
 	exec->fd[READ] = NO_REDIRECTION;
 	exec->fd[WRITE] = NO_REDIRECTION;
-	get_final_args_and_handle_redirections(data, token, exec);
-	if (token->cop[0] == '|')
+	get_final_args_and_handle_redirections(data, expression, exec);
+	if (expression->control_operator[0] == '|')
 	{
 		if (pipe(exec->p_fd) == -1)
 			exit(1);
@@ -136,17 +134,17 @@ static t_execute	*get_exec(t_data *data, t_token *token)
 ** No return value
 */
 
-void				cody_catch(t_data *data)
+void	cody_catch(t_data *data)
 {
 	t_list		*temp;
 	t_execute	*cur;
 	t_execute	*prev;
 
 	prev = NULL;
-	temp = data->token;
+	temp = data->expression;
 	while (temp)
 	{
-		cur = get_exec(data, (t_token*)temp->content);
+		cur = get_exec(data, (t_expression*)temp->content);
 		execute(data, cur, prev);
 		if (prev)
 			free_exec(prev);

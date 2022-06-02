@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils_error.c                                      :+:    :+:            */
+/*   print_error.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 19:17:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/01 14:40:17 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Returns -1
 */
 
-int		print_errno_int(void)
+int	print_errno_int(void)
 {
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putchar_fd('\n', 2);
@@ -35,11 +35,6 @@ void	print_errno(void)
 	ft_putchar_fd('\n', 2);
 }
 
-/*
-** Prints the error message
-** Prints all the strings to STDERR and sets the exit status
-** No return value
-*/
 
 char	**make_array(char *s1, char *s2, char *s3, char *s4)
 {
@@ -65,6 +60,11 @@ char	**make_array(char *s1, char *s2, char *s3, char *s4)
 	return (ret);
 }
 
+/*
+** Prints the error message and exists the program
+** No return value
+*/
+
 void	print_error_exit(int exit_status, char **messages)
 {
 	int	i;
@@ -79,9 +79,14 @@ void	print_error_exit(int exit_status, char **messages)
 	exit(exit_status);
 }
 
+/*
+** Prints the error message to STDERR and sets the exit status
+** No return value
+*/
+
 void	print_error(t_data *data, int exit_status, char **messages)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (messages[i])

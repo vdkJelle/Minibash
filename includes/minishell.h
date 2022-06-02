@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/25 12:57:43 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/01 14:36:02 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,13 @@ typedef 		enum
 **-----------------------------------STRUCTS------------------------------------
 */
 
+
+typedef struct	s_token
+{
+	char		*string;
+	char		*control_operator;
+}				t_token;
+
 typedef struct	s_word
 {
 	t_list		*word_segment;
@@ -82,11 +89,11 @@ typedef struct	s_word
 	int			metacharacter;
 }				t_word;
 
-typedef struct	s_token
+typedef struct	s_expression
 {
 	t_word		**arg;
-	char		*cop;
-}				t_token;
+	char		*control_operator;
+}				t_expression;
 
 typedef struct	s_exec
 {
@@ -101,11 +108,11 @@ typedef struct	s_data
 {
 	char		**args;
 	char		**our_env;
-	char		*input;
 	int			env_size;
 	int			our_fd[2];
 	int			exit_status;
 	t_list		*token;
+	t_list		*expression;
 }				t_data;
 
 /*
@@ -177,7 +184,7 @@ int		get_arg(t_data *data, t_word **word, char *s, char control_op);
 /*
 **-------------------------------TOKEN_CHECK.C----------------------------------
 */
-int		check_token(t_data *data);
+int		check_expressions(t_data *data);
 
 /*
 **----------------------------------TOKEN.C-------------------------------------
@@ -196,8 +203,9 @@ void	free_array(char **array);
 void	free_array_part(char ***array, int i);
 void	free_exec(t_execute *exec);
 void	free_token(void *content);
-char	*join_word(t_word *arg);
-void 	print_token(void *content);
+void	free_expression(void *content);
+// char	*join_word(t_word *arg);
+void 	print_expression(void *content);
 
 /*
 **-----------------------------UTILS_STRING_SKIP.C-------------------------------
@@ -248,6 +256,7 @@ int		is_control_operator(char s);
 int		is_metacharacter(char c);
 int		is_redirection(char *s);
 int		is_whitespace(char c);
+int		ft_isdigit_char(char c);
 
 /*
 **---------------------------------UTILS_ERROR.C--------------------------------
@@ -273,9 +282,7 @@ void	ft_signal_handler(void);
 int		check_multiline_command(t_data *data, char *s);
 
 void	get_final_args_and_handle_redirections(t_data *data,
-			t_token *token, t_execute *exec);
-
-// void		final_args(t_data *data, t_execute *exec);
+			t_expression *expression, t_execute *exec);
 
 void	execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec);
 void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
@@ -283,5 +290,7 @@ void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec);
 void	create_process(t_data *data, e_command cmd, t_execute *cur, t_execute *prev);
 
 void	cody_catch(t_data *data);
+
+void	parser(t_data *data);
 
 #endif

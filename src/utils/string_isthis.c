@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils_string_isthis.c                              :+:    :+:            */
+/*   string_isthis.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 12:19:07 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 12:39:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/01 14:24:56 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** Returns 1 if the character is a control operator
 */
 
-int		is_control_operator(char c)
+int	is_control_operator(char c)
 {
 	if (c == '|' || c == ';' || c == '(' || c == ')' || c == '&' || c == '\0')
 		return (1);
@@ -34,7 +34,7 @@ int		is_control_operator(char c)
 ** Returns 1 if the character is a metacharacter
 */
 
-int		is_metacharacter(char c)
+int	is_metacharacter(char c)
 {
 	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '(' || c == ')'
 	|| c == ';' || c == ' ' || c == '\t' || c == '\0')
@@ -48,7 +48,7 @@ int		is_metacharacter(char c)
 ** Returns 1 if the character is a whitespace
 */
 
-int		is_whitespace(char c)
+int	is_whitespace(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (1);
@@ -61,9 +61,22 @@ int		is_whitespace(char c)
 ** Returns 1 if the string is a valid redirection
 */
 
-int		is_redirection(char *s)
+int	is_redirection(char *s)
 {
 	if (!ft_strcmp(s, "<\0") || !ft_strcmp(s, ">\0") || !ft_strcmp(s, ">>\0"))
+		return (1);
+	return (0);
+}
+
+/*
+** Checks if the character is a digit
+** Returns 0 if the character is not a digit
+** Returns 1 if the character is a digit
+*/
+
+int	ft_isdigit_char(char c)
+{
+	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
 }

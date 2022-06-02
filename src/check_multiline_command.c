@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   check_multis_command.c                          :+:    :+:            */
+/*   check_multiline_command.c                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/05/13 12:12:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/13 12:18:28 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/05/29 19:57:51 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/05/29 19:57:58 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 /*
 ** Counts the amount of double and single quotes
-** Returns 0 if there is an even amount of double or single quotes
-** Returns 1 if there is an uneven amount of double or single quotes
+** Returns 0 if there is an even amount of quotes
+** Returns 1 if there is an uneven amount quotes
 */
 
 static int	count_quotes(char *s)
@@ -48,33 +48,22 @@ static int	count_quotes(char *s)
 ** Checks for multiline commands
 ** Returns 1 if there is an uneven amount of quotes
 ** Returns 1 if there is an uneven amount of backslashes at the end
-** Returns 1 if there is a pipe at the end
 ** Returns 0 if there are no multiline commands
 */
 
-int			check_multiline_command(t_data *data, char *s)
+int	check_multiline_command(t_data *data, char *s)
 {
-	int		len;
+	int	len;
 
 	len = ft_strlen(s);
 	if (count_backslash(s, len) % 2)
 	{
-		data->exit_status = 1;
-		ft_putstr_fd("Multiline command\n", 2);
+		print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL, NULL));
 		return (1);
 	}
 	if (count_quotes(s))
 	{
-		data->exit_status = 1;
-		ft_putstr_fd("Multiline command\n", 2);
-		return (1);
-	}
-	while (len > 0 && is_whitespace(s[len - 1]))
-		len--;
-	if (len > 0 && s[len - 1] == '|')
-	{
-		data->exit_status = 1;
-		ft_putstr_fd("Multiline command\n", 2);
+		print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL, NULL));
 		return (1);
 	}
 	return (0);

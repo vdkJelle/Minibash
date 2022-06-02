@@ -1,12 +1,12 @@
- /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   token_handle_arg_chars.c                           :+:    :+:            */
+/*   parser_handle_args.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/29 14:29:30 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/04/28 16:32:47 by tevan-de      ########   odam.nl         */
+/*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
+/*   Updated: 2022/05/29 19:59:18 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@
 ** Returns 1
 */
 
-int		handle_char(t_data *data, t_word **word, char *s)
+int	handle_char(t_data *data, t_word **word, char *s)
 {
 	char	*single_char;
 	
 	(void)data;
-	if (!s)
-		return (-1);
-	single_char = ft_malloc(sizeof(char) * 2);
+	// if (!s)
+	// 	return (-1);
+	single_char = malloc_guard(ft_calloc(sizeof(char), 2));
 	single_char[0] = s[0];
-	single_char[1] = '\0';
-	ft_lstadd_back(&((*word)->word_segment), ft_lstnew(single_char));
-	if (!(*word)->word_segment)
-		exit(1);
+	ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(single_char)));
 	return (1);
 }
 
@@ -44,9 +41,9 @@ int		handle_char(t_data *data, t_word **word, char *s)
 ** Returns index of the end of the word segment
 */
 
-int		handle_doublequotes(t_data *data, t_word **word, char *s)
+int	handle_doublequotes(t_data *data, t_word **word, char *s)
 {
-	int		i;
+	int	i;
 	
 	if (s[1] && s[1] == '\"')
 		return (2);
@@ -75,7 +72,7 @@ int		handle_doublequotes(t_data *data, t_word **word, char *s)
 ** Returns index of the end of the key
 */
 
-int		handle_environment_variable(t_data *d, t_word **word, char *s)
+int	handle_environment_variable(t_data *d, t_word **word, char *s)
 {
 	char	*key;
 	char	*value;
@@ -92,8 +89,6 @@ int		handle_environment_variable(t_data *d, t_word **word, char *s)
 		if (!value || value[0] == '\0')
 			return (len + 1);
 		ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(malloc_guard(ft_strdup(value)))));
-		if (!(*word)->word_segment)
-			exit(1);
 		return (len + 1);
 	}
 	ft_lstadd_back(&(*word)->word_segment, malloc_guard(ft_lstnew(malloc_guard(ft_itoa(d->exit_status)))));
@@ -107,7 +102,7 @@ int		handle_environment_variable(t_data *d, t_word **word, char *s)
 ** Returns index of the end of the word + potentially skipped whitespaces
 */
 
-int		handle_metacharacter(t_data *data, t_word **word, char *s)
+int	handle_metacharacter(t_data *data, t_word **word, char *s)
 {
 	int		i;
 
@@ -130,14 +125,12 @@ int		handle_metacharacter(t_data *data, t_word **word, char *s)
 ** Returns index of the end of the word segment
 */
 
-int		handle_singlequotes(t_data *data, t_word **word, char *s)
+int	handle_singlequotes(t_data *data, t_word **word, char *s)
 {
-	int		i;
-	int		len;
+	int	len;
 
 	(void)data;
-	i = 0;
-	if (s[i + 1] && s[i + 1] == '\'')
+	if (s[1] && s[1] == '\'')
 		return (2);
 	len = skip_until_char_excl(s + 1, '\'');
 	if (len > 0)
