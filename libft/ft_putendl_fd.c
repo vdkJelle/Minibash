@@ -6,15 +6,15 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 10:01:44 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/05 11:10:43 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 12:38:49 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_putendl_fd(char *s, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
-	int i;
+	int	i;
 
 	if (s == 0)
 		return ;

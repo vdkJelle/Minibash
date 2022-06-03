@@ -6,13 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 08:56:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/10/29 14:01:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 12:42:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_tolower(int c)
+int	ft_tolower(int c)
 {
 	if (c >= 65 && c <= 90)
 		c += 32;

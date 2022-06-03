@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 11:38:10 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2019/11/11 15:36:35 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 12:41:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (src == 0)
