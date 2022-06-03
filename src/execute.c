@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:55:55 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:43:43 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ static t_execute	*get_exec(t_data *data, t_expression *expression)
 }
 
 /*
-** Iterates over the linked list with tokens and executes them
-** Saves a pointer to the previous token to use in case of a pipe
+** Iterates over the linked list with expressions and executes them
+** Saves a pointer to the previous expression to use in case of a pipe
 ** No return value
 */
 

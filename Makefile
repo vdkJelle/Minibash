@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/03 13:25:43 by tessa         ########   odam.nl          #
+#    Updated: 2022/06/03 13:45:20 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ SRCS		=	builtins/cd\
 				execute\
 				execute_builtin\
 				final_args\
-				get_env\
 				main\
 				parser_arg\
 				parser_check\
@@ -34,6 +33,7 @@ SRCS		=	builtins/cd\
 				signals\
 				tokenizer\
 				utils/free\
+				utils/get_env\
 				utils/list\
 				utils/malloc_wrapper\
 				utils/print_error\

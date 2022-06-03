@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/03 13:42:13 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,18 +197,17 @@ void	get_token(t_data *data, char *s);
 void	ft_unset(t_data *data);
 
 /*
-**--------------------------------UTILS_LIST.C----------------------------------
+**--------------------------------UTILS/LIST.C----------------------------------
 */
 void	free_array(char **array);
 void	free_array_part(char ***array, int i);
 void	free_exec(t_execute *exec);
 void	free_token(void *content);
 void	free_expression(void *content);
-// char	*join_word(t_word *arg);
 void 	print_expression(void *content);
 
 /*
-**-----------------------------UTILS_STRING_SKIP.C-------------------------------
+**-----------------------------UTILS/STRING_SKIP.C-------------------------------
 */
 int		skip_until_next_doubleq(char *s);
 int		skip_until_char(char *s, char c);
@@ -216,28 +215,19 @@ int		skip_while_char(char *s, int (*ft_isthis)(char c));
 int		skip_while_not_char(char *s, int (*ft_isthis)(char c));
 
 /*
-**-----------------------------UTILS_STRING_COUNT.C------------------------------
+**-----------------------------UTILS/STRING_COUNT.C------------------------------
 */
 int		count_arguments(char *s, char c);
 int		count_backslash(char *s, int loc);
-// int		count_words(char const *s, char c);
 
 /*
-**-------------------------------UTILS_STRING.C---------------------------------
+**-------------------------------UTILS/STRING.C---------------------------------
 */
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strjoin_wrapper(char *s1, char *s2, int mode);
-// char	*put_in_singlequotes(char *s);
 
 /*
-**--------------------------UTILS_STRING_STRJOIN.C------------------------------
-*/
-char	*ft_strjoin_char(char *s1, char c);
-char	*ft_strjoin_free_both(char *s1, char *s2);
-char	*ft_strjoin_free_s1(char *s1, char const *s2);
-
-/*
-**----------------------------UTILS_STRING_IS_THIS.C----------------------------
+**----------------------------UTILS/STRING_IS_THIS.C----------------------------
 */
 int		is_control_operator(char s);
 int		is_metacharacter(char c);
@@ -246,7 +236,7 @@ int		is_whitespace(char c);
 int		ft_isdigit_char(char c);
 
 /*
-**---------------------------------UTILS_ERROR.C--------------------------------
+**---------------------------------UTILS/ERROR.C--------------------------------
 */
 void	print_errno(void);
 int		print_errno_int(void);
@@ -255,13 +245,12 @@ void	print_error_exit(int exit_status, char **messages);
 void	print_error(t_data *data, int exit_status, char **messages);
 
 /*
-**----------------------------UTILS_MALLOC_WRAPPER.C----------------------------
+**----------------------------UTILS/MALLOC_WRAPPER.C----------------------------
 */
 void	*malloc_guard(void *ret);
 void	*ft_malloc(size_t size);
 
 e_file	check_file(t_data *data, char *s);
-// int		execute(t_data *data, t_execute *cur, t_execute *prev);
 
 void	signal_output(int sig);
 void	ft_signal_handler(void);
