@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:57:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:26:32 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	get_token(t_data *data, char *s)
 		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))
 			i += skip_until_next_doubleq(s + i);
 		else if (s[i] == '\'' && !(count_backslash(s, i) % 2))
-			i += skip_until_next_singleq(s + i);
+			i += skip_until_char_excl(s + i, '\'');
 		if (s[i])
 			i++;
 	}

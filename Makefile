@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/01 14:24:24 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/06/03 13:25:43 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS		=	builtins/cd\
 				builtins/export\
 				builtins/pwd\
 				builtins/unset\
-				check_file\
+				check_file_information\
 				check_multiline_command\
 				execute\
 				execute_builtin\
