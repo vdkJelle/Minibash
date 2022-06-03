@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:28:07 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,21 +211,9 @@ void 	print_expression(void *content);
 **-----------------------------UTILS_STRING_SKIP.C-------------------------------
 */
 int		skip_until_next_doubleq(char *s);
-int		skip_until_char_excl(char *s, char c);
-int		skip_until_char_incl(char *s, char c);
+int		skip_until_char(char *s, char c);
 int		skip_while_char(char *s, int (*ft_isthis)(char c));
 int		skip_while_not_char(char *s, int (*ft_isthis)(char c));
-// int		skip_until_f_int(char *s, int (*ft_isthis)(int c));
-// int		skip_until_metacharacter_incl(char *s);
-// int		skip_chars_int(char *s, char c);
-// int		skip_metacharacters_int(char *s);
-// int		skip_nonwhitespaces_int(char *s);
-// int		skip_whitespaces_int(char *s);
-// int		skip_until_metacharacterexcl(char *s);
-// void	skip_char(char **s, char c);
-// void	skip_chars(char **s, char c);
-// void	skip_whitespaces(char **s);
-// void	skip_nonwhitespaces(char **s);
 
 /*
 **-----------------------------UTILS_STRING_COUNT.C------------------------------

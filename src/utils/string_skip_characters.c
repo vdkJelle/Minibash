@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 11:08:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:27:51 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,12 @@ int	skip_until_next_doubleq(char *s)
 	return (i);
 }
 
-int	skip_until_char_excl(char *s, char c)
+int	skip_until_char(char *s, char c)
 {
 	int	i;
 
 	i = 0;
 	while (s[i] && s[i] != c)
-		i++;
-	return (i);
-}
-
-int	skip_until_char_incl(char *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
-	if (s[i] && s[i] == c)
 		i++;
 	return (i);
 }

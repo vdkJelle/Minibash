@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 19:08:37 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	check_if_exists(char *arg, char ***our_env)
 		j = 0;
 		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
 			j++;
-		if (!ft_strncmp((*our_env)[i], arg, skip_until_char_excl(arg, '=')))
+		if (!ft_strncmp((*our_env)[i], arg, skip_until_char(arg, '=')))
 		{
 			if (ft_strchr(arg, '='))
 			{

@@ -6,11 +6,12 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 15:49:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:32:01 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 /*
 ** Calls the builtin function based on the command
 ** No return value
@@ -38,11 +39,11 @@ static void	execute_builtin(t_data *data, e_command cmd, t_execute *exec)
 **		fd write is set to STDOUT_FILENO
 ** If there is a redirection the fds are set to the fd of the exec
 ** Calls execute_builtin
-** Closed the fd after execute_builtin in case of a redirection
+** Closes the fd after execute_builtin in case of a redirection
 ** No return value
 */
 
-void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
+void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 {
 	if (exec->fd[READ] == NO_REDIRECTION)
 		data->our_fd[READ] = STDIN_FILENO;
@@ -67,7 +68,7 @@ void		execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 ** No return value
 */
 
-void		execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec)
+void	execute_builtin_pipe(t_data *data, e_command cmd, t_execute *exec)
 {
 	data->our_fd[READ] = STDIN_FILENO;
 	data->our_fd[WRITE] = STDOUT_FILENO;

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:59:18 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	handle_singlequotes(t_data *data, t_word **word, char *s)
 	(void)data;
 	if (s[1] && s[1] == '\'')
 		return (2);
-	len = skip_until_char_excl(s + 1, '\'');
+	len = skip_until_char(s + 1, '\'');
 	if (len > 0)
 		ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(malloc_guard(ft_substr(s, 1, len)))));
 	return (len + 2);

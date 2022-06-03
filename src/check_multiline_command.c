@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:57:51 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:26:12 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	count_quotes(char *s)
 		}
 		else if (s[i] == '\'' && !(count_backslash(s, i) % 2))
 		{
-			i += skip_until_char_excl(s + i, '\'');
+			i += skip_until_char(s + i, '\'');
 			if (i >= len)
 				return (1);
 		}
