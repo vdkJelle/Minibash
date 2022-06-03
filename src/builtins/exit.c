@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/24 18:23:56 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 17:18:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_exit(t_data *data)
 		while (args[1][i] && ft_isdigit(args[1][i]))
 			i++;
 		if (args[1][i] != '\0')
-			print_error(data, 2, make_array("🐶 > exit: ", args[1], ": numeric argument required", NULL));
+			print_error_exit(2, make_array("🐶 > exit: ", args[1], ": numeric argument required", NULL));
 		data->exit_status = ft_atoi(args[1]);
 	}
 	exit(data->exit_status);

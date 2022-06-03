@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 16:06:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:28 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 15:13:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 void	ft_env(t_data *data)
 {
-	int 	fd;
-	int 	i;
+	int	fd;
+	int	i;
 
 	fd = data->our_fd[1];
 	i = 0;

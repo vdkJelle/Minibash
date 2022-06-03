@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 18:11:35 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/03 15:13:08 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 ** No return value
 */
 
-void			ft_cd(t_data *data)
+void	ft_cd(t_data *data)
 {
 	char	**args;
 	int		ret;

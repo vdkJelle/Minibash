@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/29 12:50:00 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 17:10:23 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void	tokenize_parse_execute(t_data *data, char *input)
 	get_token(data, input);
 	parser(data);
 	ft_lstclear(&data->token, free_token);
-	ft_lstiter(data->expression, print_expression);
+	// ft_lstiter(data->expression, print_expression);
 	if (check_expressions(data))
 	{
 		ft_lstclear(&data->expression, free_expression);
