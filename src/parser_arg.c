@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:58:19 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:48:57 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ arg_characters	get_arg_characters(char *s, int i)
 ** Gets the argument
 ** An argument is a word and words are seperated by metacharacters
 ** Checks if the first character is a metacharacter
-**		it is saved as a word to check for a redirection or parser error later
+**		it is saved as a word to check for a syntax error later
 ** Loops over the input string and calls get_arg_character
 **		to see which arg_handler function needs to be called
 ** If the character is a backslash it can be skipped
@@ -54,7 +54,7 @@ arg_characters	get_arg_characters(char *s, int i)
 ** Returns index of the end of the word
 */
 
-int				get_arg(t_data *data, t_word **word, char *s, char control_op)
+int	get_arg(t_data *data, t_word **word, char *s, char control_op)
 {
 	int				i;
 	arg_characters	ac;

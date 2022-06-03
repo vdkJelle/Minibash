@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/03 13:52:46 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	handle_char(t_data *data, t_word **word, char *s)
 	char	*single_char;
 	
 	(void)data;
-	// if (!s)
-	// 	return (-1);
 	single_char = malloc_guard(ft_calloc(sizeof(char), 2));
 	single_char[0] = s[0];
 	ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(single_char)));

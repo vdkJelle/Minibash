@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 18:38:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:57:22 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:53:37 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 **		arguments, none, one or more words (strings)
 **		control operator, a string with one or a combinations of the following characters ; | ( ) &
 ** Words are seperated by metacharacters
-** Clears the list of tokens after they are no longer needed
 ** No return value
 */
 

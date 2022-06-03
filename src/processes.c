@@ -6,12 +6,11 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/25 14:13:31 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/03 13:55:50 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 /*
 ** Handles pipes
@@ -124,12 +123,11 @@ void	create_process
 	pid = fork();
 	if (pid == -1)
 		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
-	else if (!pid)
+	else if (pid == CHILD)
 	{
 		if (cmd == CMD_ERROR)
 			exit(data->exit_status);
-		if (cmd)
-			child_process(data, cmd, cur, prev);
+		child_process(data, cmd, cur, prev);
 	}
 	else
 		parent_process(data, pid, cur, prev);
