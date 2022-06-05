@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/01 14:25:14 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/05 17:53:01 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void	free_token(void *content)
 	free(token->control_operator);
 	free(content);
 }
+
+/*
+** Frees a t_expression struct
+** No return value
+*/
 
 void	free_expression(void *content)
 {
