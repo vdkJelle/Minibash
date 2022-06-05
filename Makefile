@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/03 13:45:20 by tessa         ########   odam.nl          #
+#    Updated: 2022/06/05 18:34:19 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,9 @@ SRCS		=	builtins/cd\
 				execute_builtin\
 				final_args\
 				main\
-				parser_arg\
 				parser_check\
-				parser_handle_args\
+				parser_word\
+				parser_word_segments\
 				parser\
 				processes\
 				redirection\
