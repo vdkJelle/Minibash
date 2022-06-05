@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:42:13 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 15:28:09 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define NO_REDIRECTION -2
 
 # define CHILD 0
+
+# define NOT_NUMERIC 0
+# define NUMERIC 1
 
 /*
 **------------------------------------ENUMS-------------------------------------
@@ -68,12 +71,20 @@ typedef 		enum
 				METACHARACTER = 3,
 				SINGLEQUOTE = 4,
 				BACKSLASH = 5,
-}				arg_characters;
+}				e_arg_char;
 
+
+typedef			enum
+{
+	FALSE = 0,
+	TRUE = 1
+}				e_bool;
 
 /*
 **-----------------------------------STRUCTS------------------------------------
 */
+
+
 
 
 typedef struct	s_token
