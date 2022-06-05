@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:48:57 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 15:28:01 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** Returns the type of character
 */
 
-arg_characters	get_arg_characters(char *s, int i)
+e_arg_char	get_arg_characters(char *s, int i)
 {
 	if (s[i] == '\'' && !(count_backslash(s, i) % 2))
 		return (SINGLEQUOTE);
@@ -57,7 +57,7 @@ arg_characters	get_arg_characters(char *s, int i)
 int	get_arg(t_data *data, t_word **word, char *s, char control_op)
 {
 	int				i;
-	arg_characters	ac;
+	e_arg_char		ac;
 	f_arg_handler	arg_handler[5];
 
 	arg_handler[CHAR] = handle_char;
