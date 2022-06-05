@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:37:35 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 17:51:59 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static e_bool	is_string_numeric(char *s)
 **		the program does not exit
 **		the exit status is unchanged
 ** If the first argument is numeric and is the single argument exit is called with the value of the argument
+** Calling exit with a number smaller than 0 or bigger than 255 will result in undefined behavior
 ** No return value
 */
 
