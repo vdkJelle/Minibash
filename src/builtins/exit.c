@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:09:33 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 17:37:35 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static e_bool	is_string_numeric(char *s)
 	return (FALSE);
 }
 
-
 /*
 ** Exits the program
 ** If there are no arguments the exit status is equal to our exit status
@@ -71,46 +70,46 @@ static e_bool	is_string_numeric(char *s)
 
 void	ft_exit(t_data *data)
 {
-	char	**args;
 	e_bool	numeric;
 
-	args = data->args;
-	if (!args[1])
+	if (!data->args[1])
 		exit(data->exit_status);
-	numeric = is_string_numeric(args[1]);
+	numeric = is_string_numeric(data->args[1]);
 	if (numeric == FALSE)
 	{
-		print_error(data, 2, make_array("🐶 > exit: ", args[1], ": numeric argument required", NULL));
+		print_error(data, 2, make_array("🐶 > exit: ", data->args[1],
+			": numeric argument required", NULL));
 		exit(2);
 	}
-	if (args[2])
+	if (data->args[2])
 	{
-		print_error(data, 1, make_array("🐶 > exit: too many arguments", NULL, NULL, NULL));
+		print_error(data, 1, make_array("🐶 > exit: too many arguments",
+			NULL, NULL, NULL));
 		return ;
 	}
-	exit(ft_atoi(args[1]));
+	exit(ft_atoi(data->args[1]));
 }
 
 // void	ft_exit(t_data *data)
 // {
-// 	char	**args;
+// 	char	**data->args;
 // 	int		i;
 
-// 	args = data->args;
-// 	if (args[1] && args[2] != NULL)
+// 	data->args = data->data->args;
+// 	if (data->args[1] && data->args[2] != NULL)
 // 	{
 // 		print_error(data, 1, make_array("🐶 > exit: too many arguments", NULL, NULL, NULL));
 // 		return ;
 // 	}
 // 	ft_putstr_fd("exit\n", data->our_fd[1]);
-// 	if (args[1] && args[2] == NULL)
+// 	if (data->args[1] && data->args[2] == NULL)
 // 	{
 // 		i = 0;
-// 		while (args[1][i] && ft_isdigit(args[1][i]))
+// 		while (data->args[1][i] && ft_isdigit(data->args[1][i]))
 // 			i++;
-// 		if (args[1][i] != '\0')
-// 			print_error_exit(2, make_array("🐶 > exit: ", args[1], ": numeric argument required", NULL));
-// 		data->exit_status = ft_atoi(args[1]);
+// 		if (data->args[1][i] != '\0')
+// 			print_error_exit(2, make_array("🐶 > exit: ", data->args[1], ": numeric argument required", NULL));
+// 		data->exit_status = ft_atoi(data->args[1]);
 // 	}
 // 	exit(data->exit_status);
 // }

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/23 15:04:35 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/05 17:32:42 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,25 @@
 
 void	ft_echo(t_data *data)
 {
-	int		fd;
 	int		i;
 	int		newline;
-	char	**args;
 
-	args = data->args;
-	fd = data->our_fd[1];
 	i = 1;
-	if (args[i] && !ft_strcmp(args[i], "-n"))
+	if (data->args[i] && !ft_strcmp(data->args[i], "-n"))
 	{
 		i++;
 		newline = 0;
 	}
 	else
 		newline = 1;
-	while (args[i])
+	while (data->args[i])
 	{
-		ft_putstr_fd(args[i], fd);
-		if (args[i + 1])
-			ft_putchar_fd(' ', fd);
+		ft_putstr_fd(data->args[i], data->our_fd[WRITE]);
+		if (data->args[i + 1])
+			ft_putchar_fd(' ', data->our_fd[WRITE]);
 		i++;
 	}
 	if (newline == 1)
-		ft_putchar_fd('\n', fd);
+		ft_putchar_fd('\n', data->our_fd[WRITE]);
 	data->exit_status = 0;
 }

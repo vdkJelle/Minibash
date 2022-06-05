@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 15:13:08 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/05 17:46:44 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,18 @@
 
 void	ft_cd(t_data *data)
 {
-	char	**args;
 	int		ret;
 
-	args = data->args;
 	ret = 0;
-	if (!args[1])
+	if (!data->args[1])
 		ret = chdir(get_env(data->our_env, "HOME"));
-	else if (args[1] && args[2] == NULL)
-		ret = chdir(args[1]);
-	else if (args[1] && args[2] != NULL)
-	{
-		print_error(data, 1,
-			make_array("🐶 > cd: too many arguments", NULL, NULL, NULL));
-		return ;
-	}
-	if (ret < 0)
-	{
-		print_error(data, 2,
-			make_array("🐶 > cd: ", args[1], ": ", strerror(errno)));
-		return ;
-	}
+	else if (!data->args[2])
+		ret = chdir(data->args[1]);
+	else if (data->args[2])
+		return (print_error(data, 1,
+			make_array("🐶 > cd: too many arguments", NULL, NULL, NULL)));
+	if (ret == -1)
+		return (print_error(data, 2,
+			make_array("🐶 > cd: ", data->args[1], ": ", strerror(errno))));
 	data->exit_status = 0;
 }

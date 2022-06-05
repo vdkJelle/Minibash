@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 17:40:34 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,16 @@ static int	check_if_valid(t_data *data, char *s)
 	i = 0;
 	if (!ft_isalpha(s[i]) && s[i] != '_')
 	{
-		print_error(data, 1, make_array("🐶 > export: `", s, "': not a valid identifier", NULL));
+		print_error(data, 1, make_array("🐶 > export: `", s,
+			"': not a valid identifier", NULL));
 		return (1);
 	}
 	while (s[i] && s[i] != '=')
 	{
 		if (!ft_isalnum(s[i]) && s[i] != '_')
 		{
-			print_error(data, 1, make_array("🐶 > export: `", s, "': not a valid identifier", NULL));
+			print_error(data, 1, make_array("🐶 > export: `", s,
+				"': not a valid identifier", NULL));
 			return (1);
 		}
 		i++;
@@ -149,13 +151,11 @@ static int	check_if_valid(t_data *data, char *s)
 */
 void		ft_export(t_data *data)
 {
-	char	**args;
 	int		i;
 
-	args = data->args;
 	data->exit_status = 0;
 	i = 0;
-	if (!args[1])
+	if (!data->args[1])
 	{
 		while (data->our_env[i])
 		{
@@ -164,10 +164,10 @@ void		ft_export(t_data *data)
 		}
 	}
 	i = 1;
-	while (args[i])
+	while (data->args[i])
 	{
-		if (!check_if_valid(data, args[i]))
-			append_key_value(args[i], &data->our_env, &data->env_size);
+		if (!check_if_valid(data, data->args[i]))
+			append_key_value(data->args[i], &data->our_env, &data->env_size);
 		i++;
 	}
 }
