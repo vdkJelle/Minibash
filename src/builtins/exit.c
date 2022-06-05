@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 15:34:00 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 17:09:33 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@
 // exit status 2
 // actual exit
 
+/*
+** Checks if all characters in the string are digits
+** Returns TRUE if the string is numeric
+** Returns FALSE if the string is empty or if the argument contains characters that are not digits
+*/
+
 static e_bool	is_string_numeric(char *s)
 {
 	int i;
@@ -48,13 +54,27 @@ static e_bool	is_string_numeric(char *s)
 	return (FALSE);
 }
 
+
+/*
+** Exits the program
+** If there are no arguments the exit status is equal to our exit status
+** If the first argument is not numeric (for example: exit nope)
+**		an error message is printed
+**		the program exits with exit status 2
+** If the first argument is numeric but there are multiple arguments (for example: exit 4 nope ; exit 4 4)
+**		an error message is printed
+**		the program does not exit
+**		the exit status is unchanged
+** If the first argument is numeric and is the single argument exit is called with the value of the argument
+** No return value
+*/
+
 void	ft_exit(t_data *data)
 {
 	char	**args;
 	e_bool	numeric;
 
 	args = data->args;
-	ft_putstr_fd("exit\n", 1);
 	if (!args[1])
 		exit(data->exit_status);
 	numeric = is_string_numeric(args[1]);

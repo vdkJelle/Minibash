@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:32:01 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 17:09:49 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ void	execute_builtin_no_pipe(t_data *data, e_command cmd, t_execute *exec)
 		data->our_fd[WRITE] = STDOUT_FILENO;
 	else
 		data->our_fd[WRITE] = exec->fd[WRITE];
+	if (cmd == EXIT)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	execute_builtin(data, cmd, exec);
 	if (exec->fd[READ] != NO_REDIRECTION && close(exec->fd[READ]) == -1)
 		return (print_errno());
 	if (exec->fd[WRITE] != NO_REDIRECTION && close(exec->fd[WRITE]) == -1)
 		return (print_errno());
+
 }
 
 /*
