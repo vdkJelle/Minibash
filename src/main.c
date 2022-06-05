@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 17:10:23 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/05 15:42:10 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 	else
 	{
 		i = skip_while_not_char(shlvl, ft_isdigit_char);
-		if (shlvl[i] != '\0')
+		if (!shlvl[i])
 			temp = malloc_guard(ft_strdup("SHLVL=1"));
 		else
 		{
@@ -42,8 +42,6 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 			temp = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup("SHLVL=")), malloc_guard(ft_itoa(n)), 3));
 		}
 	}
-	if (!temp)
-		exit(1);
 	append_key_value(temp, our_env, env_size);
 	free(temp);
 }
@@ -91,7 +89,7 @@ static void	tokenize_parse_execute(t_data *data, char *input)
 	get_token(data, input);
 	parser(data);
 	ft_lstclear(&data->token, free_token);
-	// ft_lstiter(data->expression, print_expression);
+	ft_lstiter(data->expression, print_expression);
 	if (check_expressions(data))
 	{
 		ft_lstclear(&data->expression, free_expression);
