@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 12:19:07 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/01 14:24:56 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/05 18:43:21 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	is_whitespace(char c)
 
 int	is_redirection(char *s)
 {
-	if (!ft_strcmp(s, "<\0") || !ft_strcmp(s, ">\0") || !ft_strcmp(s, ">>\0"))
+	if (!ft_strcmp(s, "<\0") || !ft_strcmp(s, "<<\0") || !ft_strcmp(s, ">\0")
+		|| !ft_strcmp(s, ">>\0"))
 		return (1);
 	return (0);
 }
