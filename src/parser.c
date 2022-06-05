@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 18:38:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:53:37 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 18:28:06 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	while (i < size)
 	{
 		args[i] = malloc_guard(ft_calloc(sizeof(t_word), 1));
-		j += get_arg(data, &args[i], s + j, control_operator);
+		j += get_word(data, &args[i], s + j, control_operator);
 		args[i]->word = join_word(args[i]);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/05 15:28:09 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/05 18:28:06 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef 		enum
 				METACHARACTER = 3,
 				SINGLEQUOTE = 4,
 				BACKSLASH = 5,
-}				e_arg_char;
+}				e_special_char;
 
 
 typedef			enum
@@ -129,7 +129,7 @@ typedef struct	s_data
 /*
 **----------------------------POINTERS TO FUNCTIONS-----------------------------
 */
-typedef int		(*f_arg_handler)(t_data *data, t_word **word, char *s);
+typedef int		(*f_word_segment_handler)(t_data *data, t_word **word, char *s);
 typedef void	(*f_builtin)(t_data *data);
 
 /*
@@ -190,7 +190,7 @@ int		redirection(t_data *data, t_word **arg, int i, int fd[2]);
 /*
 **--------------------------------TOKEN_ARG.C-----------------------------------
 */
-int		get_arg(t_data *data, t_word **word, char *s, char control_op);
+int		get_word(t_data *data, t_word **word, char *s, char control_op);
 
 /*
 **-------------------------------TOKEN_CHECK.C----------------------------------
