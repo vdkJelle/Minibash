@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/05 15:42:10 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 13:57:36 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(void)
 		input = readline("🐶 > ");
 		if (!input)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			exit(0);
 		}
 		if (*input)
