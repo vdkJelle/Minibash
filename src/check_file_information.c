@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   check_file.c                                       :+:    :+:            */
+/*   check_file_information.c                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/01 14:40:02 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/06 18:20:22 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ e_file	check_file(t_data *data, char *s)
 	{
 		if (ENOENT)
 		{
-			print_error(data, 127, make_array("🐶 > ", s, ": No such file or directory", NULL));
+			print_error(data, 127, make_array("🐶 > ", s,
+				": No such file or directory", NULL));
 			return (NOT_FOUND);
 		}
 		print_error(data, 126, make_array("🐶 > ", s, ": ", strerror(errno)));
@@ -113,14 +114,16 @@ e_file	check_file(t_data *data, char *s)
 	}
 	if (!(sb.st_mode & S_IXUSR))
 	{
-		print_error(data, 126, make_array("🐶 > ", s, ": Permission denied", NULL));
+		print_error(data, 126, make_array("🐶 > ", s, ": Permission denied",
+			NULL));
 		return (NOT_EXECUTABLE);
 	}
 	if ((sb.st_mode & S_IFMT) == S_IFREG)
 		return (REGULAR);
 	if ((sb.st_mode & S_IFMT) == S_IFDIR)
 	{
-		print_error(data, 126, make_array("🐶 > ", s, ": Is a directory", NULL));
+		print_error(data, 126, make_array("🐶 > ", s, ": Is a directory",
+			NULL));
 		return (DIRECTORY);
 	}
 	return (FILE_ERROR);

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 16:23:09 by tevan-de      #+#    #+#                 */
-/*   Updated: 2021/05/18 19:07:43 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/06 18:18:57 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 char	*get_env(char **our_env, char *key)
 {
-	int		len;
-	int		i;
+	int	len;
+	int	i;
 
 	len = ft_strlen(key);
 	i = 0;

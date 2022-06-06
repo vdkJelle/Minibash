@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 17:55:43 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:21:07 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 
 static int	get_new_size(t_word **arg)
 {
-	int		i;
-	int		size;
+	int	i;
+	int	size;
 
 	size = 0;
 	if (!arg)

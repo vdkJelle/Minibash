@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:53:01 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:18:46 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 void	free_array(char **array)
 {
-	int		i;
-	int		size;
+	int	i;
+	int	size;
 
 	if (!array)
 		return ;
@@ -68,7 +68,6 @@ void	free_exec(t_execute *exec)
 ** Frees a t_token struct
 ** No return value
 */
-
 
 void	free_token(void *content)
 {

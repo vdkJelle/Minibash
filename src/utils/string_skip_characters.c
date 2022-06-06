@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 11:08:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:24:08 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:19:44 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	skip_until_char(char *s, char c)
 
 int	skip_while_char(char *s, int (*ft_isthis)(char c))
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (s[i] && ft_isthis(s[i]))
