@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 17:34:25 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 17:42:34 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ static void	here_doc_read_input(char *delimiter, int rd)
 /*
 ** Handles >> redirection by creating a here-document
 ** A here-document contains multiline strings and can be redirected to a command (such as cat)
-** Opens a temporary file
-** Calls here_doc_read_input to start reading input and writes said input to the temporary fd
+** Opens a here-document
+** Calls here_doc_read_input to start reading input and writes said input to the here-document
 ** If input has already been redirected the old file descriptor of fd[READ] is closed
-** fd[READ] opens the here-document and reads from it
+** fd[READ] opens the here-document
 */
 
 static int	here_doc(t_data *data, char *delimiter, int fd[2])
@@ -100,8 +100,9 @@ static int	here_doc(t_data *data, char *delimiter, int fd[2])
 }
 
 /*
-** Handles redirections, assumes the argument after the redirection is valid
-** If input or output has already been redircected the old file descriptor is closed
+** Handles redirections
+** Assumes the argument after the redirection is valid
+** If input or output has already been redirected the old file descriptor is closed
 ** Returns 0 if opening a file was successful and no error occured with close
 ** Returns 1 if opening a file was unsuccessful or an error occured with close
 */
