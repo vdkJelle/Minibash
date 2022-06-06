@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/22 22:51:14 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 14:11:05 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:15:59 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static char	*get_control_operator(char *s)
 {
 	char	*ret;
 
-	ret = malloc_guard(ft_substr(s, 0, skip_while_char(s, is_control_operator)));
+	ret = malloc_guard(ft_substr(s, 0, skip_while_char(s,
+		is_control_operator)));
 	return (ret);
 }
 
@@ -44,7 +45,8 @@ static int create_token(t_data *data, char *s, char *p_control_operator)
 		return (0);
 	token = malloc_guard(ft_calloc(sizeof(t_token), 1));
 	if (!is_control_operator(s[0]))
-		token->string = malloc_guard(ft_substr(s, 0, skip_until_char(s, p_control_operator[0])));
+		token->string = malloc_guard(ft_substr(s, 0, skip_until_char(s,
+			p_control_operator[0])));
 	token->control_operator = get_control_operator(p_control_operator);
 	ft_lstadd_back(&data->token, malloc_guard(ft_lstnew(token)));
 	return (ft_strlen(token->control_operator));

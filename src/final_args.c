@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 13:32:08 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 17:55:43 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,16 @@ void	get_final_args_and_handle_redirections(t_data *data,
 	int	j;
 	int	size;
 
-	(void)data;
 	size = get_new_size(expression->arg);
 	exec->args = malloc_guard(ft_calloc(sizeof(char *), size + 1));
 	i = 0;
 	j = 0;
 	while (expression->arg && expression->arg[i])
 	{
-		if (is_redirection(expression->arg[i]->word) && expression->arg[i]->metacharacter == 1)
+		if (is_redirection(expression->arg[i]->word)
+			&& expression->arg[i]->metacharacter)
 		{
-			if (redirection(data, expression->arg, i, exec->fd) == -1)
+			if (redirection(data, expression->arg, i, exec->fd))
 				return (free_array_part(&exec->args, j));
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/05/29 19:58:34 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/06/06 18:10:37 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,29 @@
 ** Returns 1 if an argument is invalid or if there is a syntax error
 */
 
-static int	check_argument(t_data *data, t_word **arg, char *control_operator, int i)
+static int	check_argument(t_data *data, t_word **arg, char *control_operator,
+int i)
 {
 	if (!is_redirection(arg[i]->word))
 	{
-		print_error(data, 2, make_array("🐶 > Invalid metacharacter: ", arg[i]->word, NULL, NULL));
+		print_error(data, 2, make_array("🐶 > Invalid metacharacter: ",
+			arg[i]->word, NULL, NULL));
 		return (1);
 	}
 	if (!arg[i + 1])
 	{
 		if (control_operator[0] == '\0')
-			print_error(data, 2, make_array("🐶 > syntax error near unexpected token `newline'", NULL, NULL, NULL));
+			print_error(data, 2, make_array("🐶 > syntax error near unexpected",
+			" token `newline'", NULL, NULL));
 		else
-			print_error(data, 2, make_array("🐶 > syntax error near unexpected token `", control_operator, "'", NULL));
+			print_error(data, 2, make_array("🐶 > syntax error near unexpected",
+			" token `", control_operator, "'"));
 		return (1);
 	}
 	else if (arg[i + 1] && arg[i + 1]->metacharacter == 1)
 	{
-		print_error(data, 2, make_array("🐶 > syntax error near unexpected token `", arg[i + 1]->word, "'", NULL));
+		print_error(data, 2, make_array("🐶 > syntax error near unexpected",
+			" token `", arg[i + 1]->word, "'"));
 		return (1);
 	}
 	return (0);
@@ -55,7 +60,8 @@ static int	check_control_operator(t_data *data, char *s)
 {
 	if (!(!ft_strcmp(s, "|\0") || !ft_strcmp(s, ";\0") || s[0] == '\0'))
 	{
-		print_error(data, 2, make_array("🐶 > Invalid control operator: ", s, NULL, NULL));
+		print_error(data, 2, make_array("🐶 > Invalid control operator: ", s,
+			NULL, NULL));
 		return (1);
 	}
 	return (0);
@@ -76,12 +82,15 @@ static int	check_argument_pipe(t_data *data, t_expression *cur, t_list *list)
 	{
 		if (list->next && !((t_expression*)list->next->content)->arg)
 		{
-			print_error(data, 2, make_array("🐶 > syntax error near unexpected token `", ((t_expression*)list->next->content)->control_operator, "'", NULL));
+			print_error(data, 2, 
+			make_array("🐶 > syntax error near unexpected token `",
+			((t_expression*)list->next->content)->control_operator, "'", NULL));
 			return (1);
 		}
 		if (!list->next)
 		{
-			print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL, NULL));
+			print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL,
+				NULL));
 			return (1);
 		}
 	}
@@ -110,15 +119,12 @@ int	check_expressions(t_data *data)
 			check_argument_pipe(data, expression, temp))
 			return (1);
 		i = 0;
-		if (expression->arg)
+		while (expression->arg && expression->arg[i])
 		{
-			while (expression->arg[i])
-			{
-				if (expression->arg[i]->metacharacter == 1
-				&& check_argument(data, expression->arg, expression->control_operator, i))
-					return (1);
-				i++;
-			}
+			if (expression->arg[i]->metacharacter && check_argument(data,
+				expression->arg, expression->control_operator, i))
+				return (1);
+			i++;
 		}
 		temp = temp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 18:34:47 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:12:21 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** Returns the index of the end of the word segment
 */
 
-static int	word_segment_handler(t_data *data, e_special_char c, t_word **word, char *s)
+static int	word_segment_handler(t_data *data, e_special_char c, t_word **word,
+	char *s)
 {
 	f_word_segment_handler	word_segment_handler[5];
 
@@ -48,8 +49,8 @@ static e_special_char	identify_character(char *s, int i)
 	else if (s[i] == '\\' && !(count_backslash(s, i) % 2))
 		return (BACKSLASH);
 	else if (s[i] == '$' && !(count_backslash(s, i) % 2)
-	&& !is_control_operator(s[i + 1])
-	&& !(s[i + 1] != '_' && s[i + 1] != '?' && !ft_isalpha(s[i + 1])))
+	&& !is_control_operator(s[i + 1]) && !(s[i + 1] != '_' && s[i + 1] != '?'
+	&& !ft_isalpha(s[i + 1])))
 		return (ENVIRONMENT_VARIABLE);
 	else if (is_metacharacter(s[i]) && !(count_backslash(s, i) % 2))
 		return (METACHARACTER);

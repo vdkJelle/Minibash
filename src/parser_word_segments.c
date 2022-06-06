@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 18:35:33 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:11:27 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	handle_char(t_data *data, t_word **word, char *s)
 	(void)data;
 	single_char = malloc_guard(ft_calloc(sizeof(char), 2));
 	single_char[0] = s[0];
-	ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew(single_char)));
+	ft_lstadd_back(&((*word)->word_segment),
+		malloc_guard(ft_lstnew(single_char)));
 	return (1);
 }
 
@@ -104,7 +105,7 @@ int	handle_environment_variable(t_data *data, t_word **word, char *s)
 
 int	handle_metacharacter(t_data *data, t_word **word, char *s)
 {
-	int		i;
+	int	i;
 
 	(void)data;
 	i = skip_while_char(s, is_whitespace);

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:57:51 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:38:39 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 17:46:18 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 static int	count_quotes(char *s)
 {
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(s);

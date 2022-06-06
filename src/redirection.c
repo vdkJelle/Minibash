@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 17:42:34 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/06 18:15:17 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static void	here_doc_read_input(char *delimiter, int rd)
 	{
 		input = readline("> ");
 		if (!input)
-			print_error_exit(0, make_array("🐶 > warning: here-document at line 1",
-			" delimited by end-of-file (wanted `", delimiter, "')"));
+			print_error_exit(0, make_array("🐶 > warning: here-document at line",
+			"1 delimited by end-of-file (wanted `", delimiter, "')"));
 		if (!ft_strcmp(input, delimiter))
 			exit(0);
 		write(rd, input, ft_strlen(input));
@@ -82,7 +82,8 @@ static int	here_doc(t_data *data, char *delimiter, int fd[2])
 	tmp_fd = open("/tmp/here-document", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (tmp_fd == -1)
 	{
-		print_error(data, 1, make_array("🐶 > /tmp/here-document: ", strerror(errno), NULL, NULL));
+		print_error(data, 1, make_array("🐶 > /tmp/here-document: ",
+			strerror(errno), NULL, NULL));
 		return (1);
 	}
 	pid = fork();
