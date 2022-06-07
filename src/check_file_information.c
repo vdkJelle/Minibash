@@ -6,16 +6,16 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 18:20:22 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 18:19:29 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Utility function that closes the directory opened with opendir
-** Called when something went wrong with readdir
-** Returns -1 and prints errno
+**	Utility function that closes the directory opened with opendir
+**	Called when something went wrong with readdir
+**	Returns -1 and prints errno
 */
 
 static int	closedir_error(DIR **dir_p)
@@ -26,14 +26,14 @@ static int	closedir_error(DIR **dir_p)
 }
 
 /*
-** Checks if the file is present in the directory
-** Opens the directory and compares the filenames in the directory to our file
-** Returns 0 if the file was not found in the directory
-** Returns 1 if the file was found in the directory
-** Returns -1 if an error occured
+**	Checks if the file is present in the directory
+**	Opens the directory and compares the files in the directory to our file
+**	Returns 0 if the file was not found in the directory
+**	Returns 1 if the file was found in the directory
+**	Returns -1 if an error occured
 */
 
-static int	check_in_dir(char *s, char *dir)
+static int	check_in_dir(char *file, char *dir)
 {
 	struct dirent	*dir_s;
 	DIR				*dir_p;
@@ -47,7 +47,7 @@ static int	check_in_dir(char *s, char *dir)
 		closedir_error(&dir_p);
 	while (dir_s)
 	{
-		if (!ft_strcmp(s, dir_s->d_name))
+		if (!ft_strcmp(file, dir_s->d_name))
 		{
 			if (closedir(dir_p) == -1)
 				return (print_errno_int());
@@ -63,68 +63,90 @@ static int	check_in_dir(char *s, char *dir)
 }
 
 /*
-** Checks if the file is present in the /bin/ or /usr/bin/ directory exists
-** Uses check_in_dir
-** If a command doesn't have a '/' and is not present in /bin/ or /usr/bin
+**	Checks if the file is present in the /bin/ or /usr/bin/ directory
+**	Uses check_in_dir
+**	If a command doesn't have a / and is not present in /bin/ or /usr/bin/
 **		it cannot be found
-** Returns an enum with the type of file or an error
+**	Returns an enum with the type of file or an error
 */
 
-e_file	check_bin(t_data *data, char *s)
+e_file	check_bin_and_usr_bin(char *file)
 {
 	int	bin;
 	int	usr_bin;
-	
-	bin = check_in_dir(s, "/bin/");
+
+	bin = check_in_dir(file, "/bin/");
 	if (bin == -1)
 		return (FILE_ERROR);
 	else if (bin == 1)
 		return (BIN);
-	usr_bin = check_in_dir(s, "/usr/bin/");
+	usr_bin = check_in_dir(file, "/usr/bin/");
 	if (usr_bin == -1)
 		return (FILE_ERROR);
 	else if (usr_bin == 1)
 		return (USR_BIN);
-	print_error(data, 127, make_array(s, ": command not found", NULL, NULL));
 	return (NOT_FOUND);
 }
 
 /*
-** Checks if the file status of the executable
-** Files in the /bin/ or /usr/bin/ directory and regular files can be executed
-** Returns the type of file or an error
+**	Checks the file status of the executable
+**	Files in the /bin/ or /usr/bin/ directory and regular files can be executed
+**	Prints error messages and sets exit status if a file cannot be executed
+**	Returns an enum with file information
 */
 
-e_file	check_file(t_data *data, char *s)
+static e_file	handle_file_status(t_data *data, e_file file_status, char *file)
 {
-	struct stat sb;
-
-	if (!ft_strchr(s, '/'))
-		return (check_bin(data, s));
-	if (stat(s, &sb) == -1)
-	{
-		if (ENOENT)
-		{
-			print_error(data, 127, make_array("🐶 > ", s,
+	if (file_status == FILE_ERROR)
+		print_error(data, 1, make_array("🐶 > ", file, ": ", strerror(errno)));
+	else if (file_status == DIRECTORY)
+		print_error(data, 126, make_array("🐶 > ", file,
+				": Is a directory", NULL));
+	else if (file_status == NO_SUCH_FILE)
+		print_error(data, 127, make_array("🐶 > ", file,
 				": No such file or directory", NULL));
-			return (NOT_FOUND);
+	else if (file_status == NOT_EXECUTABLE)
+		print_error(data, 126, make_array("🐶 > ", file, ": ", strerror(errno)));
+	else if (file_status == NOT_FOUND)
+		print_error(data, 127, make_array(file, ": command not found", NULL,
+				NULL));
+	else if (file_status == PERMISSION_DENIED)
+		print_error(data, 126, make_array("🐶 > ", file,
+				": Permission denied", NULL));
+	return (file_status);
+}
+
+/*
+**	Checks the file status of the executable
+**	Checks if the file can be found in /bin/ or /usr/bin/
+**	Uses stat and mode_t to get more information about the file
+**	Returns an enum with file information
+*/
+
+e_file	check_file_information(t_data *data, char *file)
+{
+	struct stat	sb;
+	e_file		file_status;
+
+	if (!ft_strchr(file, '/'))
+		file_status = check_bin_and_usr_bin(file);
+	else
+	{
+		if (stat(file, &sb) == -1)
+		{
+			if (ENOENT)
+				file_status = NO_SUCH_FILE;
+			else
+				file_status = NOT_EXECUTABLE;
 		}
-		print_error(data, 126, make_array("🐶 > ", s, ": ", strerror(errno)));
-		return (NOT_EXECUTABLE);
+		else if (!(sb.st_mode & S_IXUSR))
+			file_status = PERMISSION_DENIED;
+		else if ((sb.st_mode & S_IFMT) == S_IFREG)
+			file_status = REGULAR;
+		else if ((sb.st_mode & S_IFMT) == S_IFDIR)
+			file_status = DIRECTORY;
+		else
+			file_status = FILE_ERROR;
 	}
-	if (!(sb.st_mode & S_IXUSR))
-	{
-		print_error(data, 126, make_array("🐶 > ", s, ": Permission denied",
-			NULL));
-		return (NOT_EXECUTABLE);
-	}
-	if ((sb.st_mode & S_IFMT) == S_IFREG)
-		return (REGULAR);
-	if ((sb.st_mode & S_IFMT) == S_IFDIR)
-	{
-		print_error(data, 126, make_array("🐶 > ", s, ": Is a directory",
-			NULL));
-		return (DIRECTORY);
-	}
-	return (FILE_ERROR);
+	return (handle_file_status(data, file_status, file));
 }
