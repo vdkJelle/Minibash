@@ -6,21 +6,21 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/03 13:43:43 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 18:37:21 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Gets the path to the executable based on file status
-** Returns a malloced string to the path of the executable
+**	Gets the path to the executable based on file status
+**	Returns a malloced string to the path of the executable
 */
 
 static char	*get_path(char *arg, e_file file)
 {
 	char	*ret;
-	
+
 	if (file == BIN)
 		ret = malloc_guard(ft_strjoin("/bin/", arg));
 	else if (file == USR_BIN)
@@ -36,23 +36,23 @@ static char	*get_path(char *arg, e_file file)
 }
 
 /*
-** Look up table for builtin command
-** Returns an enum with the type of command
+**	Look up table for builtin command
+**	Returns an enum with the type of command
 */
 
 static e_command	identify_command(char *s)
 {
 	int					i;
 	static const char	*builtins[7] = {
-		[CD] = "cd",
-		[ECHO] = "echo",
-		[ENV] = "env",
-		[EXIT] = "exit",
-		[EXPORT] = "export",
-		[PWD] = "pwd",
-		[UNSET] = "unset"
+	[CD] = "cd",
+	[ECHO] = "echo",
+	[ENV] = "env",
+	[EXIT] = "exit",
+	[EXPORT] = "export",
+	[PWD] = "pwd",
+	[UNSET] = "unset"
 	};
-	
+
 	i = 0;
 	while (i < 7)
 	{
@@ -64,18 +64,19 @@ static e_command	identify_command(char *s)
 }
 
 /*
-** Executes a command
-** If something went wrong with redirections or if there are no arguments
-**		create process is called with CMD_ERROR and will exit the child process immediately
-** Calls identify_command to check if the command is a builtin
-** If command is not a builtin
-**		the file status is checked with check_file
-**		the path to the executable is obtained with get_path
-**		calls create process
-** If command is a builtin
-**		calls execute_builtin_no_pipe if there is no pipe
-**		calls create process if there is a pipe
-** No return value
+**	Executes a command
+**	If something went wrong with redirections or if there are no arguments ...
+**	... create process is called with CMD_ERROR and will exit the child ...
+**	... process immediately after starting, no command will be executed
+**	Calls identify_command to check if the command is a builtin
+**	If command is not a builtin
+**		- the file status is checked with check_file
+**		- the path to the executable is obtained with get_path
+**		- calls create process
+**	If command is a builtin
+**		- calls execute_builtin_no_pipe if there is no pipe
+**		- calls create process if there is a pipe
+**	No return value
 */
 
 static void	execute(t_data *data, t_execute *cur, t_execute *prev)
@@ -88,7 +89,7 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 	cmd = identify_command(cur->args[0]);
 	if (cmd == NON_BUILTIN)
 	{
-		file = check_file(data, cur->args[0]);
+		file = check_file_information(data, cur->args[0]);
 		if (file == FILE_ERROR)
 			data->exit_status = 1;
 		if (file != BIN && file != USR_BIN && file != REGULAR)
@@ -96,19 +97,20 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 		cur->path = get_path(cur->args[0], file);
 		create_process(data, cmd, cur, prev);
 	}
-	else if (cmd != NON_BUILTIN && (cur->piped == 1 ||
-		(prev && prev->piped == 1)))
+	else if (cmd != NON_BUILTIN && (cur->piped == 1 || (prev
+				&& prev->piped == 1)))
 		create_process(data, cmd, cur, prev);
 	else
 		execute_builtin_no_pipe(data, cmd, cur);
 }
 
 /*
-** Initializes the execute struct
-** Sets the initial value of the file descriptors to no redirection
-** Calls get_final_args_and_handle_redirections to create the final array and handle redirections
-** Creates a pipe if the control operator is a pipe
-** Returns a malloced execute struct
+**	Initializes the execute struct
+**	Sets the initial value of the file descriptors to no redirection
+**	Calls get_final_args_and_handle_redirections to create the final array ...
+**	... and handle redirections
+**	Creates a pipe if the control operator is a pipe
+**	Returns a malloced execute struct
 */
 
 static t_execute	*get_exec(t_data *data, t_expression *expression)
@@ -122,16 +124,16 @@ static t_execute	*get_exec(t_data *data, t_expression *expression)
 	if (expression->control_operator[0] == '|')
 	{
 		if (pipe(exec->p_fd) == -1)
-			exit(1);
+			print_error_exit(1, make_array("🐶 > ", strerror(errno)));
 		exec->piped = 1;
 	}
 	return (exec);
 }
 
 /*
-** Iterates over the linked list with expressions and executes them
-** Saves a pointer to the previous expression to use in case of a pipe
-** No return value
+**	Iterates over the linked list with expressions and executes them
+**	Saves a pointer to the previous expression to use in case of a pipe
+**	No return value
 */
 
 void	cody_catch(t_data *data)
@@ -144,7 +146,7 @@ void	cody_catch(t_data *data)
 	temp = data->expression;
 	while (temp)
 	{
-		cur = get_exec(data, (t_expression*)temp->content);
+		cur = get_exec(data, (t_expression *)temp->content);
 		execute(data, cur, prev);
 		if (prev)
 			free_exec(prev);
