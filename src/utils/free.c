@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 18:45:24 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:51:45 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 22:30:54 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,6 @@ void	free_exec(t_execute *exec)
 }
 
 /*
-**	Frees a t_token struct
-**	No return value
-*/
-
-void	free_token(void *content)
-{
-	t_token	*token;
-
-	token = (t_token *)content;
-	free(token->string);
-	free(token->control_operator);
-	free(content);
-	content = NULL;
-}
-
-/*
 **	Frees a t_expression struct
 **	No return value
 */
@@ -106,6 +90,22 @@ void	free_expression(void *content)
 	}
 	free(expression->arg);
 	free(expression->control_operator);
+	free(content);
+	content = NULL;
+}
+
+/*
+**	Frees a t_token struct
+**	No return value
+*/
+
+void	free_token(void *content)
+{
+	t_token	*token;
+
+	token = (t_token *)content;
+	free(token->string);
+	free(token->control_operator);
 	free(content);
 	content = NULL;
 }
