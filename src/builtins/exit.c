@@ -6,44 +6,22 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:51:59 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 15:38:30 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Terminates the calling process
-** If there there are no arguments the process is terminated with exit code 0
-** If there is one argument and it's numeric (n)
-**		the process is terminated with exit code n
-** If there is one argument and isn't numeric
-**		the error is printed and the process is terminated with exit code 1
-** If there is more than one argument the error is printed and the process is
-**		not terminated
-** No return value
-*/
-
-// exit 4 nope
-// exit 4 4
-// too many arguments
-// exit status 1
-// no actual exit
-
-// exit nope 4
-// numeric argument
-// exit status 2
-// actual exit
-
-/*
-** Checks if all characters in the string are digits
-** Returns TRUE if the string is numeric
-** Returns FALSE if the string is empty or if the argument contains characters that are not digits
+**	Checks if all characters in the string are digits
+**	Returns TRUE if the string is numeric
+**	Returns FALSE if the string is empty or if the string contains a ...
+**	... character that is not a digit
 */
 
 static e_bool	is_string_numeric(char *s)
 {
-	int i;
+	int	i;
 
 	if (ft_strlen(s))
 	{
@@ -55,18 +33,23 @@ static e_bool	is_string_numeric(char *s)
 }
 
 /*
-** Exits the program
-** If there are no arguments the exit status is equal to our exit status
-** If the first argument is not numeric (for example: exit nope)
-**		an error message is printed
-**		the program exits with exit status 2
-** If the first argument is numeric but there are multiple arguments (for example: exit 4 nope ; exit 4 4)
-**		an error message is printed
-**		the program does not exit
-**		the exit status is unchanged
-** If the first argument is numeric and is the single argument exit is called with the value of the argument
-** Calling exit with a number smaller than 0 or bigger than 255 will result in undefined behavior
-** No return value
+**	Exits the program
+**	If there are no arguments the exit status is equal to our exit status
+**	If the first argument is not numeric
+**		- example: exit nope or exit 42a
+**		- an error message is printed
+**		- the program exits with exit status 2
+**	If the first argument is numeric but there are multiple arguments
+**		- example: exit 42 nope or exit 42 42
+**		- an error message is printed
+**		- the program does not exit
+**		- the exit status is unchanged
+**	If the first argument is numeric and is the single argument exit is ...
+**	... called with the value of the argument
+**		- example: exit 42
+**	Calling exit with a number smaller than 0 or bigger than 255 will result ...
+**	... in undefined behavior
+**	No return value
 */
 
 void	ft_exit(t_data *data)
@@ -79,38 +62,14 @@ void	ft_exit(t_data *data)
 	if (numeric == FALSE)
 	{
 		print_error(data, 2, make_array("🐶 > exit: ", data->args[1],
-			": numeric argument required", NULL));
+				": numeric argument required", NULL));
 		exit(2);
 	}
 	if (data->args[2])
 	{
 		print_error(data, 1, make_array("🐶 > exit: too many arguments",
-			NULL, NULL, NULL));
+				NULL, NULL, NULL));
 		return ;
 	}
 	exit(ft_atoi(data->args[1]));
 }
-
-// void	ft_exit(t_data *data)
-// {
-// 	char	**data->args;
-// 	int		i;
-
-// 	data->args = data->data->args;
-// 	if (data->args[1] && data->args[2] != NULL)
-// 	{
-// 		print_error(data, 1, make_array("🐶 > exit: too many arguments", NULL, NULL, NULL));
-// 		return ;
-// 	}
-// 	ft_putstr_fd("exit\n", data->our_fd[1]);
-// 	if (data->args[1] && data->args[2] == NULL)
-// 	{
-// 		i = 0;
-// 		while (data->args[1][i] && ft_isdigit(data->args[1][i]))
-// 			i++;
-// 		if (data->args[1][i] != '\0')
-// 			print_error_exit(2, make_array("🐶 > exit: ", data->args[1], ": numeric argument required", NULL));
-// 		data->exit_status = ft_atoi(data->args[1]);
-// 	}
-// 	exit(data->exit_status);
-// }

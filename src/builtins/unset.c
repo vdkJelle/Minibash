@@ -6,17 +6,17 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/05/24 18:39:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/07 15:45:20 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Removes an environmental variable
-** Frees the string and moves the other strings up one place
-** Decrements the size of the array
-** No return value
+**	Removes an environmental variable
+**	Frees the string and moves the other strings up one place
+**	Decrements the size of the array
+**	No return value
 */
 
 static void	destroy_entry(char ***our_env, int *env_size, int i)
@@ -32,15 +32,15 @@ static void	destroy_entry(char ***our_env, int *env_size, int i)
 }
 
 /*
-** Checks if there is a match between the key and an environmental variable
-** If the key is a match the environmental variable is destroyed
-** No return value
+**	Checks if there is a match between the key and an environmental variable
+**	If the key is a match the environmental variable is destroyed
+**	No return value
 */
 
 static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 {
-	int		i;
-	int 	j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while ((*our_env)[i])
@@ -56,52 +56,51 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 }
 
 /*
-** Checks if the identifier is valid
-** An argument is invalid if 
-**		the first character is not a letter or '_'
-** 		the following characters up to the '=' are not alphanumerical or '_'
-** Returns 0 if the argument is valid
-** Returns 1 if the argument is invalid
+**	Checks if the identifier is valid
+**	An argument is invalid if 
+**		- the first character is not a letter or '_'
+** 		- the following characters up to the '=' are not alphanumerical or '_'
+**	Returns FALSE if the argument is invalid
+**	Returns TRUE if the argument is valid
 */
 
-static int	check_if_valid(char *input)
+static e_bool	check_if_valid(char *input)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (!ft_isalpha(input[i]) && input[i] != '_')
-		return (1);
+		return (FALSE);
 	while (input[i])
 	{
 		if (!ft_isalnum(input[i]) && input[i] != '_')
-			return (1);
+			return (FALSE);
 		i++;
 	}
-	return (0);
+	return (TRUE);
 }
 
 /*
-** Removes environmental variables
-** An environmental variable is removed from the array if
-**		the argument is valid
-**		the key exists
-** No return value
+**	Removes environmental variables
+**	An environmental variable is removed from the array if
+**		- the argument is valid
+**		- the key exists
+**	No return value
 */
 
 void	ft_unset(t_data *data)
 {
-	char	**args;
 	int		i;
 
-	args = data->args;
 	data->exit_status = 0;
 	i = 1;
-	while (args[i])
+	while (data->args[i])
 	{
-		if (check_if_valid(args[i]))
-			print_error(data, 1, make_array("🐶 > unset: `", args[i], "': not a valid identifier", NULL));
+		if (check_if_valid(data->args[i]) == FALSE)
+			print_error(data, 1, make_array("🐶 > unset: `", data->args[i],
+					"': not a valid identifier", NULL));
 		else
-			check_for_entry(args[i], &data->our_env, &data->env_size);
+			check_for_entry(data->args[i], &data->our_env, &data->env_size);
 		i++;
 	}
 }

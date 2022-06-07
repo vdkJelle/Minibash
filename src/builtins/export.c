@@ -6,23 +6,23 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/05 17:40:34 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 15:39:28 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Prints the environmental variable
-** Prints declase -x first
-** Places double quotes around the value
-** Prints baskslashes of the value double
-** No return value
+**	Prints all environmental variables with newlines in between
+**	Prints declare -x before every environmental variable
+**	Places double quotes around the value
+**	Prints baskslashes of the value double
+**	No return value
 */
 
 static void	print_export(char *our_env, int our_fd)
 {
-	int		i;
+	int	i;
 
 	ft_putstr_fd("declare -x ", 1);
 	i = 0;
@@ -55,10 +55,11 @@ static void	print_export(char *our_env, int our_fd)
 ** Returns 0 if the variable is new
 ** Returns 1 if the variable already existed
 */
+
 static int	check_if_exists(char *arg, char ***our_env)
 {
-	int		i;
-	int 	j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -88,7 +89,8 @@ static int	check_if_exists(char *arg, char ***our_env)
 ** If the variable key is new the value is appended to the array
 ** No return value
 */
-void		append_key_value(char *arg, char ***our_env, int *env_size)
+
+void	append_key_value(char *arg, char ***our_env, int *env_size)
 {
 	char	**tmp;
 	int		i;
@@ -127,7 +129,7 @@ static int	check_if_valid(t_data *data, char *s)
 	if (!ft_isalpha(s[i]) && s[i] != '_')
 	{
 		print_error(data, 1, make_array("🐶 > export: `", s,
-			"': not a valid identifier", NULL));
+				"': not a valid identifier", NULL));
 		return (1);
 	}
 	while (s[i] && s[i] != '=')
@@ -135,7 +137,7 @@ static int	check_if_valid(t_data *data, char *s)
 		if (!ft_isalnum(s[i]) && s[i] != '_')
 		{
 			print_error(data, 1, make_array("🐶 > export: `", s,
-				"': not a valid identifier", NULL));
+					"': not a valid identifier", NULL));
 			return (1);
 		}
 		i++;
@@ -149,9 +151,10 @@ static int	check_if_valid(t_data *data, char *s)
 ** If arguments are provided and identifiers are valid arguments are appended
 ** No return value
 */
-void		ft_export(t_data *data)
+
+void	ft_export(t_data *data)
 {
-	int		i;
+	int	i;
 
 	data->exit_status = 0;
 	i = 0;
