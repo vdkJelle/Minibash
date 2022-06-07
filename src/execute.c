@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 18:37:21 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 18:48:27 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ static t_execute	*get_exec(t_data *data, t_expression *expression)
 	if (expression->control_operator[0] == '|')
 	{
 		if (pipe(exec->p_fd) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno)));
+			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
+					NULL));
 		exec->piped = 1;
 	}
 	return (exec);
