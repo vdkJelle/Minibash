@@ -6,19 +6,19 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/06 13:57:36 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 18:56:39 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Adds the correct shell level to the array of environmental variables
-** If SHLVL is not set the value it is set to 1
-** If SHLVL is set but the value is not numeric the value is set to 1
-** If SHLVL is set correctly the value is incremented
-** Calls append_key_value to add the key and value to the array of env variables
-** No return value
+**	Adds the correct shell level to the array of environmental variables
+**	If SHLVL is not set the value it is set to 1
+**	If SHLVL is set but the value is not numeric the value is set to 1
+**	If SHLVL is set correctly the value is incremented
+**	Calls append_key_value to add the SHLVL to the array of env variables
+**	No return value
 */
 
 static void	handle_shlvl(char ***our_env, int *env_size)
@@ -27,7 +27,7 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 	char	*temp;
 	int		i;
 	int		n;
-	
+
 	shlvl = get_env(*our_env, "SHLVL");
 	if (!shlvl)
 		temp = malloc_guard(ft_strdup("SHLVL=1"));
@@ -39,7 +39,8 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 		else
 		{
 			n = ft_atoi(shlvl) + 1;
-			temp = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup("SHLVL=")), malloc_guard(ft_itoa(n)), 3));
+			temp = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup
+							("SHLVL=")), malloc_guard(ft_itoa(n)), 3));
 		}
 	}
 	append_key_value(temp, our_env, env_size);
@@ -47,10 +48,10 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 }
 
 /*
-** Copies the environmental variables of the shell environment
-** Uses an external char **environ
-** Calls handle_shlvl to set the correct value of the key SHLVL
-** No return value
+**	Copies the environmental variables of the shell environment
+**	Uses an external char **environ
+**	Calls handle_shlvl to set the correct value of the key SHLVL
+**	No return value
 */
 
 static void	initialize_env(char ***our_env, int *env_size)
@@ -74,12 +75,12 @@ static void	initialize_env(char ***our_env, int *env_size)
 }
 
 /*
-** Calls check_multiline_command to make sure there are no multiline commands
-** Calls get_token to tokenize the input
-** Calls parser to build expressions from the tokens
-** Calls check_expression to make sure the expression is valid
-** Calls cody_catch where the commands are executed
-** No return value
+**	Calls check_multiline_command to make sure there are no multiline commands
+**	Calls get_token to tokenize the input
+**	Calls parser to build expressions from the tokens
+**	Calls check_expression to make sure the expression is valid
+**	Calls cody_catch where the commands are executed
+**	No return value
 */
 
 static void	tokenize_parse_execute(t_data *data, char *input)
@@ -100,11 +101,11 @@ static void	tokenize_parse_execute(t_data *data, char *input)
 }
 
 /*
-** Main of the amazing Codyshell 🐶
-** Prints prompt
-** Reads from the terminal with readline
-** Sends the input to tokenize_parse_execute
-** Returns 0
+**	Main of the amazing Codyshell 🐶
+**	Prints prompt
+**	Reads from the terminal with readline
+**	Sends the input to tokenize_parse_execute
+**	Returns 0
 */
 
 int	main(void)
