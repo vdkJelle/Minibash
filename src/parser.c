@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 18:38:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/05 18:28:06 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 19:15:21 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Joins the word segments into a word
-** Returns a malloced string with the word
+**	Joins the word segments into a word
+**	Returns a malloced string with the word
 */
 
 static char	*join_word(t_word *arg)
@@ -44,11 +44,11 @@ static char	*join_word(t_word *arg)
 }
 
 /*
-** Gets the arguments
-** Calls count_arguments to get the size of the array of arguments
-** Calls get_arg to get the word segements of the argument
-** Calls join word to merge the word segments of the command into one word
-** Returns a malloced array of malloced t_word structs
+**	Gets the arguments
+**	Calls count_arguments to get the size of the array of arguments
+**	Calls get_arg to get the word segements of the argument
+**	Calls join word to merge the word segments of the command into one word
+**	Returns a malloced array of malloced t_word structs
 */
 
 static t_word	**get_arguments(t_data *data, char *s, char control_operator)
@@ -59,7 +59,7 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 	t_word	**args;
 
 	size = count_arguments(s, control_operator);
-	args = malloc_guard(ft_calloc(sizeof(t_word*), size + 1));
+	args = malloc_guard(ft_calloc(sizeof(t_word *), size + 1));
 	i = 0;
 	j = 0;
 	while (i < size)
@@ -73,12 +73,10 @@ static t_word	**get_arguments(t_data *data, char *s, char control_operator)
 }
 
 /*
-** Parses over tokens and builds expressions out of them
-** Each expression consists of
-**		arguments, none, one or more words (strings)
-**		control operator, a string with one or a combinations of the following characters ; | ( ) &
-** Words are seperated by metacharacters
-** No return value
+**	Parses over tokens and builds expressions out of them
+**	Each expression consists of arguments and a control operator
+**	Arguments are words seperated by metacharacters
+**	No return value
 */
 
 void	parser(t_data *data)
@@ -93,8 +91,10 @@ void	parser(t_data *data)
 		token = temp->content;
 		expression = malloc_guard(ft_calloc(sizeof(t_expression), 1));
 		if (token->string)
-			expression->arg = get_arguments(data, token->string, token->control_operator[0]);
-		expression->control_operator = malloc_guard(ft_strdup(token->control_operator));
+			expression->arg = get_arguments(data, token->string,
+					token->control_operator[0]);
+		expression->control_operator = malloc_guard(ft_strdup
+				(token->control_operator));
 		ft_lstadd_back(&data->expression, malloc_guard(ft_lstnew(expression)));
 		temp = temp->next;
 	}
