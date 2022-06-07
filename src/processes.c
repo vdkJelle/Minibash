@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 19:23:10 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:07:18 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	child_pipes(t_execute *cur, t_execute *prev)
 **	No return value
 */
 
-static void	child_process(t_data *data, e_command cmd, t_execute *cur,
+static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 	t_execute *prev)
 {
 	signal(SIGINT, SIG_DFL);
@@ -122,7 +122,7 @@ static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 **	No return value
 */
 
-void	create_process(t_data *data, e_command cmd, t_execute *cur,
+void	create_process(t_data *data, enum e_command cmd, t_execute *cur,
 	t_execute *prev)
 {
 	pid_t	pid;

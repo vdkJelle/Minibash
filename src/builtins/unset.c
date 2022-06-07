@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:45:20 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:04:20 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 **	Returns TRUE if the argument is valid
 */
 
-static e_bool	check_if_valid(char *input)
+static enum e_bool	check_if_valid(char *input)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:38:30 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:03:37 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 **	... character that is not a digit
 */
 
-static e_bool	is_string_numeric(char *s)
+static enum e_bool	is_string_numeric(char *s)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ static e_bool	is_string_numeric(char *s)
 
 void	ft_exit(t_data *data)
 {
-	e_bool	numeric;
+	enum e_bool	numeric;
 
 	if (!data->args[1])
 		exit(data->exit_status);

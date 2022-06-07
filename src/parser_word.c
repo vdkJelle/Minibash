@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/21 20:56:05 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 19:10:13 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:09:03 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 **	Returns the index of the end of the word segment
 */
 
-static int	word_segment_handler(t_data *data, e_special_char c, t_word **word,
-	char *s)
+static int	word_segment_handler(t_data *data, enum e_special_char c,
+	t_word **word, char *s)
 {
-	f_word_segment_handler	word_segment_handler[5];
+	t_word_segment_handler	word_segment_handler[5];
 
 	word_segment_handler[CHAR] = handle_char;
 	word_segment_handler[DOUBLEQUOTE] = handle_doublequotes;
@@ -40,7 +40,7 @@ static int	word_segment_handler(t_data *data, e_special_char c, t_word **word,
 **	Returns the type of character
 */
 
-static e_special_char	identify_character(char *s, int i)
+static enum e_special_char	identify_character(char *s, int i)
 {
 	if (s[i] == '\'' && !(count_backslash(s, i) % 2))
 		return (SINGLEQUOTE);
@@ -74,8 +74,8 @@ static e_special_char	identify_character(char *s, int i)
 
 int	get_word(t_data *data, t_word **word, char *s, char control_operator)
 {
-	int				i;
-	e_special_char	c;
+	int					i;
+	enum e_special_char	c;
 
 	if (s[0] && is_metacharacter(s[0]))
 		return (word_segment_handler(data, METACHARACTER, word, s));

@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 18:19:29 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:01:19 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	check_in_dir(char *file, char *dir)
 **	Returns an enum with the type of file or an error
 */
 
-e_file	check_bin_and_usr_bin(char *file)
+enum e_file	check_bin_and_usr_bin(char *file)
 {
 	int	bin;
 	int	usr_bin;
@@ -95,7 +95,8 @@ e_file	check_bin_and_usr_bin(char *file)
 **	Returns an enum with file information
 */
 
-static e_file	handle_file_status(t_data *data, e_file file_status, char *file)
+static enum e_file	handle_file_status(t_data *data, enum e_file file_status,
+	char *file)
 {
 	if (file_status == FILE_ERROR)
 		print_error(data, 1, make_array("🐶 > ", file, ": ", strerror(errno)));
@@ -123,10 +124,10 @@ static e_file	handle_file_status(t_data *data, e_file file_status, char *file)
 **	Returns an enum with file information
 */
 
-e_file	check_file_information(t_data *data, char *file)
+enum e_file	check_file_information(t_data *data, char *file)
 {
 	struct stat	sb;
-	e_file		file_status;
+	enum e_file	file_status;
 
 	if (!ft_strchr(file, '/'))
 		file_status = check_bin_and_usr_bin(file);

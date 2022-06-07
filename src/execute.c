@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 18:48:27 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:04:46 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	Returns a malloced string to the path of the executable
 */
 
-static char	*get_path(char *arg, e_file file)
+static char	*get_path(char *arg, enum e_file file)
 {
 	char	*ret;
 
@@ -40,7 +40,7 @@ static char	*get_path(char *arg, e_file file)
 **	Returns an enum with the type of command
 */
 
-static e_command	identify_command(char *s)
+static enum e_command	identify_command(char *s)
 {
 	int					i;
 	static const char	*builtins[7] = {
@@ -81,8 +81,8 @@ static e_command	identify_command(char *s)
 
 static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 {
-	e_command	cmd;
-	e_file		file;
+	enum e_command	cmd;
+	enum e_file		file;
 
 	if (!cur->args || !cur->args[0])
 		return (create_process(data, CMD_ERROR, cur, prev));
