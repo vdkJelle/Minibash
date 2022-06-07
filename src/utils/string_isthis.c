@@ -6,18 +6,18 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 12:19:07 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 14:39:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/06/07 17:13:54 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Checks if the character is a control operator
-** A control operator is a token that performs a control function
-**		and seperates token sets from each other
-** Returns 0 if the character is not a control operator
-** Returns 1 if the character is a control operator
+**	Checks if the character is a control operator
+**	A control operator is a token that performs a control function ...
+**	... and seperates tokens from each other
+**	Returns 0 if the character is not a control operator
+**	Returns 1 if the character is a control operator
 */
 
 int	is_control_operator(char c)
@@ -28,10 +28,10 @@ int	is_control_operator(char c)
 }
 
 /*
-** Checks if the character is a metacharacter
-** A metacharacter is a character that, when unquoted, seperates words
-** Returns 0 if the character is not a metacharacter
-** Returns 1 if the character is a metacharacter
+**	Checks if the character is a metacharacter
+**	A metacharacter is a character that, when unquoted, seperates words
+**	Returns 0 if the character is not a metacharacter
+**	Returns 1 if the character is a metacharacter
 */
 
 int	is_metacharacter(char c)
@@ -43,9 +43,9 @@ int	is_metacharacter(char c)
 }
 
 /*
-** Checks if the character is a whitespace
-** Returns 0 if the character is not a whitespace
-** Returns 1 if the character is a whitespace
+**	Checks if the character is a whitespace
+**	Returns 0 if the character is not a whitespace
+**	Returns 1 if the character is a whitespace
 */
 
 int	is_whitespace(char c)
@@ -56,23 +56,23 @@ int	is_whitespace(char c)
 }
 
 /*
-** Checks if the string is a valid redirection
-** Returns 0 if the string is not a valid redirection
-** Returns 1 if the string is a valid redirection
+**	Checks if the string is a valid redirection
+**	Returns 0 if the string is not a valid redirection
+**	Returns 1 if the string is a valid redirection
 */
 
 int	is_redirection(char *s)
 {
-	if (!ft_strcmp(s, "<\0") || !ft_strcmp(s, "<<\0")
-		|| !ft_strcmp(s, ">\0") || !ft_strcmp(s, ">>\0"))
+	if (!ft_strcmp(s, "<") || !ft_strcmp(s, "<<") || !ft_strcmp(s, ">")
+		|| !ft_strcmp(s, ">>"))
 		return (1);
 	return (0);
 }
 
 /*
-** Checks if the character is a digit
-** Returns 0 if the character is not a digit
-** Returns 1 if the character is a digit
+**	Checks if the character is a digit
+**	Returns 0 if the character is not a digit
+**	Returns 1 if the character is a digit
 */
 
 int	ft_isdigit_char(char c)
