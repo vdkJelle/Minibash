@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/05 18:34:19 by tessa         ########   odam.nl          #
+#    Updated: 2022/06/07 23:29:29 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,20 +18,18 @@ SRCS		=	builtins/cd\
 				builtins/export\
 				builtins/pwd\
 				builtins/unset\
-				check_file_information\
-				check_multiline_command\
-				execute\
-				execute_builtin\
-				final_args\
-				main\
-				parser_check\
-				parser_word\
-				parser_word_segments\
-				parser\
-				processes\
-				redirection\
-				signals\
-				tokenizer\
+				execute/check_file_information\
+				execute/execute_builtin\
+				execute/execute\
+				execute/final_args\
+				execute/processes\
+				execute/redirection\
+				tokenizer_and_parser/check_multiline_command\
+				tokenizer_and_parser/parser_check\
+				tokenizer_and_parser/parser_word\
+				tokenizer_and_parser/parser_word_segments\
+				tokenizer_and_parser/parser\
+				tokenizer_and_parser/tokenizer\
 				utils/free\
 				utils/get_env\
 				utils/list\
@@ -40,7 +38,9 @@ SRCS		=	builtins/cd\
 				utils/string\
 				utils/string_count\
 				utils/string_isthis\
-				utils/string_skip_characters
+				utils/string_skip_characters\
+				main\
+				signals
 CFILES		=	$(SRCS:%=src/%.c)
 OFILES		=	$(SRCS:%=obj/%.o)
 INCLUDES	=	./includes/.

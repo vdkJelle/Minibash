@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 23:09:15 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 23:30:42 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,37 +140,90 @@ typedef void	(*t_builtin)(t_data *data);
 **--------------------------------BUILTINS/CD.C---------------------------------
 */
 void		ft_cd(t_data *data);
-
 /*
 **-------------------------------BUILTINS/ECHO.C--------------------------------
 */
 void		ft_echo(t_data *data);
-
 /*
 **--------------------------------BUILTINS/ENV.C--------------------------------
 */
 void		ft_env(t_data *data);
-
 /*
 **-------------------------------BUILTINS/EXIT.C--------------------------------
 */
 void		ft_exit(t_data *data);
-
 /*
 **------------------------------BUILTINS/EXPORT.C-------------------------------
 */
 void		append_key_value(char *arg, char ***our_env, int *env_size);
 void		ft_export(t_data *data);
-
 /*
 **--------------------------------BUILTINS/PWD.C--------------------------------
 */
 void		ft_pwd(t_data *data);
-
 /*
 **-------------------------------BUILTINS/UNSET.C-------------------------------
 */
 void		ft_unset(t_data *data);
+
+/*
+**-----------------------EXECUTE/CHECK_FILE_INFORMATION.C-----------------------
+*/
+enum e_file	check_file_information(t_data *data, char *s);
+/*
+**--------------------------EXECUTE/EXECUTE_BUILTIN.C---------------------------
+*/
+void		execute_builtin_pipe(t_data *data, enum e_command cmd,
+				t_execute *exec);
+void		execute_builtin_no_pipe(t_data *data, enum e_command cmd,
+				t_execute *exec);
+/*
+**------------------------------EXECUTE/EXECUTE.C-------------------------------
+*/
+void		cody_catch(t_data *data);
+/*
+**-----------------------------EXECUTE/FINAL_ARGS.C-----------------------------
+*/
+void		get_final_args_and_handle_redirections(t_data *data,
+				t_expression *expression, t_execute *exec);
+/*
+**-----------------------------EXECUTE/PROCESSES.C------------------------------
+*/
+void		create_process(t_data *data, enum e_command cmd, t_execute *cur,
+				t_execute *prev);
+/*
+**-----------------------------EXECUTE/REDIRECTION.C----------------------------
+*/
+int			redirection(t_data *data, t_word **arg, int i, int fd[2]);
+
+/*
+**---------------TOKENIZER_AND_PARSER/CHECK_MULTILINE_COMMANDS.C----------------
+*/
+int			check_multiline_command(t_data *data, char *s);
+/*
+**---------------------TOKENIZER_AND_PARSER/PARSER_CHECK.C----------------------
+*/
+int			check_expressions(t_data *data);
+/*
+**-----------------TOKENIZER_AND_PARSER/PARSER_WORD_SEGMENTS.C------------------
+*/
+int			handle_char(t_data *data, t_word **word, char *s);
+int			handle_doublequotes(t_data *data, t_word **word, char *s);
+int			handle_environment_variable(t_data *d, t_word **word, char *s);
+int			handle_metacharacter(t_data *data, t_word **word, char *s);
+int			handle_singlequotes(t_data *data, t_word **word, char *s);
+/*
+**----------------------TOKENIZER_AND_PARSER/PARSER_WORD.C----------------------
+*/
+int			get_word(t_data *data, t_word **word, char *s, char control_op);
+/*
+**------------------------TOKENIZER_AND_PARSER/PARSER.C-------------------------
+*/
+void		parser(t_data *data);
+/*
+**-----------------------TOKENIZER_AND_PARSER/TOKENIZER.C-----------------------
+*/
+void		get_token(t_data *data, char *s);
 
 /*
 **---------------------------------UTILS/FREE.C---------------------------------
@@ -180,23 +233,19 @@ void		free_array_part(char ***array, int i);
 void		free_exec(t_execute *exec);
 void		free_expression(void *content);
 void		free_token(void *content);
-
 /*
 **-------------------------------UTILS/GET_ENV.C--------------------------------
 */
 char		*get_env(char **env, char *key);
-
 /*
 **---------------------------------UTILS/LIST.C---------------------------------
 */
 void		print_expression(void *content);
-
 /*
 **----------------------------UTILS/MALLOC_WRAPPER.C----------------------------
 */
 void		*malloc_guard(void *ret);
 void		*ft_malloc(size_t size);
-
 /*
 **-----------------------------UTILS/PRINT_ERROR.C------------------------------
 */
@@ -205,13 +254,11 @@ int			print_errno_int(void);
 char		**make_array(char *s1, char *s2, char *s3, char *s4);
 void		print_error_exit(int exit_status, char **messages);
 void		print_error(t_data *data, int exit_status, char **messages);
-
 /*
 **-----------------------------UTILS/STRING_COUNT.C-----------------------------
 */
 int			count_arguments(char *s, char c);
 int			count_backslash(char *s, int loc);
-
 /*
 **----------------------------UTILS/STRING_IS_THIS.C----------------------------
 */
@@ -220,7 +267,6 @@ int			is_metacharacter(char c);
 int			is_redirection(char *s);
 int			is_whitespace(char c);
 int			ft_isdigit_char(char c);
-
 /*
 **------------------------UTILS/STRING_SKIP_CHARACTERS.C------------------------
 */
@@ -228,7 +274,6 @@ int			skip_until_next_doubleq(char *s);
 int			skip_until_char(char *s, char c);
 int			skip_while_char(char *s, int (*ft_isthis)(char c));
 int			skip_while_not_char(char *s, int (*ft_isthis)(char c));
-
 /*
 **--------------------------------UTILS/STRING.C--------------------------------
 */
@@ -236,80 +281,14 @@ int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strjoin_wrapper(char *s1, char *s2, int mode);
 
 /*
-**---------------------------CHECK_FILE_INFORMATION.C---------------------------
-*/
-enum e_file	check_file_information(t_data *data, char *s);
-
-/*
-**--------------------------CHECK_MULTILINE_COMMANDS.C--------------------------
-*/
-int			check_multiline_command(t_data *data, char *s);
-
-/*
-**------------------------------EXECUTE_BUILTIN.C-------------------------------
-*/
-void		execute_builtin_pipe(t_data *data, enum e_command cmd,
-				t_execute *exec);
-void		execute_builtin_no_pipe(t_data *data, enum e_command cmd,
-				t_execute *exec);
-
-/*
-**----------------------------------EXECUTE.C-----------------------------------
-*/
-void		cody_catch(t_data *data);
-
-/*
-**---------------------------------FINAL_ARGS.C---------------------------------
-*/
-void		get_final_args_and_handle_redirections(t_data *data,
-				t_expression *expression, t_execute *exec);
-
-/*
 **------------------------------------MAIN.C------------------------------------
 */
 int			main(void);
-
-/*
-**--------------------------------PARSER_CHECK.C--------------------------------
-*/
-int			check_expressions(t_data *data);
-
-/*
-**----------------------------PARSER_WORD_SEGMENTS.C----------------------------
-*/
-int			handle_char(t_data *data, t_word **word, char *s);
-int			handle_doublequotes(t_data *data, t_word **word, char *s);
-int			handle_environment_variable(t_data *d, t_word **word, char *s);
-int			handle_metacharacter(t_data *data, t_word **word, char *s);
-int			handle_singlequotes(t_data *data, t_word **word, char *s);
-
-/*
-**--------------------------------PARSER_WORD.C---------------------------------
-*/
-int			get_word(t_data *data, t_word **word, char *s, char control_op);
-
-/*
-**-----------------------------------PARSER.C-----------------------------------
-*/
-void		parser(t_data *data);
-
-void		create_process(t_data *data, enum e_command cmd, t_execute *cur,
-				t_execute *prev);
-
-/*
-**--------------------------------REDIRECTION.C---------------------------------
-*/
-int			redirection(t_data *data, t_word **arg, int i, int fd[2]);
 
 /*
 **----------------------------------SIGNALS.C-----------------------------------
 */
 void		signal_output(int sig);
 void		ft_signal_handler(void);
-
-/*
-**----------------------------------TOKENIZER.C---------------------------------
-*/
-void		get_token(t_data *data, char *s);
 
 #endif
