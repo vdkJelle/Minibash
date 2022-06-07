@@ -6,15 +6,15 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 17:52:17 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 17:10:42 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Prints the error message to STDERR_FILENO using strerror(errno)
-** Returns -1
+**	Prints the error message to STDERR_FILENO using strerror(errno)
+**	Returns -1
 */
 
 int	print_errno_int(void)
@@ -25,8 +25,8 @@ int	print_errno_int(void)
 }
 
 /*
-** Prints the error message to STDERR_FILENO using strerror(errno)
-** No return value
+**	Prints the error message to STDERR_FILENO using strerror(errno)
+**	No return value
 */
 
 void	print_errno(void)
@@ -35,6 +35,11 @@ void	print_errno(void)
 	ft_putchar_fd('\n', STDERR_FILENO);
 }
 
+/*
+**	Creates an array of strings
+**	Needed while printing error messages as va_list is not allowed
+**	Returns a null terminated, dynamically allocated array of strings
+*/
 
 char	**make_array(char *s1, char *s2, char *s3, char *s4)
 {

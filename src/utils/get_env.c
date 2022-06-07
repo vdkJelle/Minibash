@@ -6,17 +6,17 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 16:23:09 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 18:18:57 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 15:54:32 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Finds the value of an environmental variable based on the key
-** Returns a pointer to a string where the value starts if it finds a match
-** Returns NULL if it doesn't find a match
-** Returns NULL if the environmental variable doesn't have a value
+**	Finds the value of an environmental variable based on the key
+**	Returns a pointer to a string where the value starts if it finds a match
+**	Returns NULL if it doesn't find a match
+**	Returns NULL if the environmental variable doesn't have a value
 */
 
 char	*get_env(char **our_env, char *key)
