@@ -6,21 +6,21 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/06 18:11:27 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/07 19:05:05 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /*
-** Saves a single character as a word segment
-** Returns 1
+**	Saves a single character as a word segment
+**	Returns 1
 */
 
 int	handle_char(t_data *data, t_word **word, char *s)
 {
 	char	*single_char;
-	
+
 	(void)data;
 	single_char = malloc_guard(ft_calloc(sizeof(char), 2));
 	single_char[0] = s[0];
@@ -30,30 +30,30 @@ int	handle_char(t_data *data, t_word **word, char *s)
 }
 
 /*
-** Saves everything between double quotes as a word segment
-** If the next character is a double quote, nothing is saved
-** If there is a backslash and the next character is a backslash, double quote
-**		or dollar sign, the next character is saved instead of the current
-** If there is a dollar sign environmental variables have to be handled if
-**		the next character is not a double quote
-**		the next character is the first character of a valid identifier
-** Returns index of the end of the word segment
+**	Saves everything between double quotes as a word segment
+**	If the next character is a double quote, nothing is saved
+**	If there is a backslash and the next character is a backslash, double ...
+**	... quote or dollar sign, the next character is saved instead of the current
+**	If there is a dollar sign environmental variables have to be handled if
+**		- the next character is not a double quote
+**		- the next character is the first character of a valid identifier
+**	Returns index of the end of the word segment
 */
 
 int	handle_doublequotes(t_data *data, t_word **word, char *s)
 {
 	int	i;
-	
+
 	if (s[1] && s[1] == '\"')
 		return (2);
 	i = 1;
-	while (s[i] && (s[i] != '\"'
-	|| (s[i] == '\"' && count_backslash(s, i) % 2)))
+	while (s[i] && (s[i] != '\"' || (s[i] == '\"'
+				&& count_backslash(s, i) % 2)))
 	{
 		if (s[i] == '\\' && s[i + 1] && ft_strchr("\\\"$", s[i + 1]))
 			i += handle_char(data, word, s + i + 1);
 		else if (s[i] == '$' && !(count_backslash(s, i) % 2)
-		&& s[i + 1] != '\"' && !(s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
+			&& s[i + 1] != '\"' && !(s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
 			i += handle_environment_variable(data, word, s + i) - 1;
 		else
 			handle_char(data, word, s + i);
@@ -63,12 +63,12 @@ int	handle_doublequotes(t_data *data, t_word **word, char *s)
 }
 
 /*
-** Adds the value of an environmental variable as a word segment
-** If the next character is a question mark
-**		the exit status is saved as a word segment
-** Looks up the value of an environmental variable with get_env based on the key
-** If no value is found nothing is saved
-** Returns index of the end of the key
+**	Adds the value of an environmental variable as a word segment
+**	If the next character is a question mark the exit status is saved as a ...
+**	... word segment
+**	Finds the value of an environmental variable with get_env based on the key
+**	If no value is found nothing is saved
+**	Returns index of the end of the key
 */
 
 int	handle_environment_variable(t_data *data, t_word **word, char *s)
@@ -79,8 +79,8 @@ int	handle_environment_variable(t_data *data, t_word **word, char *s)
 
 	if (s[0] == '$' && s[1] == '?')
 	{
-		ft_lstadd_back(&(*word)->word_segment, 
-			malloc_guard(ft_lstnew(malloc_guard(ft_itoa(data->exit_status)))));
+		ft_lstadd_back(&(*word)->word_segment, malloc_guard(ft_lstnew
+				(malloc_guard(ft_itoa(data->exit_status)))));
 		return (2);
 	}
 	len = 0;
@@ -91,16 +91,16 @@ int	handle_environment_variable(t_data *data, t_word **word, char *s)
 	free(key);
 	if (!value || value[0] == '\0')
 		return (len + 1);
-	ft_lstadd_back(&((*word)->word_segment), 
-		malloc_guard(ft_lstnew(malloc_guard(ft_strdup(value)))));
+	ft_lstadd_back(&((*word)->word_segment), malloc_guard(ft_lstnew
+			(malloc_guard(ft_strdup(value)))));
 	return (len + 1);
 }
 
 /*
-** Saves metacharacters as a word
-** Only if they are the encountered as the first character of a new word
-** Whitespaces are never saved
-** Returns index of the end of the word + potentially skipped whitespaces
+**	Saves metacharacters as a word
+**	Only if they are the encountered as the first character of a new word
+**	Whitespaces are never saved
+**	Returns index of the end of the word + potentially skipped whitespaces
 */
 
 int	handle_metacharacter(t_data *data, t_word **word, char *s)
@@ -109,8 +109,8 @@ int	handle_metacharacter(t_data *data, t_word **word, char *s)
 
 	(void)data;
 	i = skip_while_char(s, is_whitespace);
-	while (is_metacharacter(s[i])
-	&& !is_whitespace(s[i]) && !is_control_operator(s[i]))
+	while (is_metacharacter(s[i]) && !is_whitespace(s[i])
+		&& !is_control_operator(s[i]))
 	{
 		handle_char(data, word, s + i);
 		(*word)->metacharacter = 1;
@@ -121,9 +121,9 @@ int	handle_metacharacter(t_data *data, t_word **word, char *s)
 }
 
 /*
-** Saves everything between single quotes as a word segment
-** If the next character is a single quote, nothing is saved
-** Returns index of the end of the word segment
+**	Saves everything between single quotes as a word segment
+**	If the next character is a single quote, nothing is saved
+**	Returns index of the end of the word segment
 */
 
 int	handle_singlequotes(t_data *data, t_word **word, char *s)
@@ -135,7 +135,7 @@ int	handle_singlequotes(t_data *data, t_word **word, char *s)
 		return (2);
 	len = skip_until_char(s + 1, '\'');
 	if (len > 0)
-		ft_lstadd_back(&((*word)->word_segment), 
+		ft_lstadd_back(&((*word)->word_segment),
 			malloc_guard(ft_lstnew(malloc_guard(ft_substr(s, 1, len)))));
 	return (len + 2);
 }
