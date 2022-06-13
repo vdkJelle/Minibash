@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 19:05:05 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/13 14:45:58 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int	handle_doublequotes(t_data *data, t_word **word, char *s)
 	{
 		if (s[i] == '\\' && s[i + 1] && ft_strchr("\\\"$", s[i + 1]))
 			i += handle_char(data, word, s + i + 1);
+		else if (s[i] == '$' && !(count_backslash(s, i) % 2 && s[i + 1]
+			&& s[i + 1] == '?'))
+			i += handle_environment_variable(data, word, s + i) - 1;
 		else if (s[i] == '$' && !(count_backslash(s, i) % 2)
 			&& s[i + 1] != '\"' && !(s[i + 1] != '_' && !ft_isalpha(s[i + 1])))
 			i += handle_environment_variable(data, word, s + i) - 1;
