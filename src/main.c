@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 18:56:39 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/13 15:41:54 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ static void	initialize_env(char ***our_env, int *env_size)
 }
 
 /*
+**	Input is tokenized, checked for syntax errors and executed
 **	Calls check_multiline_command to make sure there are no multiline commands
 **	Calls get_token to tokenize the input
-**	Calls parser to build expressions from the tokens
-**	Calls check_expression to make sure the expression is valid
+**	Calls check_input to make sure there are no syntax errors
 **	Calls cody_catch where the commands are executed
 **	No return value
 */
@@ -88,16 +88,14 @@ static void	tokenize_parse_execute(t_data *data, char *input)
 	if (check_multiline_command(data, input))
 		return ;
 	get_token(data, input);
-	parser(data);
-	ft_lstclear(&data->token, free_token);
-	ft_lstiter(data->expression, print_expression);
-	if (check_expressions(data))
+	if (check_input(data))
 	{
+		ft_lstclear(&data->token, free_token);
 		ft_lstclear(&data->expression, free_expression);
 		return ;
 	}
 	cody_catch(data);
-	ft_lstclear(&data->expression, free_expression);
+	ft_lstclear(&data->token, free_token);
 }
 
 /*
@@ -119,7 +117,7 @@ int	main(void)
 	while (1)
 	{
 		ft_signal_handler();
-		input = readline("🐶 > ");
+		input = readline(PROMPT);
 		if (!input)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
