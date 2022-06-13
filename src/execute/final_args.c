@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 23:45:16 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 18:41:29 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/13 14:38:33 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ static int	get_new_size(t_word **arg)
 **	No return value
 */
 
-void	get_final_args_and_handle_redirections(t_data *data,
-	t_expression *expression, t_execute *exec)
+void	get_final_args(t_expression *expression, t_execute *exec)
 {
 	int	i;
 	int	j;
@@ -70,11 +69,7 @@ void	get_final_args_and_handle_redirections(t_data *data,
 	{
 		if (expression->arg[i]->metacharacter
 			&& is_redirection(expression->arg[i]->word))
-		{
-			if (redirection(data, expression->arg, i, exec->fd))
-				return (free_array_part(&exec->args, j));
 			i++;
-		}
 		else
 		{
 			exec->args[j] = malloc_guard(ft_strdup(expression->arg[i]->word));
