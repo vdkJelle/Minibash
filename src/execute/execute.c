@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 23:04:46 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/13 15:03:30 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 /*
 **	Initializes the execute struct
 **	Sets the initial value of the file descriptors to no redirection
-**	Calls get_final_args_and_handle_redirections to create the final array ...
-**	... and handle redirections
+**	Calls handle_redirections to handle redirections, if an error occurs no ...
+**	... arguments will be set
+**	Calls get_final_args to create the final array
 **	Creates a pipe if the control operator is a pipe
 **	Returns a malloced execute struct
 */
@@ -120,7 +121,8 @@ static t_execute	*get_exec(t_data *data, t_expression *expression)
 	exec = malloc_guard(ft_calloc(sizeof(t_execute), 1));
 	exec->fd[READ] = NO_REDIRECTION;
 	exec->fd[WRITE] = NO_REDIRECTION;
-	get_final_args_and_handle_redirections(data, expression, exec);
+	if (!handle_redirections(data, expression, exec))
+		get_final_args(expression, exec);
 	if (expression->control_operator[0] == '|')
 	{
 		if (pipe(exec->p_fd) == -1)
@@ -132,22 +134,25 @@ static t_execute	*get_exec(t_data *data, t_expression *expression)
 }
 
 /*
-**	Iterates over the linked list with expressions and executes them
-**	Saves a pointer to the previous expression to use in case of a pipe
+**	Iterates over the linked list with tokens, parses them and executes them
+**	Saves a pointer to the previous t_execute struct to use in case of a pipe
 **	No return value
 */
 
 void	cody_catch(t_data *data)
 {
-	t_list		*temp;
-	t_execute	*cur;
-	t_execute	*prev;
+	t_list			*temp;
+	t_expression	*expression;
+	t_execute		*cur;
+	t_execute		*prev;
 
 	prev = NULL;
-	temp = data->expression;
+	temp = data->token;
 	while (temp)
 	{
-		cur = get_exec(data, (t_expression *)temp->content);
+		expression = parse_one(data, (t_token *)temp->content);
+		cur = get_exec(data, expression);
+		free_expression(expression);
 		execute(data, cur, prev);
 		if (prev)
 			free_exec(prev);
