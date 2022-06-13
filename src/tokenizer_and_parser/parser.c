@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 18:38:11 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 15:28:43 by tessa         ########   odam.nl         */
+/*   Updated: 2022/06/13 16:15:19 by tessa         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_expression	*parse_one(t_data *data, t_token *token)
 	expression = malloc_guard(ft_calloc(sizeof(t_expression), 1));
 	if (token->string)
 		expression->arg = get_arguments(data, token->string,
-			token->control_operator[0]);
+				token->control_operator[0]);
 	expression->control_operator = malloc_guard(ft_strdup
 			(token->control_operator));
 	return (expression);
