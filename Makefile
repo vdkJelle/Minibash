@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/07 23:29:29 by tessa         ########   odam.nl          #
+#    Updated: 2022/06/13 15:27:18 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,10 @@ SRCS		=	builtins/cd\
 				execute/execute\
 				execute/final_args\
 				execute/processes\
+				execute/redirection_here_doc\
 				execute/redirection\
+				tokenizer_and_parser/check_input\
 				tokenizer_and_parser/check_multiline_command\
-				tokenizer_and_parser/parser_check\
 				tokenizer_and_parser/parser_word\
 				tokenizer_and_parser/parser_word_segments\
 				tokenizer_and_parser/parser\
