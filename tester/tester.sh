@@ -14,6 +14,7 @@ touch tester/output2.txt
 ./minishell < $input 2>> tester/error.txt | tail -n +2 >> tester/output.txt
 
 sed -i 's/🐶 > //g' tester/error.txt
+sed -i 's/🐶 > //g' tester/output.txt
 sed -i '$ d' tester/error.txt
 
 while IFS= read -r line2
