@@ -1,0 +1,9 @@
+echo hi
+echo hello
+pwd
+ls -la
+exit 4 | exit 5 | exit 2 ; echo $?
+./blub
+blub
+echo $0
+exit

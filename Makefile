@@ -6,39 +6,42 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2021/06/28 15:03:40 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/06/13 15:27:18 by tessa         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-SRCS		=	cd\
-				check_file\
-				check_multiline_command\
-				echo\
-				env\
-				execute\
-				execute_builtin\
-				export\
-				exit\
-				final_args\
-				get_env\
+SRCS		=	builtins/cd\
+				builtins/echo\
+				builtins/env\
+				builtins/exit\
+				builtins/export\
+				builtins/pwd\
+				builtins/unset\
+				execute/check_file_information\
+				execute/execute_builtin\
+				execute/execute\
+				execute/final_args\
+				execute/processes\
+				execute/redirection_here_doc\
+				execute/redirection\
+				tokenizer_and_parser/check_input\
+				tokenizer_and_parser/check_multiline_command\
+				tokenizer_and_parser/parser_word\
+				tokenizer_and_parser/parser_word_segments\
+				tokenizer_and_parser/parser\
+				tokenizer_and_parser/tokenizer\
+				utils/free\
+				utils/get_env\
+				utils/list\
+				utils/malloc_wrapper\
+				utils/print_error\
+				utils/string\
+				utils/string_count\
+				utils/string_isthis\
+				utils/string_skip_characters\
 				main\
-				processes\
-				pwd\
-				redirection\
-				signals\
-				utils_error\
-				utils_free\
-				utils_list\
-				utils_string_count\
-				utils_string_isthis\
-				utils_string_skip\
-				utils_string\
-				unset\
-				token\
-				token_arg\
-				token_check\
-				token_handle_arg_chars
+				signals
 CFILES		=	$(SRCS:%=src/%.c)
 OFILES		=	$(SRCS:%=obj/%.o)
 INCLUDES	=	./includes/.
@@ -46,8 +49,7 @@ FLAGS		=	-Wall -Wextra -Werror
 ifdef DEBUG
 FLAGS += -g -fsanitize=address
 endif
-LIBRARIES	=	libft/libft.a\
-				get_next_line/gnl.a
+LIBRARIES	=	libft/libft.a
 
 all:	announce $(NAME)
 
@@ -61,7 +63,7 @@ announce:
 	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
 
 $(NAME): $(OFILES) $(LIBRARIES)
-	@$(CC) $(FLAGS) $^ -o $(NAME)
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline
 
 $(LIBRARIES):
 	@echo "   _                   ____    _____  _____" 
@@ -72,14 +74,6 @@ $(LIBRARIES):
 	@echo "  //  \\\\\.-,_|___|_,-._|| \\\\\_  )(\\\\\,- _// \\\\\_"
 	@echo " (_\")(\"_)\\_)-' '-(_/(__) (__)(__)(_/(__) (__)" 
 	@$(MAKE) bonus -sC libft
-	@echo "   ____  U _____ u  _____        _   _   U _____ u __  __    _____         _                  _   _   U _____ u"
-	@echo "U /\"___|u\| ___\"|/ |_ \" _|      | \\ |\"|  \\| ___\"|/ \\ \\/\"/   |_ \" _|       |\"|        ___     | \\ |\"|  \\| ___\"|/"
-	@echo "\\| |  _ / |  _|\"     | |       <|  \\| |>  |  _|\"   /\\  /\\     | |       U | | u     |_\"_|   <|  \\| |>  |  _|\""
-	@echo " | |_| |  | |___    /| |\\      U| |\\  |u  | |___  U /  \\ u   /| |\\       \\| |/__     | |    U| |\\  |u  | |___"
-	@echo "  \\____|  |_____|  u |_|U       |_| \\_|   |_____|  /_/\\_\\   u |_|U        |_____|  U/| |\\u   |_| \\_|   |_____|"  
-	@echo "  _)(|_   <<   >>  _// \\\\\_      ||   \\\\\,-.<<   >>,-,>> \\\\\_  _// \\\\\_       //  \\\\\.-,_|___|_,-.||   \\\\\,-.<<   >>"
-	@echo " (__)__) (__) (__)(__) (__)     (_\")  (_/(__) (__)\_)  (__)(__) (__)     (_\")(\"_)\_)-' '-(_/ (_\")  (_/(__) (__) "
-	@$(MAKE) -sC get_next_line
 
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
@@ -89,13 +83,11 @@ obj/%.o: src/%.c
 clean:
 	@echo "Cleaning..."
 	@rm -f $(OFILES) $(BOFILES)
-	@make clean -sC get_next_line
 	@make clean -sC libft
 
 fclean: clean
 	@echo "Extra cleaning..."
 	@rm -f $(NAME)
-	@make fclean -sC get_next_line
 	@make fclean -sC libft
 
 re: fclean all
