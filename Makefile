@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/06/13 15:27:18 by tessa         ########   odam.nl          #
+#    Updated: 2022/09/07 12:54:20 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ announce:
 	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
 
 $(NAME): $(OFILES) $(LIBRARIES)
-	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline -L `brew --prefix readline`/lib
 
 $(LIBRARIES):
 	@echo "   _                   ____    _____  _____" 
@@ -78,7 +78,7 @@ $(LIBRARIES):
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
 	@echo "Compiling... $^"
-	@gcc $(FLAGS) -I $(INCLUDES) -c $^ -o $@
+	@gcc $(FLAGS) -c $^ -o $@ -I $(INCLUDES) -I `brew --prefix readline`/include
 
 clean:
 	@echo "Cleaning..."

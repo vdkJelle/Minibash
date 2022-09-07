@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 23:04:20 by tessa         ########   odam.nl         */
+/*   Updated: 2022/09/07 17:07:27 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,15 @@ static void	destroy_entry(char ***our_env, int *env_size, int i)
 {
 	free((*our_env)[i]);
 	(*our_env)[i] = NULL;
-	while ((*our_env)[i])
+	if ((*our_env)[i + 1])
 	{
 		(*our_env)[i] = (*our_env)[i + 1];
 		i++;
+		while ((*our_env)[i])
+		{
+			(*our_env)[i] = (*our_env)[i + 1];
+			i++;
+		}
 	}
 	(*env_size)--;
 }
