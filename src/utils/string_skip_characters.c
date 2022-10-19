@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 11:08:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 17:16:12 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/19 10:54:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,23 @@ int	skip_until_next_doubleq(char *s)
 		i++;
 		if (s[i] && s[i] == '\"' && count_backslash(s, i) % 2)
 			i++;
+	}
+	return (i);
+}
+
+/*
+**	Finds the location of the next single quote, doesn't skip over it
+**	Returns an integer with the index of the next single quote
+*/
+
+int	skip_until_next_singleq(char *s)
+{
+	int	i;
+
+	i = 1;
+	while (s[i] && s[i] != '\'')
+	{
+		i++;
 	}
 	return (i);
 }

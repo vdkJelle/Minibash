@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/13 15:03:30 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/19 11:40:00 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 **	Returns a malloced string to the path of the executable
 */
 
-static char	*get_path(char *arg, enum e_file file)
+static char	*get_path(t_data *data, char *arg, enum e_file file)
 {
 	char	*ret;
 
+	ret = NULL;
 	if (file == BIN)
-		ret = malloc_guard(ft_strjoin("/bin/", arg));
-	else if (file == USR_BIN)
-		ret = malloc_guard(ft_strjoin("/usr/bin/", arg));
+		ret = get_path_from_bin(data, arg);
 	else
 	{
 		if (arg[0] == '.' || arg[0] == '/')
@@ -92,9 +91,9 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 		file = check_file_information(data, cur->args[0]);
 		if (file == FILE_ERROR)
 			data->exit_status = 1;
-		if (file != BIN && file != USR_BIN && file != REGULAR)
+		if (file != BIN && file != REGULAR)
 			cmd = CMD_ERROR;
-		cur->path = get_path(cur->args[0], file);
+		cur->path = get_path(data, cur->args[0], file);
 		create_process(data, cmd, cur, prev);
 	}
 	else if (cmd != NON_BUILTIN && (cur->piped == 1 || (prev

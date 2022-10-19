@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 23:01:19 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/19 11:33:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	closedir_error(DIR **dir_p)
 **	Returns -1 if an error occured
 */
 
-static int	check_in_dir(char *file, char *dir)
+int	check_in_dir(char *file, char *dir)
 {
 	struct dirent	*dir_s;
 	DIR				*dir_p;
@@ -70,22 +70,45 @@ static int	check_in_dir(char *file, char *dir)
 **	Returns an enum with the type of file or an error
 */
 
-enum e_file	check_bin_and_usr_bin(char *file)
-{
-	int	bin;
-	int	usr_bin;
+// static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
+// {
+// 	int	bin;
+// 	int	usr_bin;
+	
+// 	bin = check_in_dir(file, get_env(data->our_env, "PATH"));
+// 	printf("PATH = %s\n", get_env(data->our_env, "PATH"));
+// 	if (bin == -1)
+// 		return (FILE_ERROR);
+// 	else if (bin == 1)
+// 		return (BIN);
+// 	usr_bin = check_in_dir(file, get_env(data->our_env, "PATH"));
+// 	if (usr_bin == -1)
+// 		return (FILE_ERROR);
+// 	else if (usr_bin == 1)
+// 		return (USR_BIN);
+// 	return (NOT_FOUND);
+// }
 
-	bin = check_in_dir(file, "/bin/");
-	if (bin == -1)
-		return (FILE_ERROR);
-	else if (bin == 1)
-		return (BIN);
-	usr_bin = check_in_dir(file, "/usr/bin/");
-	if (usr_bin == -1)
-		return (FILE_ERROR);
-	else if (usr_bin == 1)
-		return (USR_BIN);
-	return (NOT_FOUND);
+static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
+{
+	char	**splitted_path;
+	int		i;
+	
+	if (!get_env(data->our_env, "PATH")) {
+		return (NO_SUCH_FILE);
+	}
+	splitted_path = malloc_guard(ft_split(get_env(data->our_env, "PATH"), ':'));
+	i = 0;
+	while (splitted_path && splitted_path[i])
+	{
+		if (check_in_dir(file, splitted_path[i]))
+		{
+			free_array(splitted_path);
+			return (BIN);
+		}
+		i++;
+	}
+	return (NO_SUCH_FILE);
 }
 
 /*
@@ -130,7 +153,7 @@ enum e_file	check_file_information(t_data *data, char *file)
 	enum e_file	file_status;
 
 	if (!ft_strchr(file, '/'))
-		file_status = check_bin_and_usr_bin(file);
+		file_status = check_bin_and_usr_bin(data, file);
 	else
 	{
 		if (stat(file, &sb) == -1)

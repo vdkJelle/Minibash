@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/11 10:10:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 19:28:22 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/19 11:55:48 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	signal_output(int sig)
 		rl_replace_line("", 0);
 	}
 	if (sig == SIGQUIT)
+	{
 		write(1, "\b\b  \b\b", 6);
+	}
 }
 
 /*

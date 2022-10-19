@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 15:31:16 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/19 10:34:37 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,9 @@ static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &wstatus, 0);
+	while (wait(NULL) > 0) {
+		continue ;
+	}
 	if (WIFEXITED(wstatus))
 		data->exit_status = WEXITSTATUS(wstatus);
 	else if (WTERMSIG(wstatus) == SIGQUIT)

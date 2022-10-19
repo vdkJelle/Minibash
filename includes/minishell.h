@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/07 12:18:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/19 11:36:52 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ enum e_file
 	FILE_ERROR = -1,
 	REGULAR = 0,
 	BIN = 1,
-	USR_BIN = 2,
-	DIRECTORY = 3,
-	NO_SUCH_FILE = 4,
-	NOT_EXECUTABLE = 5,
-	NOT_FOUND = 6,
-	PERMISSION_DENIED = 7,
+	DIRECTORY = 2,
+	NO_SUCH_FILE = 3,
+	NOT_EXECUTABLE = 4,
+	NOT_FOUND = 5,
+	PERMISSION_DENIED = 6,
 };
 
 enum e_special_char
@@ -172,6 +171,8 @@ void			ft_unset(t_data *data);
 **-----------------------EXECUTE/CHECK_FILE_INFORMATION.C-----------------------
 */
 enum e_file		check_file_information(t_data *data, char *s);
+int				check_in_dir(char *file, char *dir);
+
 /*
 **--------------------------EXECUTE/EXECUTE_BUILTIN.C---------------------------
 */
@@ -281,6 +282,7 @@ int				ft_isdigit_char(char c);
 **------------------------UTILS/STRING_SKIP_CHARACTERS.C------------------------
 */
 int				skip_until_next_doubleq(char *s);
+int				skip_until_next_singleq(char *s);
 int				skip_until_char(char *s, char c);
 int				skip_while_char(char *s, int (*ft_isthis)(char c));
 int				skip_while_not_char(char *s, int (*ft_isthis)(char c));
@@ -289,6 +291,7 @@ int				skip_while_not_char(char *s, int (*ft_isthis)(char c));
 */
 int				ft_strcmp(const char *s1, const char *s2);
 char			*ft_strjoin_wrapper(char *s1, char *s2, int mode);
+char			*get_path_from_bin(t_data *data, char *arg);
 
 /*
 **------------------------------------MAIN.C------------------------------------
