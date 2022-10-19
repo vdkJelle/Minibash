@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/19 10:34:37 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/19 15:52:22 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,22 @@ static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 	t_execute *prev)
 {
-	int	wstatus;
+	// int	wstatus;
 
 	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &wstatus, 0);
-	while (wait(NULL) > 0) {
-		continue ;
-	}
-	if (WIFEXITED(wstatus))
-		data->exit_status = WEXITSTATUS(wstatus);
-	else if (WTERMSIG(wstatus) == SIGQUIT)
-	{
-		data->exit_status = 128 + WTERMSIG(wstatus);
-		write(1, "\b\b  \b\b^\\Quit\n", 13);
-	}
-	else if (WTERMSIG(wstatus) == SIGINT)
-		data->exit_status = 128 + WTERMSIG(wstatus);
+	// waitpid(pid, &wstatus, 0);
+	// while (wait(NULL) > 0) {
+	// 	continue ;
+	// }
+	// if (WIFEXITED(wstatus))
+	// 	data->exit_status = WEXITSTATUS(wstatus);
+	// else if (WTERMSIG(wstatus) == SIGQUIT)
+	// {
+	// 	data->exit_status = 128 + WTERMSIG(wstatus);
+	// 	write(1, "\b\b  \b\b^\\Quit\n", 13);
+	// }
+	// else if (WTERMSIG(wstatus) == SIGINT)
+	// 	data->exit_status = 128 + WTERMSIG(wstatus);
 	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
 		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
@@ -116,6 +116,8 @@ static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 	if (cur->fd[WRITE] != NO_REDIRECTION && cur->fd[WRITE] != -1
 		&& close(cur->fd[WRITE]) == -1)
 		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+	(void)data;
+	(void)pid;
 }
 
 /*
@@ -140,5 +142,8 @@ void	create_process(t_data *data, enum e_command cmd, t_execute *cur,
 		child_process(data, cmd, cur, prev);
 	}
 	else
+	{
 		parent_process(data, pid, cur, prev);
+		data->pid = pid;
+	}
 }
