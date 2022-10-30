@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/30 14:54:41 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/30 16:39:39 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 	t_execute *prev)
 {
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	child_pipes(cur, prev);
 	if (cur->fd[READ] != NO_REDIRECTION)
 	{
