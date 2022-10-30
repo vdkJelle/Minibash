@@ -6,7 +6,7 @@
 /*   By: tessa <tessa@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 15:18:13 by tessa         #+#    #+#                 */
-/*   Updated: 2022/06/13 15:27:46 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/30 14:45:14 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ static void	here_doc_read_input(char *delimiter, int rd)
 {
 	char	*input;
 
+	signal(SIGINT, SIG_DFL);
 	while (1)
 	{
 		input = readline("> ");
 		if (!input)
-			print_error_exit(0, make_array("🐶 > warning: here-document at line",
+			print_error_exit(0, make_array("warning: here-document at line",
 					"1 delimited by end-of-file (wanted `", delimiter, "')"));
 		if (!ft_strcmp(input, delimiter))
 			exit(0);
@@ -58,13 +59,13 @@ int	here_doc(t_data *data, char *delimiter, int fd[2])
 	tmp_fd = open("/tmp/here-document", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (tmp_fd == -1)
 	{
-		print_error(data, 1, make_array("🐶 > /tmp/here-document: ",
-				strerror(errno), NULL, NULL));
+		print_error(data, 1, make_array(PROMPT, "/tmp/here-document: ",
+				strerror(errno), NULL));
 		return (1);
 	}
 	pid = fork();
 	if (pid == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(PROMPT, strerror(errno), NULL, NULL));
 	if (pid == CHILD)
 		here_doc_read_input(delimiter, tmp_fd);
 	waitpid(pid, NULL, 0);

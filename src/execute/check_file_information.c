@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/19 11:33:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/10/30 14:54:46 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,13 @@ int	check_in_dir(char *file, char *dir)
 **	Returns an enum with the type of file or an error
 */
 
-// static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
-// {
-// 	int	bin;
-// 	int	usr_bin;
-	
-// 	bin = check_in_dir(file, get_env(data->our_env, "PATH"));
-// 	printf("PATH = %s\n", get_env(data->our_env, "PATH"));
-// 	if (bin == -1)
-// 		return (FILE_ERROR);
-// 	else if (bin == 1)
-// 		return (BIN);
-// 	usr_bin = check_in_dir(file, get_env(data->our_env, "PATH"));
-// 	if (usr_bin == -1)
-// 		return (FILE_ERROR);
-// 	else if (usr_bin == 1)
-// 		return (USR_BIN);
-// 	return (NOT_FOUND);
-// }
-
 static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
 {
 	char	**splitted_path;
 	int		i;
-	
-	if (!get_env(data->our_env, "PATH")) {
+
+	if (!get_env(data->our_env, "PATH"))
 		return (NO_SUCH_FILE);
-	}
 	splitted_path = malloc_guard(ft_split(get_env(data->our_env, "PATH"), ':'));
 	i = 0;
 	while (splitted_path && splitted_path[i])
@@ -108,7 +88,7 @@ static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
 		}
 		i++;
 	}
-	return (NO_SUCH_FILE);
+	return (NOT_FOUND);
 }
 
 /*
@@ -122,20 +102,20 @@ static enum e_file	handle_file_status(t_data *data, enum e_file file_status,
 	char *file)
 {
 	if (file_status == FILE_ERROR)
-		print_error(data, 1, make_array("🐶 > ", file, ": ", strerror(errno)));
+		print_error(data, 1, make_array(PROMPT, file, ": ", strerror(errno)));
 	else if (file_status == DIRECTORY)
-		print_error(data, 126, make_array("🐶 > ", file,
+		print_error(data, 126, make_array(PROMPT, file,
 				": Is a directory", NULL));
 	else if (file_status == NO_SUCH_FILE)
-		print_error(data, 127, make_array("🐶 > ", file,
+		print_error(data, 127, make_array(PROMPT, file,
 				": No such file or directory", NULL));
 	else if (file_status == NOT_EXECUTABLE)
-		print_error(data, 126, make_array("🐶 > ", file, ": ", strerror(errno)));
+		print_error(data, 126, make_array(PROMPT, file, ": ", strerror(errno)));
 	else if (file_status == NOT_FOUND)
-		print_error(data, 127, make_array(file, ": command not found", NULL,
+		print_error(data, 127, make_array(PROMPT, file, ": command not found",
 				NULL));
 	else if (file_status == PERMISSION_DENIED)
-		print_error(data, 126, make_array("🐶 > ", file,
+		print_error(data, 126, make_array(PROMPT, file,
 				": Permission denied", NULL));
 	return (file_status);
 }

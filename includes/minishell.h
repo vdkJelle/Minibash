@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:52:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/30 14:49:01 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ void			get_final_args(t_expression *expression, t_execute *exec);
 /*
 **-----------------------------EXECUTE/PROCESSES.C------------------------------
 */
+void			waiting_for_processes(t_data *data);
 void			create_process(t_data *data, enum e_command cmd, t_execute *cur,
 					t_execute *prev);
 /*

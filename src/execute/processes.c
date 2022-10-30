@@ -6,11 +6,34 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:52:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/30 14:54:41 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/*
+** Waits for all processes to end, if they ended by signal, alters exit status
+** No return value
+*/
+
+void	waiting_for_processes(t_data *data)
+{
+	int	wstatus;
+
+	waitpid(data->pid, &wstatus, 0);
+	while (wait(NULL) > 0)
+		continue ;
+	if (WIFEXITED(wstatus))
+		data->exit_status = WEXITSTATUS(wstatus);
+	else if (WTERMSIG(wstatus) == SIGQUIT)
+	{
+		data->exit_status = 128 + WTERMSIG(wstatus);
+		write(1, "\b\b  \b\b^\\Quit\n", 13);
+	}
+	else if (WTERMSIG(wstatus) == SIGINT)
+		data->exit_status = 128 + WTERMSIG(wstatus);
+}
 
 /*
 **	Handles pipes
@@ -75,10 +98,6 @@ static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 }
 
 /*
-**	Waits for the child process to change state
-**	The child process can be terminated
-**		- normally (calling exit or returning from execve)
-**		- by a signal
 **	If the current command is a pipe the fd of the write end of the current ...
 **	... pipe is closed
 **	If the previous command is a pipe the fd of the read end of the previous ...
@@ -90,22 +109,7 @@ static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 	t_execute *prev)
 {
-	// int	wstatus;
-
 	signal(SIGINT, SIG_IGN);
-	// waitpid(pid, &wstatus, 0);
-	// while (wait(NULL) > 0) {
-	// 	continue ;
-	// }
-	// if (WIFEXITED(wstatus))
-	// 	data->exit_status = WEXITSTATUS(wstatus);
-	// else if (WTERMSIG(wstatus) == SIGQUIT)
-	// {
-	// 	data->exit_status = 128 + WTERMSIG(wstatus);
-	// 	write(1, "\b\b  \b\b^\\Quit\n", 13);
-	// }
-	// else if (WTERMSIG(wstatus) == SIGINT)
-	// 	data->exit_status = 128 + WTERMSIG(wstatus);
 	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
 		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
 	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:35:15 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/30 14:32:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_cd(t_data *data)
 		return (print_error(data, 1,
 				make_array("🐶 > cd: too many arguments", NULL, NULL, NULL)));
 	if (ret == -1)
-		return (print_error(data, 2,
+		return (print_error(data, 1,
 				make_array("🐶 > cd: ", data->args[1], ": ", strerror(errno))));
 	data->exit_status = 0;
 }

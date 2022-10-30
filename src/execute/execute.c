@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/19 15:54:30 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/30 14:48:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ void	cody_catch(t_data *data)
 	t_expression	*expression;
 	t_execute		*cur;
 	t_execute		*prev;
-	int				wstatus;
 
 	prev = NULL;
 	temp = data->token;
@@ -161,17 +160,5 @@ void	cody_catch(t_data *data)
 		if (!temp)
 			free_exec(cur);
 	}
-	waitpid(data->pid, &wstatus, 0);
-	while (wait(NULL) > 0) {
-		continue ;
-	}
-	if (WIFEXITED(wstatus))
-		data->exit_status = WEXITSTATUS(wstatus);
-	else if (WTERMSIG(wstatus) == SIGQUIT)
-	{
-		data->exit_status = 128 + WTERMSIG(wstatus);
-		write(1, "\b\b  \b\b^\\Quit\n", 13);
-	}
-	else if (WTERMSIG(wstatus) == SIGINT)
-		data->exit_status = 128 + WTERMSIG(wstatus);
+	waiting_for_processes(data);
 }
