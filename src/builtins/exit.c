@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 13:03:07 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/31 14:10:29 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static enum e_bool	is_string_numeric(char *s)
 **	If the first argument is not numeric
 **		- example: exit nope or exit 42a
 **		- an error message is printed
-**		- the program exits with exit status 2
+**		- the program exits with exit status 255
 **	If the first argument is numeric but there are multiple arguments
 **		- example: exit 42 nope or exit 42 42
 **		- an error message is printed
