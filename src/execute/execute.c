@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/30 14:48:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/31 12:48:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 	enum e_command	cmd;
 	enum e_file		file;
 
-	if (!cur->args || !cur->args[0])
+	if (!cur->args || !cur->args[0] || !ft_strlen(cur->args[0]))
 		return (create_process(data, CMD_ERROR, cur, prev));
 	cmd = identify_command(cur->args[0]);
 	if (cmd == NON_BUILTIN)

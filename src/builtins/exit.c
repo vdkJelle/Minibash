@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 16:06:55 by tessa         ########   odam.nl         */
+/*   Updated: 2022/10/31 13:03:07 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@ static enum e_bool	is_string_numeric(char *s)
 {
 	int	i;
 
+	i = 0;
 	if (ft_strlen(s))
 	{
-		i = skip_while_char(s, ft_isdigit_char);
+		i += skip_while_char(s, is_whitespace);
+		if (s[i] == '-' || s[i] == '+')
+			i++;
+		i += skip_while_char(s, ft_isdigit_char);
+		i += skip_while_char(s, is_whitespace);
 		if (!s[i])
 			return (TRUE);
 	}
@@ -61,9 +66,9 @@ void	ft_exit(t_data *data)
 	numeric = is_string_numeric(data->args[1]);
 	if (numeric == FALSE)
 	{
-		print_error(data, 2, make_array("🐶 > exit: ", data->args[1],
+		print_error(data, 255, make_array("🐶 > exit: ", data->args[1],
 				": numeric argument required", NULL));
-		exit(2);
+		exit(data->exit_status);
 	}
 	if (data->args[2])
 	{

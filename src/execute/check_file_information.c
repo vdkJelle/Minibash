@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/30 14:54:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/10/31 12:51:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static enum e_file	check_bin_and_usr_bin(t_data *data, char *file)
 		}
 		i++;
 	}
+	free_array(splitted_path);
 	return (NOT_FOUND);
 }
 
