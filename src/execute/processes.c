@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/30 16:39:39 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/02 10:02:48 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ void	waiting_for_processes(t_data *data)
 	else if (WTERMSIG(wstatus) == SIGQUIT)
 	{
 		data->exit_status = 128 + WTERMSIG(wstatus);
-		write(1, "\b\b  \b\b^\\Quit\n", 13);
+		write(1, "\b\b  \b\b^\\Quit: 3\n", 16);
 	}
 	else if (WTERMSIG(wstatus) == SIGINT)
+	{
 		data->exit_status = 128 + WTERMSIG(wstatus);
+		write(1, "\n", 1);
+	}
 }
 
 /*

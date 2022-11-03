@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/11 10:10:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/30 16:44:03 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/02 15:06:36 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	signal_output(int sig)
 {
 	if (sig == SIGINT)
 	{
-		rl_replace_line("", 1);
 		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 /*

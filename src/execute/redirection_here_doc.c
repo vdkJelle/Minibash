@@ -6,7 +6,7 @@
 /*   By: tessa <tessa@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 15:18:13 by tessa         #+#    #+#                 */
-/*   Updated: 2022/10/30 14:45:14 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/02 14:41:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	here_doc(t_data *data, char *delimiter, int fd[2])
 				strerror(errno), NULL));
 		return (1);
 	}
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 		print_error_exit(1, make_array(PROMPT, strerror(errno), NULL, NULL));
@@ -74,5 +75,6 @@ int	here_doc(t_data *data, char *delimiter, int fd[2])
 	if (fd[READ] != NO_REDIRECTION && close(fd[READ]) == -1)
 		return (redirection_close_error(data, "/tmp/here-document"));
 	fd[READ] = open("/tmp/here-document", O_RDONLY);
+	ft_signal_handler();
 	return (0);
 }
