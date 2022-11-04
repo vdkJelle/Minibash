@@ -6,12 +6,12 @@
 /*   By: tessa <tessa@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 15:18:13 by tessa         #+#    #+#                 */
-/*   Updated: 2022/11/02 14:41:55 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:18:16 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
+#include <termios.h>
 /*
 **	Reads from the input with readline until the delimiter is encountered
 **	Writes the input + a newline to the file descriptor

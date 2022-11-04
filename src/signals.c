@@ -6,12 +6,12 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/11 10:10:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/02 15:06:36 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/04 18:18:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
+#include <termios.h>
 /*
 **	CTRL + C == SIGINT
 **	When the function receives a SIGINT signal, it will print the signal ...
@@ -42,6 +42,11 @@ void	signal_output(int sig)
 
 void	ft_signal_handler(void)
 {
+	struct termios	attributes;
+
+	tcgetattr(STDIN_FILENO, &attributes);
+	attributes.c_lflag |= ECHO;
+	tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
 	if (signal(SIGINT, &signal_output) == SIG_ERR
 		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		exit(1);

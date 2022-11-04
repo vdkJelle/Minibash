@@ -6,11 +6,23 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:31:54 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/04 18:18:09 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static size_t	skip_while_n(char *s)
+{
+	int	i;
+
+	i = 1;
+	while (s[i] && s[i] == 'n')
+	{
+		i++;
+	}
+	return (i);
+}
 
 /*
 **	Prints all arguments with spaces in between
@@ -24,13 +36,14 @@ void	ft_echo(t_data *data)
 	int	newline;
 
 	i = 1;
-	if (data->args[i] && !ft_strcmp(data->args[i], "-n"))
+	newline = 1;
+	while (data->args[i] && !ft_strncmp(data->args[i], "-n", 2))
 	{
-		i++;
+		if (ft_strlen(data->args[i]) != skip_while_n(data->args[i]))
+			break ;
 		newline = 0;
+		i++;
 	}
-	else
-		newline = 1;
 	while (data->args[i])
 	{
 		ft_putstr_fd(data->args[i], data->our_fd[WRITE]);
