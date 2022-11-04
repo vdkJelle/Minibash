@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/30 16:38:32 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/04 19:26:28 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,23 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 	free(temp);
 }
 
+static void	handle_pwd(char ***our_env, int *env_size, t_data *data)
+{
+	char	*pwd;
+
+	pwd = NULL;
+	pwd = getcwd(pwd, 0);
+	if (!pwd)
+	{
+		print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		return ;
+	}
+	pwd = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup
+			("PWD=")), pwd, 3));
+	append_key_value(pwd, our_env, env_size);
+	free(pwd);
+}
+
 /*
 **	Copies the environmental variables of the shell environment
 **	Uses an external char **environ
@@ -54,23 +71,29 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 **	No return value
 */
 
-static void	initialize_env(char ***our_env, int *env_size)
+static void	initialize_env(char ***our_env, int *env_size, t_data *data)
 {
 	extern char	**environ;
 	int			i;
+	int			j;
 
 	i = 0;
-	while (environ[i])
-		i++;
-	*our_env = ft_malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (environ[i])
+	j = 0;
+	while (environ[j])
+		j++;
+	*our_env = ft_malloc(sizeof(char *) * (j));
+	j = 0;
+	while (environ[j])
 	{
-		(*our_env)[i] = malloc_guard(ft_strdup(environ[i]));
+		if (!ft_strncmp(environ[i], "OLDPWD", 6))
+			j++;
+		(*our_env)[i] = malloc_guard(ft_strdup(environ[j]));
 		i++;
+		j++;
 	}
 	(*our_env)[i] = NULL;
 	(*env_size) = i;
+	handle_pwd(our_env, env_size, data);
 	handle_shlvl(our_env, env_size);
 }
 
@@ -114,7 +137,7 @@ int	main(void)
 	rl_catch_signals = 0;
 	ft_bzero(&data, sizeof(data));
 	ft_putstr_fd("Welcome to the amazing Codyshell!\n", 1);
-	initialize_env(&data.our_env, &data.env_size);
+	initialize_env(&data.our_env, &data.env_size, &data);
 	while (1)
 	{
 		ft_signal_handler();
