@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/04 21:38:25 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/05 12:54:48 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	waiting_for_processes(t_data *data)
 {
 	int	wstatus;
 
+	wstatus = 0;
 	waitpid(data->pid, &wstatus, 0);
 	while (wait(NULL) > 0)
 		continue ;
@@ -33,6 +34,7 @@ void	waiting_for_processes(t_data *data)
 	}
 	else if (WTERMSIG(wstatus) == SIGINT)
 	{
+		printf("HELLO WE ARE HERE WITH A CD COMMAND\n");
 		data->exit_status = 128 + WTERMSIG(wstatus);
 		write(1, "\n", 1);
 	}

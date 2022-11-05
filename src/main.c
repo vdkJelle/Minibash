@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/04 19:26:28 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/05 12:05:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,12 @@ static void	handle_shlvl(char ***our_env, int *env_size)
 	free(temp);
 }
 
-static void	handle_pwd(char ***our_env, int *env_size, t_data *data)
+static void	handle_pwd(char ***our_env, int *env_size)
 {
 	char	*pwd;
 
 	pwd = NULL;
-	pwd = getcwd(pwd, 0);
-	if (!pwd)
-	{
-		print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL, NULL));
-		return ;
-	}
+	pwd = malloc_guard(getcwd(pwd, 0));
 	pwd = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup
 			("PWD=")), pwd, 3));
 	append_key_value(pwd, our_env, env_size);
@@ -71,7 +66,7 @@ static void	handle_pwd(char ***our_env, int *env_size, t_data *data)
 **	No return value
 */
 
-static void	initialize_env(char ***our_env, int *env_size, t_data *data)
+static void	initialize_env(char ***our_env, int *env_size)
 {
 	extern char	**environ;
 	int			i;
@@ -93,7 +88,7 @@ static void	initialize_env(char ***our_env, int *env_size, t_data *data)
 	}
 	(*our_env)[i] = NULL;
 	(*env_size) = i;
-	handle_pwd(our_env, env_size, data);
+	handle_pwd(our_env, env_size);
 	handle_shlvl(our_env, env_size);
 }
 
@@ -137,7 +132,7 @@ int	main(void)
 	rl_catch_signals = 0;
 	ft_bzero(&data, sizeof(data));
 	ft_putstr_fd("Welcome to the amazing Codyshell!\n", 1);
-	initialize_env(&data.our_env, &data.env_size, &data);
+	initialize_env(&data.our_env, &data.env_size);
 	while (1)
 	{
 		ft_signal_handler();

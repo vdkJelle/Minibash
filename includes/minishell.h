@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/02 12:44:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/05 12:56:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,10 @@ typedef struct s_data
 */
 typedef int		(*t_word_segment_handler)(t_data *data, t_word **word, char *s);
 typedef void	(*t_builtin)(t_data *data);
+/*
+**------------------------------BUBBLE_SORT/CD.C--------------------------------
+*/
+char			**bubble_sort(char **env, int *env_size);
 
 /*
 **--------------------------------BUILTINS/CD.C---------------------------------
