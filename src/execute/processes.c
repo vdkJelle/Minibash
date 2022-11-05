@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/05 12:54:48 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/05 14:55:56 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,17 @@ static void	child_pipes(t_execute *cur, t_execute *prev)
 		if (dup2(cur->p_fd[WRITE], STDOUT_FILENO) == -1)
 			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
 					NULL));
+		close(cur->p_fd[WRITE]);
 	}
 	if (prev && prev->piped == 1)
 	{
 		if (dup2(prev->p_fd[READ], STDIN_FILENO) == -1)
 			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
 					NULL));
+		close(prev->p_fd[READ]);
 	}
+	if (cur->p_fd[READ] != 0)
+		close(cur->p_fd[READ]);
 }
 
 /*
