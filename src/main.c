@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/05 12:05:10 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/07 13:58:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,16 @@ static void	initialize_env(char ***our_env, int *env_size)
 	j = 0;
 	while (environ[j])
 		j++;
-	*our_env = ft_malloc(sizeof(char *) * (j));
+	*our_env = ft_malloc(sizeof(char *) * (j + 1));
 	j = 0;
 	while (environ[j])
 	{
-		if (!ft_strncmp(environ[i], "OLDPWD", 6))
+		if (!ft_strncmp(environ[i], "OLDPWD=", 7) ||
+				!ft_strcmp(environ[i], "OLDPWD"))
+		{
 			j++;
+			continue ;
+		}
 		(*our_env)[i] = malloc_guard(ft_strdup(environ[j]));
 		i++;
 		j++;

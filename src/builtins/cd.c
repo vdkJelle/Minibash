@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/30 14:32:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/07 14:20:16 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_cd(t_data *data)
 
 	ret = 0;
 	if (!data->args[1])
-		ret = chdir(get_env(data->our_env, "HOME"));
+		ret = chdir(get_env(data->our_env, "HOME")); //NEED TO CHECK IF UNSET HOME WHAT MAC DO
 	else if (!data->args[2])
 		ret = chdir(data->args[1]);
 	else if (data->args[2])

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/05 12:13:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/05 13:10:06 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/07 14:18:16 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char **sort(char **sorted_env)
 		j = i + 1;
 		while (sorted_env[j])
 		{
-			if (*sorted_env[i] > *sorted_env[j])
+			if (ft_strcmp(sorted_env[i], sorted_env[j]) > 0)
 			{
 				tmp = sorted_env[i];
 				sorted_env[i] = sorted_env[j];
