@@ -6,15 +6,13 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:08:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:20:15 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-
-void	handle_cd_home(t_data *data, char *pwd, char *oldpwd)
+static void	handle_cd_home(t_data *data)
 {
 	int		ret;
 	char	*home;
@@ -47,14 +45,10 @@ void	handle_cd_home(t_data *data, char *pwd, char *oldpwd)
 void	ft_cd(t_data *data)
 {
 	int	ret;
-	char *pwd;
-	char *oldpwd;
 
 	ret = 0;
-	oldpwd = NULL;
-	pwd = NULL;
 	if (!data->args[1])
-		return (handle_cd_home(data, pwd, oldpwd));
+		return (handle_cd_home(data));
 	ret = chdir(data->args[1]);
 	if (ret == -1)
 		return (print_error(data, 1,

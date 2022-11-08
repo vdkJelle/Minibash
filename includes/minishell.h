@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 11:52:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:19:05 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,11 @@ t_expression	*parse_one(t_data *data, t_token *token);
 **-----------------------TOKENIZER_AND_PARSER/TOKENIZER.C-----------------------
 */
 void			get_token(t_data *data, char *s);
+
+/*
+**---------------------------------UTILS/FREE.C---------------------------------
+*/
+void			initialize_env(char ***our_env, int *env_size);
 
 /*
 **---------------------------------UTILS/FREE.C---------------------------------

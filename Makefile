@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/11/08 11:21:06 by tevan-de      ########   odam.nl          #
+#    Updated: 2022/11/08 13:49:11 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS		=	builtins/cd\
 				tokenizer_and_parser/parser\
 				tokenizer_and_parser/tokenizer\
 				utils/bubble_sort\
+				utils/environment_utils\
 				utils/free\
 				utils/get_env\
 				utils/list\

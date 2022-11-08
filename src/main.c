@@ -6,95 +6,11 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:16:22 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:18:02 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-/*
-**	Adds the correct shell level to the array of environmental variables
-**	If SHLVL is not set the value it is set to 1
-**	If SHLVL is set but the value is not numeric the value is set to 1
-**	If SHLVL is set correctly the value is incremented
-**	Calls append_key_value to add the SHLVL to the array of env variables
-**	No return value
-*/
-
-static void	handle_shlvl(char ***our_env, int *env_size)
-{
-	char	*shlvl;
-	char	*temp;
-	int		i;
-	int		n;
-
-	shlvl = get_env(*our_env, "SHLVL");
-	if (!shlvl)
-		temp = malloc_guard(ft_strdup("SHLVL=1"));
-	else
-	{
-		i = skip_while_not_char(shlvl, ft_isdigit_char);
-		if (!shlvl[i])
-			temp = malloc_guard(ft_strdup("SHLVL=1"));
-		else
-		{
-			n = ft_atoi(shlvl) + 1;
-			temp = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup
-							("SHLVL=")), malloc_guard(ft_itoa(n)), 3));
-		}
-	}
-	append_key_value(temp, our_env, env_size);
-	free(temp);
-}
-
-static void	handle_pwd(char ***our_env, int *env_size)
-{
-	char	*pwd;
-
-	pwd = NULL;
-	pwd = malloc_guard(getcwd(pwd, 0));
-	pwd = malloc_guard(ft_strjoin_wrapper(malloc_guard(
-					ft_strdup("PWD=")), pwd, 3));
-	append_key_value(pwd, our_env, env_size);
-	free(pwd);
-}
-
-/*
-**	Copies the environmental variables of the shell environment
-**	Uses an external char **environ
-**	Calls handle_shlvl to set the correct value of the key SHLVL
-**	No return value
-*/
-
-static void	initialize_env(char ***our_env, int *env_size)
-{
-	extern char	**environ;
-	int			i;
-	int			j;
-
-	i = 0;
-	j = 0;
-	while (environ[j])
-		j++;
-	*our_env = ft_malloc(sizeof(char *) * (j + 1));
-	j = 0;
-	while (environ[j])
-	{
-		if (!ft_strncmp(environ[i], "OLDPWD=", 7)
-			|| !ft_strcmp(environ[i], "OLDPWD"))
-		{
-			j++;
-			continue ;
-		}
-		(*our_env)[i] = malloc_guard(ft_strdup(environ[j]));
-		i++;
-		j++;
-	}
-	(*our_env)[i] = NULL;
-	(*env_size) = i;
-	handle_pwd(our_env, env_size);
-	handle_shlvl(our_env, env_size);
-}
 
 /*
 **	Input is tokenized, checked for syntax errors and executed
