@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/08 11:43:21 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:13:15 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ static void	child_pipes(t_execute *cur, t_execute *prev)
 	if (cur->piped == 1)
 	{
 		if (dup2(cur->p_fd[WRITE], STDOUT_FILENO) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
+			print_error_exit(1, make_array(SHELL, strerror(errno), NULL,
 					NULL));
 		close(cur->p_fd[WRITE]);
 	}
 	if (prev && prev->piped == 1)
 	{
 		if (dup2(prev->p_fd[READ], STDIN_FILENO) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
+			print_error_exit(1, make_array(SHELL, strerror(errno), NULL,
 					NULL));
 		close(prev->p_fd[READ]);
 	}
@@ -90,19 +90,19 @@ static void	child_process(t_data *data, enum e_command cmd, t_execute *cur,
 	if (cur->fd[READ] != NO_REDIRECTION)
 	{
 		if (dup2(cur->fd[READ], STDIN_FILENO) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
+			print_error_exit(1, make_array(SHELL, strerror(errno), NULL,
 					NULL));
 	}
 	if (cur->fd[WRITE] != NO_REDIRECTION)
 	{
 		if (dup2(cur->fd[WRITE], STDOUT_FILENO) == -1)
-			print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL,
+			print_error_exit(1, make_array(SHELL, strerror(errno), NULL,
 					NULL));
 	}
 	if (cmd != NON_BUILTIN)
 		execute_builtin_pipe(data, cmd, cur);
 	else if (execve(cur->path, cur->args, data->our_env) == -1)
-		print_error_exit(1, make_array("🐶 > ", cur->path, ": ",
+		print_error_exit(1, make_array(SHELL, cur->path, ": ",
 				strerror(errno)));
 }
 
@@ -120,15 +120,15 @@ static void	parent_process(t_data *data, pid_t pid, t_execute *cur,
 {
 	signal(SIGINT, SIG_IGN);
 	if (cur->piped == 1 && close(cur->p_fd[WRITE]) == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(SHELL, strerror(errno), NULL, NULL));
 	if (prev && prev->piped == 1 && close(prev->p_fd[READ]) == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(SHELL, strerror(errno), NULL, NULL));
 	if (cur->fd[READ] != NO_REDIRECTION && cur->fd[READ] != -1
 		&& close(cur->fd[READ]) == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(SHELL, strerror(errno), NULL, NULL));
 	if (cur->fd[WRITE] != NO_REDIRECTION && cur->fd[WRITE] != -1
 		&& close(cur->fd[WRITE]) == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(SHELL, strerror(errno), NULL, NULL));
 	(void)data;
 	(void)pid;
 }
@@ -147,7 +147,7 @@ void	create_process(t_data *data, enum e_command cmd, t_execute *cur,
 
 	pid = fork();
 	if (pid == -1)
-		print_error_exit(1, make_array("🐶 > ", strerror(errno), NULL, NULL));
+		print_error_exit(1, make_array(SHELL, "fork: ", strerror(errno), NULL));
 	else if (pid == CHILD)
 	{
 		if (cmd == CMD_ERROR)

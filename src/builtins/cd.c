@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:24:21 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:39:17 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,20 @@ static void	update_oldpwd_and_pwd(t_data *data, char *oldpwd)
 	int		i;
 
 	pwd = NULL;
-	pwd = getcwd(pwd, 0);
-	if (!pwd)
-		return (print_error(data, 1,
-				make_array("codyshell: cd: ",
-					data->args[1], ": ", strerror(errno))));
+	pwd = malloc_guard(getcwd(pwd, 0));
 	i = 0;
 	while (data->our_env[i])
 	{
 		if ((!ft_strcmp("OLDPWD", data->our_env[i])
 				|| !ft_strncmp("OLDPWD=", data->our_env[i], 7)))
-			append_key_value(oldpwd, &data->our_env, &data->env_size);
+			append_key_value(malloc_guard(ft_strjoin_wrapper("OLDPWD=",
+						oldpwd, 0)), &data->our_env, &data->env_size);
 		else if ((!ft_strcmp("PWD", data->our_env[i])
 				|| !ft_strncmp("PWD=", data->our_env[i], 4)))
-			append_key_value(pwd, &data->our_env, &data->env_size);
+			append_key_value(malloc_guard(ft_strjoin_wrapper("PWD=", pwd, 2)),
+				&data->our_env, &data->env_size);
 		i++;
 	}
-	free(pwd);
 	data->exit_status = 0;
 }
 

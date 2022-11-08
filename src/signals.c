@@ -6,12 +6,13 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/11 10:10:31 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/04 18:18:02 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:10:21 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <termios.h>
+
 /*
 **	CTRL + C == SIGINT
 **	When the function receives a SIGINT signal, it will print the signal ...

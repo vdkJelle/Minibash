@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/09/07 17:07:27 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 17:20:57 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,24 @@ static void	destroy_entry(char ***our_env, int *env_size, int i)
 
 static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	while ((*our_env)[i])
 	{
 		j = 0;
-		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
-			j++;
-		if (!ft_strncmp((*our_env)[i], arg, j))
+		if (ft_strchr((*our_env)[i], '='))
+			tmp = malloc_guard(ft_substr((*our_env)[i], 0, skip_until_char((*our_env)[i], '=')));
+		else
+			tmp = malloc_guard(ft_strdup((*our_env)[i]));
+		if (!ft_strcmp(tmp, arg))
+		{
+			free(tmp);
 			return (destroy_entry(our_env, env_size, i));
+		}
+		free(tmp);
 		i++;
 	}
 	return ;
@@ -102,8 +109,8 @@ void	ft_unset(t_data *data)
 	while (data->args[i])
 	{
 		if (check_if_valid(data->args[i]) == FALSE)
-			print_error(data, 1, make_array("🐶 > unset: `", data->args[i],
-					"': not a valid identifier", NULL));
+			print_error(data, 1, make_array(SHELL, "unset: `", data->args[i],
+					"': not a valid identifier"));
 		else
 			check_for_entry(data->args[i], &data->our_env, &data->env_size);
 		i++;

@@ -6,12 +6,28 @@
 /*   By: tessa <tessa@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/13 15:18:13 by tessa         #+#    #+#                 */
-/*   Updated: 2022/11/04 18:18:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 16:57:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <termios.h>
+
+int	wait_for_heredoc(t_data *data, int pid)
+{
+	int	wstatus;
+
+	wstatus = -1;
+	waitpid(pid, &wstatus, 0);
+	if (WTERMSIG(wstatus) == SIGINT)
+	{
+		data->exit_status = 1;
+		write(1, "\n", 1);
+		return (1);
+	}
+	return (0);
+}
+
 /*
 **	Reads from the input with readline until the delimiter is encountered
 **	Writes the input + a newline to the file descriptor
@@ -69,7 +85,8 @@ int	here_doc(t_data *data, char *delimiter, int fd[2])
 		print_error_exit(1, make_array(PROMPT, strerror(errno), NULL, NULL));
 	if (pid == CHILD)
 		here_doc_read_input(delimiter, tmp_fd);
-	waitpid(pid, NULL, 0);
+	if (wait_for_heredoc(data, pid))
+		return (1);
 	if (close(tmp_fd) == -1)
 		return (redirection_close_error(data, "/tmp/here-document"));
 	if (fd[READ] != NO_REDIRECTION && close(fd[READ]) == -1)

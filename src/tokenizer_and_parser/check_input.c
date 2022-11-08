@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 14:16:18 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 15:26:42 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/08 15:58:49 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,26 @@ int i)
 {
 	if (!is_redirection(arg[i]->word))
 	{
-		print_error(data, 2, make_array("🐶 > Invalid metacharacter: ",
-				arg[i]->word, NULL, NULL));
+		print_error(data, 2, make_array(SHELL, "Invalid metacharacter: ",
+				arg[i]->word, NULL));
 		return (1);
 	}
 	if (!arg[i + 1])
 	{
 		if (control_operator[0] == '\0')
-			print_error(data, 2, make_array("🐶 > syntax error near unexpected",
-					" token `newline'", NULL, NULL));
+			print_error(data, 2, make_array(SHELL,
+					"syntax error near unexpected", " token `newline'", NULL));
 		else
-			print_error(data, 2, make_array("🐶 > syntax error near unexpected",
-					" token `", control_operator, "'"));
+			print_error(data, 2, make_array(
+					"codyshell: syntax error near unexpected", " token `",
+					control_operator, "'"));
 		return (1);
 	}
 	else if (arg[i + 1] && arg[i + 1]->metacharacter == 1)
 	{
-		print_error(data, 2, make_array("🐶 > syntax error near unexpected",
-				" token `", arg[i + 1]->word, "'"));
+		print_error(data, 2, make_array(
+				"codyshell: syntax error near unexpected", " token `",
+				arg[i + 1]->word, "'"));
 		return (1);
 	}
 	return (0);
@@ -60,8 +62,8 @@ static int	check_control_operator(t_data *data, char *s)
 {
 	if (!(!ft_strcmp(s, "|\0") || !ft_strcmp(s, ";\0") || s[0] == '\0'))
 	{
-		print_error(data, 2, make_array("🐶 > Invalid control operator: ", s,
-				NULL, NULL));
+		print_error(data, 2, make_array(SHELL, "Invalid control operator: ", s,
+				NULL));
 		return (1);
 	}
 	return (0);
@@ -83,14 +85,14 @@ static int	check_argument_pipe(t_data *data, t_expression *cur, t_list *list)
 		if (list->next && !((t_expression *)list->next->content)->arg)
 		{
 			print_error(data, 2,
-				make_array("🐶 > syntax error near unexpected token `",
+				make_array(SHELL, "syntax error near unexpected token `",
 					((t_expression *)list->next->content)->control_operator,
-					"'", NULL));
+					"'"));
 			return (1);
 		}
 		if (!list->next)
 		{
-			print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL,
+			print_error(data, 2, make_array(SHELL, "Multiline command", NULL,
 					NULL));
 			return (1);
 		}

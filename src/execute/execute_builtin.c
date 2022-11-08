@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 16:02:04 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/08 15:45:40 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	execute_builtin_no_pipe(t_data *data, enum e_command cmd,
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	execute_builtin(data, cmd, exec);
 	if (exec->fd[READ] != NO_REDIRECTION && close(exec->fd[READ]) == -1)
-		return (print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL,
+		return (print_error(data, 1, make_array(SHELL, strerror(errno), NULL,
 					NULL)));
 	if (exec->fd[WRITE] != NO_REDIRECTION && close(exec->fd[WRITE]) == -1)
-		return (print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL,
+		return (print_error(data, 1, make_array(SHELL, strerror(errno), NULL,
 					NULL)));
 }
 

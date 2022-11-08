@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:00:12 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:44:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,16 +129,16 @@ static int	check_if_valid(t_data *data, char *s)
 	i = 0;
 	if (!ft_isalpha(s[i]) && s[i] != '_')
 	{
-		print_error(data, 1, make_array("🐶 > export: `", s,
-				"': not a valid identifier", NULL));
+		print_error(data, 1, make_array(SHELL, "export: `", s,
+				"': not a valid identifier"));
 		return (1);
 	}
 	while (s[i] && s[i] != '=')
 	{
 		if (!ft_isalnum(s[i]) && s[i] != '_')
 		{
-			print_error(data, 1, make_array("🐶 > export: `", s,
-					"': not a valid identifier", NULL));
+			print_error(data, 1, make_array(SHELL, "export: `", s,
+					"': not a valid identifier"));
 			return (1);
 		}
 		i++;

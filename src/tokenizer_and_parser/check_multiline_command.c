@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:57:51 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/19 10:52:58 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/08 15:57:32 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	check_multiline_command(t_data *data, char *s)
 	len = ft_strlen(s);
 	if (count_backslash(s, len) % 2)
 	{
-		print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL,
+		print_error(data, 2, make_array(SHELL, "Multiline command", NULL,
 				NULL));
 		return (1);
 	}
 	if (count_quotes(s))
 	{
-		print_error(data, 2, make_array("🐶 > Multiline command", NULL, NULL,
+		print_error(data, 2, make_array(SHELL, "Multiline command", NULL,
 				NULL));
 		return (1);
 	}

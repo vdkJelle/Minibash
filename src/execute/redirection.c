@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 12:06:59 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/13 15:35:48 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/08 15:46:55 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	redirection_check_fd(t_data *data, char *s, int fd[2])
 {
 	if (fd[READ] == -1 || fd[WRITE] == -1)
 	{
-		print_error(data, 1, make_array("🐶 > ", s, ": ", strerror(errno)));
+		print_error(data, 1, make_array(SHELL, s, ": ", strerror(errno)));
 		return (1);
 	}
 	return (0);
@@ -36,7 +36,7 @@ int	redirection_check_fd(t_data *data, char *s, int fd[2])
 
 int	redirection_close_error(t_data *data, char *s)
 {
-	print_error(data, 1, make_array("🐶 > ", s, ": ", strerror(errno)));
+	print_error(data, 1, make_array(SHELL, s, ": ", strerror(errno)));
 	return (1);
 }
 
