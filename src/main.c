@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/07 13:58:37 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:57:33 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void	handle_pwd(char ***our_env, int *env_size)
 
 	pwd = NULL;
 	pwd = malloc_guard(getcwd(pwd, 0));
-	pwd = malloc_guard(ft_strjoin_wrapper(malloc_guard(ft_strdup
-			("PWD=")), pwd, 3));
+	pwd = malloc_guard(ft_strjoin_wrapper(malloc_guard(
+					ft_strdup("PWD=")), pwd, 3));
 	append_key_value(pwd, our_env, env_size);
 	free(pwd);
 }
@@ -80,8 +80,8 @@ static void	initialize_env(char ***our_env, int *env_size)
 	j = 0;
 	while (environ[j])
 	{
-		if (!ft_strncmp(environ[i], "OLDPWD=", 7) ||
-				!ft_strcmp(environ[i], "OLDPWD"))
+		if (!ft_strncmp(environ[i], "OLDPWD=", 7)
+			|| !ft_strcmp(environ[i], "OLDPWD"))
 		{
 			j++;
 			continue ;

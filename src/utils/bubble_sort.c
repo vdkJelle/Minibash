@@ -6,16 +6,16 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/05 12:13:34 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/07 14:18:16 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:55:55 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char **sort(char **sorted_env)
+static char	**sort(char **sorted_env)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*tmp;
 
 	i = 0;
@@ -37,12 +37,12 @@ static char **sort(char **sorted_env)
 	return (sorted_env);
 }
 
-char **bubble_sort(char **env, int *env_size)
+char	**bubble_sort(char **env, int *env_size)
 {
-	char **sorted_env;
-	int	i;
+	char	**sorted_env;
+	int		i;
 
-	sorted_env = ft_malloc(((*env_size)+ 1) * sizeof(char *));
+	sorted_env = ft_malloc(((*env_size) + 1) * sizeof(char *));
 	i = 0;
 	while (env[i])
 	{

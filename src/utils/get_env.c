@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/25 16:23:09 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/05 16:03:13 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:54:57 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 char	*get_env(char **our_env, char *key)
 {
-	int	len;
-	int	i;
+	int		len;
+	int		i;
 	char	*tmp;
 
 	tmp = malloc_guard(ft_strjoin_wrapper(key, "=", 0));

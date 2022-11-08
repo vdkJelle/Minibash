@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/01 12:14:57 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 12:51:02 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:52:53 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,20 @@ static enum e_file	handle_file_status(t_data *data, enum e_file file_status,
 	char *file)
 {
 	if (file_status == FILE_ERROR)
-		print_error(data, 1, make_array(PROMPT, file, ": ", strerror(errno)));
+		print_error(data, 1, make_array(SHELL, file, ": ", strerror(errno)));
 	else if (file_status == DIRECTORY)
-		print_error(data, 126, make_array(PROMPT, file,
+		print_error(data, 126, make_array(SHELL, file,
 				": Is a directory", NULL));
 	else if (file_status == NO_SUCH_FILE)
-		print_error(data, 127, make_array(PROMPT, file,
+		print_error(data, 127, make_array(SHELL, file,
 				": No such file or directory", NULL));
 	else if (file_status == NOT_EXECUTABLE)
-		print_error(data, 126, make_array(PROMPT, file, ": ", strerror(errno)));
+		print_error(data, 126, make_array(SHELL, file, ": ", strerror(errno)));
 	else if (file_status == NOT_FOUND)
-		print_error(data, 127, make_array(PROMPT, file, ": command not found",
+		print_error(data, 127, make_array(SHELL, file, ": command not found",
 				NULL));
 	else if (file_status == PERMISSION_DENIED)
-		print_error(data, 126, make_array(PROMPT, file,
+		print_error(data, 126, make_array(SHELL, file,
 				": Permission denied", NULL));
 	return (file_status);
 }

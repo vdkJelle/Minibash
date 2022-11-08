@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/07 14:17:01 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:43:21 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	waiting_for_processes(t_data *data)
 {
 	int	wstatus;
 
-	wstatus = 0;
+	wstatus = -2;
 	waitpid(data->pid, &wstatus, 0);
 	while (wait(NULL) > 0)
 		continue ;

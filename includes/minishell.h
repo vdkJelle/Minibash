@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/05 12:56:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 11:52:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define CHILD 0
 
 # define PROMPT "🐶 > "
+# define SHELL "codyshell: "
 
 /*
 **------------------------------------ENUMS-------------------------------------

@@ -6,11 +6,12 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/11/05 12:24:57 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/11/08 11:21:06 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
+CC			=	gcc
 SRCS		=	builtins/cd\
 				builtins/echo\
 				builtins/env\
@@ -64,8 +65,7 @@ announce:
 	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
 
 $(NAME): $(OFILES) $(LIBRARIES)
-	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline
-#-lreadline -L `brew --prefix readline`/lib
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline -L `brew --prefix readline`/lib
 
 $(LIBRARIES):
 	@echo "   _                   ____    _____  _____" 
@@ -80,8 +80,7 @@ $(LIBRARIES):
 obj/%.o: src/%.c
 	@mkdir -p $(@D)
 	@echo "Compiling... $^"
-	@gcc $(FLAGS) -c $^ -o $@ -I $(INCLUDES) -lreadline
-#-I `brew --prefix readline`/include
+	@gcc $(FLAGS) -c $^ -o $@ -I $(INCLUDES) -I `brew --prefix readline`/include
 
 clean:
 	@echo "Cleaning..."

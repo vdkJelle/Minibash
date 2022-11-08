@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/07 14:17:58 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:00:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	check_if_exists(char *arg, char ***our_env)
 		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
 			j++;
 		if (!ft_strncmp((*our_env)[i], arg,
-				skip_until_char((*our_env)[i], '=')))
+			skip_until_char((*our_env)[i], '=')))
 		{
 			if (ft_strchr(arg, '='))
 			{
@@ -155,7 +155,7 @@ static int	check_if_valid(t_data *data, char *s)
 
 void	ft_export(t_data *data)
 {
-	int	i;
+	int		i;
 	char	**sorted_env;
 
 	data->exit_status = 0;
