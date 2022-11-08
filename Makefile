@@ -6,11 +6,12 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/11/04 21:38:30 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/11/08 11:21:06 by tevan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
+CC			=	gcc
 SRCS		=	builtins/cd\
 				builtins/echo\
 				builtins/env\
@@ -31,6 +32,7 @@ SRCS		=	builtins/cd\
 				tokenizer_and_parser/parser_word_segments\
 				tokenizer_and_parser/parser\
 				tokenizer_and_parser/tokenizer\
+				utils/bubble_sort\
 				utils/free\
 				utils/get_env\
 				utils/list\

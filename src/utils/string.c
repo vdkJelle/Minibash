@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/06/01 14:24:42 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 12:37:46 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/07 14:15:50 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,9 @@ char	*get_path_from_bin(t_data *data, char *arg)
 	{
 		if (check_in_dir(arg, splitted_path[i]))
 		{
-			ret = ft_malloc(sizeof(char) * (ft_strlen(splitted_path[i]) + 2));
+			ret = malloc_guard(ft_calloc(ft_strlen(splitted_path[i]) + 2, 1));
 			ft_strlcat(ret, splitted_path[i], ft_strlen(splitted_path[i]) + 2);
-			ret[ft_strlen(splitted_path[i]) + 0] = '/';
-			ret[ft_strlen(splitted_path[i]) + 1] = '\0';
+			ret[ft_strlen(splitted_path[i])] = '/';
 			ret = malloc_guard(ft_strjoin_wrapper(ret, arg, 1));
 			break ;
 		}

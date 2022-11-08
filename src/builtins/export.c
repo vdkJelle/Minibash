@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/18 11:55:58 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:39:28 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/08 12:00:12 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ static int	check_if_exists(char *arg, char ***our_env)
 		j = 0;
 		while ((*our_env)[i][j] && (*our_env)[i][j] != '=')
 			j++;
-		if (!ft_strncmp((*our_env)[i], arg, skip_until_char(arg, '=')))
+		if (!ft_strncmp((*our_env)[i], arg,
+			skip_until_char((*our_env)[i], '=')))
 		{
 			if (ft_strchr(arg, '='))
 			{
@@ -154,17 +155,20 @@ static int	check_if_valid(t_data *data, char *s)
 
 void	ft_export(t_data *data)
 {
-	int	i;
+	int		i;
+	char	**sorted_env;
 
 	data->exit_status = 0;
 	i = 0;
 	if (!data->args[1])
 	{
-		while (data->our_env[i])
+		sorted_env = bubble_sort(data->our_env, &data->env_size);
+		while (sorted_env[i])
 		{
-			print_export(data->our_env[i], data->our_fd[1]);
+			print_export(sorted_env[i], data->our_fd[1]);
 			i++;
 		}
+		free_array(sorted_env);
 	}
 	i = 1;
 	while (data->args[i])

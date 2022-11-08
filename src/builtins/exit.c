@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:10:29 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:00:41 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static enum e_bool	is_string_numeric(char *s)
 		i += skip_while_char(s, is_whitespace);
 		if (s[i] == '-' || s[i] == '+')
 			i++;
-		i += skip_while_char(s, ft_isdigit_char);
-		i += skip_while_char(s, is_whitespace);
+		i += skip_while_char(s + i, ft_isdigit_char);
+		i += skip_while_char(s + i, is_whitespace);
 		if (!s[i])
 			return (TRUE);
 	}
@@ -48,7 +48,7 @@ static enum e_bool	is_string_numeric(char *s)
 **		- example: exit 42 nope or exit 42 42
 **		- an error message is printed
 **		- the program does not exit
-**		- the exit status is unchanged
+**		- the exit status is 1
 **	If the first argument is numeric and is the single argument exit is ...
 **	... called with the value of the argument
 **		- example: exit 42
@@ -65,14 +65,11 @@ void	ft_exit(t_data *data)
 		exit(data->exit_status);
 	numeric = is_string_numeric(data->args[1]);
 	if (numeric == FALSE)
-	{
-		print_error(data, 255, make_array("🐶 > exit: ", data->args[1],
-				": numeric argument required", NULL));
-		exit(data->exit_status);
-	}
+		print_error_exit(255, make_array("codyshell: exit: ",
+				data->args[1], ": numeric argument required", NULL));
 	if (data->args[2])
 	{
-		print_error(data, 1, make_array("🐶 > exit: too many arguments",
+		print_error(data, 1, make_array("codyshell: exit: too many arguments",
 				NULL, NULL, NULL));
 		return ;
 	}

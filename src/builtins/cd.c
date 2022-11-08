@@ -6,11 +6,33 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/10/30 14:32:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/08 12:08:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+
+
+void	handle_cd_home(t_data *data, char *pwd, char *oldpwd)
+{
+	int		ret;
+	char	*home;
+
+	ret = 0;
+	home = get_env(data->our_env, "HOME");
+	if (!home)
+	{
+		return (print_error(data, 1,
+				make_array("codyshell: cd: HOME not set", NULL, NULL, NULL)));
+	}
+	ret = chdir(home);
+	if (ret == -1)
+		return (print_error(data, 1,
+				make_array("codyshell: cd: ",
+					data->args[1], ": ", strerror(errno))));
+	data->exit_status = 0;
+}
 
 /*
 **	Changes the directory according to the path using chdir
@@ -25,17 +47,18 @@
 void	ft_cd(t_data *data)
 {
 	int	ret;
+	char *pwd;
+	char *oldpwd;
 
 	ret = 0;
+	oldpwd = NULL;
+	pwd = NULL;
 	if (!data->args[1])
-		ret = chdir(get_env(data->our_env, "HOME"));
-	else if (!data->args[2])
-		ret = chdir(data->args[1]);
-	else if (data->args[2])
-		return (print_error(data, 1,
-				make_array("🐶 > cd: too many arguments", NULL, NULL, NULL)));
+		return (handle_cd_home(data, pwd, oldpwd));
+	ret = chdir(data->args[1]);
 	if (ret == -1)
 		return (print_error(data, 1,
-				make_array("🐶 > cd: ", data->args[1], ": ", strerror(errno))));
+				make_array("codyshell: cd: ",
+					data->args[1], ": ", strerror(errno))));
 	data->exit_status = 0;
 }
