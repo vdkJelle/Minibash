@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:40:12 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/08 13:59:25 by tevan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,7 @@ void	ft_pwd(t_data *data)
 	char	*buf;
 
 	buf = NULL;
-	buf = getcwd(buf, 0);
-	if (!buf)
-	{
-		print_error(data, 1, make_array("🐶 > ", strerror(errno), NULL, NULL));
-		return ;
-	}
+	buf = malloc_guard(getcwd(buf, 0));
 	ft_putstr_fd(buf, data->our_fd[WRITE]);
 	ft_putchar_fd('\n', data->our_fd[WRITE]);
 	free(buf);
