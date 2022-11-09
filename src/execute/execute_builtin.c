@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/14 15:01:20 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:45:40 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:07:21 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	execute_builtin_no_pipe(t_data *data, enum e_command cmd,
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	execute_builtin(data, cmd, exec);
 	if (exec->fd[READ] != NO_REDIRECTION && close(exec->fd[READ]) == -1)
-		return (print_error(data, 1, make_array(SHELL, strerror(errno), NULL,
+		return (print_error(1, make_array(SHELL, strerror(errno), NULL,
 					NULL)));
 	if (exec->fd[WRITE] != NO_REDIRECTION && close(exec->fd[WRITE]) == -1)
-		return (print_error(data, 1, make_array(SHELL, strerror(errno), NULL,
+		return (print_error(1, make_array(SHELL, strerror(errno), NULL,
 					NULL)));
 }
 
@@ -78,5 +78,5 @@ void	execute_builtin_pipe(t_data *data, enum e_command cmd, t_execute *exec)
 	data->our_fd[READ] = STDIN_FILENO;
 	data->our_fd[WRITE] = STDOUT_FILENO;
 	execute_builtin(data, cmd, exec);
-	exit(data->exit_status);
+	exit(g_status_code);
 }

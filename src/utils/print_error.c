@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/04 16:13:17 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/06/07 17:10:42 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/09 18:08:19 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	print_error_exit(int exit_status, char **messages)
 ** No return value
 */
 
-void	print_error(t_data *data, int exit_status, char **messages)
+void	print_error(int exit_status, char **messages)
 {
 	int	i;
 
@@ -100,6 +100,6 @@ void	print_error(t_data *data, int exit_status, char **messages)
 		i++;
 	}
 	ft_putchar_fd('\n', STDERR_FILENO);
-	data->exit_status = exit_status;
+	g_status_code = exit_status;
 	free_array(messages);
 }

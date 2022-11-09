@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 12:28:46 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:13:15 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:42:59 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ void	waiting_for_processes(t_data *data)
 	while (wait(NULL) > 0)
 		continue ;
 	if (WIFEXITED(wstatus))
-		data->exit_status = WEXITSTATUS(wstatus);
+		g_status_code = WEXITSTATUS(wstatus);
 	else if (WTERMSIG(wstatus) == SIGQUIT)
 	{
-		data->exit_status = 128 + WTERMSIG(wstatus);
+		g_status_code = 128 + WTERMSIG(wstatus);
 		write(1, "\b\b  \b\b^\\Quit: 3\n", 16);
 	}
 	else if (WTERMSIG(wstatus) == SIGINT)
 	{
-		data->exit_status = 128 + WTERMSIG(wstatus);
+		g_status_code = 128 + WTERMSIG(wstatus);
 		write(1, "\n", 1);
 	}
 }
@@ -151,7 +151,7 @@ void	create_process(t_data *data, enum e_command cmd, t_execute *cur,
 	else if (pid == CHILD)
 	{
 		if (cmd == CMD_ERROR)
-			exit(data->exit_status);
+			exit(g_status_code);
 		child_process(data, cmd, cur, prev);
 	}
 	else

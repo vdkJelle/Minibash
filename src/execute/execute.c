@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 12:38:11 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:12:13 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 	{
 		file = check_file_information(data, cur->args[0]);
 		if (file == FILE_ERROR)
-			data->exit_status = 1;
+			g_status_code = 1;
 		if (file != BIN && file != REGULAR)
 			cmd = CMD_ERROR;
 		cur->path = get_path(data, cur->args[0], file);
@@ -113,7 +113,7 @@ static void	execute(t_data *data, t_execute *cur, t_execute *prev)
 **	Returns a malloced execute struct
 */
 
-static int	get_exec(t_data *data, t_execute **cur,
+static int	get_exec(t_execute **cur,
 	t_expression *expression)
 {
 	t_execute	*exec;
@@ -122,8 +122,11 @@ static int	get_exec(t_data *data, t_execute **cur,
 	exec = malloc_guard(ft_calloc(sizeof(t_execute), 1));
 	exec->fd[READ] = NO_REDIRECTION;
 	exec->fd[WRITE] = NO_REDIRECTION;
-	if (handle_redirections(data, expression, exec))
+	if (handle_redirections(expression, exec))
+	{
+		free_exec(exec);
 		return (1);
+	}
 	get_final_args(expression, exec);
 	if (expression->control_operator[0] == '|')
 	{
@@ -154,7 +157,7 @@ void	cody_catch(t_data *data)
 	while (temp)
 	{
 		expression = parse_one(data, (t_token *)temp->content);
-		if (get_exec(data, &cur, expression))
+		if (get_exec(&cur, expression))
 			return (free_cur_prev_expression(cur, prev, expression));
 		free_expression(expression);
 		execute(data, cur, prev);

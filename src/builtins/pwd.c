@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 17:41:16 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 13:59:25 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 17:38:13 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void	ft_pwd(t_data *data)
 	ft_putstr_fd(buf, data->our_fd[WRITE]);
 	ft_putchar_fd('\n', data->our_fd[WRITE]);
 	free(buf);
-	data->exit_status = 0;
+	g_status_code = 0;
 }

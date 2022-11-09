@@ -1,2 +1,4 @@
-./blub: No such file or directory
-blub: command not found
+ls: filethatdoesntexist: No such file or directory
+cd: tests: No such file or directory
+cd: tests: No such file or directory
+dsbksdgbksdghsd: command not found

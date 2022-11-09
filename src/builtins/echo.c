@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/17 10:21:10 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/04 18:18:09 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 17:37:37 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	ft_echo(t_data *data)
 	}
 	if (newline == 1)
 		ft_putchar_fd('\n', data->our_fd[WRITE]);
-	data->exit_status = 0;
+	g_status_code = 0;
 }

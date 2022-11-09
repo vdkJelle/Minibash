@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/03 16:30:26 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/08 12:00:41 by tevan-de      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:06:38 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ void	ft_exit(t_data *data)
 	enum e_bool	numeric;
 
 	if (!data->args[1])
-		exit(data->exit_status);
+		exit(g_status_code);
 	numeric = is_string_numeric(data->args[1]);
 	if (numeric == FALSE)
 		print_error_exit(255, make_array("codyshell: exit: ",
 				data->args[1], ": numeric argument required", NULL));
 	if (data->args[2])
 	{
-		print_error(data, 1, make_array("codyshell: exit: too many arguments",
+		print_error(1, make_array("codyshell: exit: too many arguments",
 				NULL, NULL, NULL));
 		return ;
 	}

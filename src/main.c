@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:30 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 17:24:54 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:44:43 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 static void	tokenize_parse_execute(t_data *data, char *input)
 {
-	if (check_multiline_command(data, input))
+	if (check_multiline_command(input))
 		return ;
 	get_token(data, input);
 	if (check_input(data))
@@ -49,6 +49,7 @@ int	main(void)
 	t_data	data;
 	char	*input;
 
+	g_status_code = 0;
 	rl_catch_signals = 0;
 	ft_bzero(&data, sizeof(data));
 	ft_putstr_fd("Welcome to the amazing Codyshell!\n", 1);

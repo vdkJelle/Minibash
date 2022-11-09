@@ -6,7 +6,7 @@
 /*   By: tevan-de <tevan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/29 19:58:38 by tevan-de      #+#    #+#                 */
-/*   Updated: 2022/11/05 15:44:47 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 17:40:10 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	handle_environment_variable(t_data *data, t_word **word, char *s)
 	if (s[0] == '$' && s[1] == '?')
 	{
 		ft_lstadd_back(&(*word)->word_segment, malloc_guard(ft_lstnew
-				(malloc_guard(ft_itoa(data->exit_status)))));
+				(malloc_guard(ft_itoa(g_status_code)))));
 		return (2);
 	}
 	len = 0;

@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 12:12:20 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:17:12 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@
 # include "../libft/libft.h"
 
 /*
+**------------------------------GLOBAL_VARIABLES--------------------------------
+*/
+
+int	g_status_code;
+
+/*
 **-----------------------------------DEFINES------------------------------------
 */
 
@@ -41,7 +47,7 @@
 
 # define CHILD 0
 
-# define PROMPT "🐶 > "
+# define PROMPT "codyshell-3.0$ "
 # define SHELL "codyshell: "
 
 /*
@@ -127,7 +133,6 @@ typedef struct s_data
 	char		**our_env;
 	int			env_size;
 	int			our_fd[2];
-	int			exit_status;
 	int			pid;
 	t_list		*token;
 	t_list		*expression;
@@ -203,13 +208,13 @@ void			create_process(t_data *data, enum e_command cmd, t_execute *cur,
 /*
 **------------------------EXECUTE/REDIRECTION_HERE_DOC.C------------------------
 */
-int				here_doc(t_data *data, char *delimiter, int fd[2]);
+int				here_doc(char *delimiter, int fd[2]);
 /*
 **-----------------------------EXECUTE/REDIRECTION.C----------------------------
 */
-int				redirection_check_fd(t_data *data, char *s, int fd[2]);
-int				redirection_close_error(t_data *data, char *s);
-int				handle_redirections(t_data *data, t_expression *expression,
+int				redirection_check_fd(char *s, int fd[2]);
+int				redirection_close_error(char *s);
+int				handle_redirections(t_expression *expression,
 					t_execute *exec);
 
 /*
@@ -219,7 +224,7 @@ int				check_input(t_data *data);
 /*
 **---------------TOKENIZER_AND_PARSER/CHECK_MULTILINE_COMMANDS.C----------------
 */
-int				check_multiline_command(t_data *data, char *s);
+int				check_multiline_command(char *s);
 /*
 **-----------------TOKENIZER_AND_PARSER/PARSER_WORD_SEGMENTS.C------------------
 */
@@ -248,7 +253,7 @@ void			get_token(t_data *data, char *s);
 */
 void			initialize_env(char ***our_env, int *env_size);
 /*
-**---------------------------------UTILS/FREE.C---------------------------------
+**---------------------------------UTILS/FREE2.C--------------------------------
 */
 void			free_cur_prev_expression(
 				t_execute *cur,
@@ -283,7 +288,7 @@ void			print_errno(void);
 int				print_errno_int(void);
 char			**make_array(char *s1, char *s2, char *s3, char *s4);
 void			print_error_exit(int exit_status, char **messages);
-void			print_error(t_data *data, int exit_status, char **messages);
+void			print_error(int exit_status, char **messages);
 /*
 **-----------------------------UTILS/STRING_COUNT.C-----------------------------
 */

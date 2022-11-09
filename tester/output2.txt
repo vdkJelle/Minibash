@@ -1,27 +1,316 @@
-echo hi
-hi
-echo hello
-hello
+/bin/ls
+Makefile
+OUT
+OUT1
+OUT2
+OUT3
+includes
+libft
+minishell
+obj
+src
+tester
+/bin/ls -l
+total 128
+-rw-r--r--   1 jelvan-d  student   3559 Nov  9 17:21 Makefile
+-rw-r--r--   1 jelvan-d  student    162 Nov  9 18:34 OUT
+-rw-r--r--   1 jelvan-d  student   1782 Nov  9 18:35 OUT1
+-rw-r--r--   1 jelvan-d  student      0 Nov  9 18:31 OUT2
+-rw-r--r--   1 jelvan-d  student    891 Nov  9 18:31 OUT3
+drwxr-xr-x   3 jelvan-d  student    102 Nov  8 12:16 includes
+drwxr-xr-x  91 jelvan-d  student   3094 Nov  9 18:17 libft
+-rwxr-xr-x   1 jelvan-d  student  45080 Nov  9 18:17 minishell
+drwxr-xr-x   8 jelvan-d  student    272 Nov  9 18:17 obj
+drwxr-xr-x   8 jelvan-d  student    272 Nov  8 12:16 src
+drwxr-xr-x  13 jelvan-d  student    442 Nov  9 18:36 tester
+echo Hi
+Hi
+echo -n Hi
+Hi/bin/ls -l
+total 128
+-rw-r--r--   1 jelvan-d  student   3559 Nov  9 17:21 Makefile
+-rw-r--r--   1 jelvan-d  student    162 Nov  9 18:34 OUT
+-rw-r--r--   1 jelvan-d  student   1782 Nov  9 18:35 OUT1
+-rw-r--r--   1 jelvan-d  student      0 Nov  9 18:31 OUT2
+-rw-r--r--   1 jelvan-d  student    891 Nov  9 18:31 OUT3
+drwxr-xr-x   3 jelvan-d  student    102 Nov  8 12:16 includes
+drwxr-xr-x  91 jelvan-d  student   3094 Nov  9 18:17 libft
+-rwxr-xr-x   1 jelvan-d  student  45080 Nov  9 18:17 minishell
+drwxr-xr-x   8 jelvan-d  student    272 Nov  9 18:17 obj
+drwxr-xr-x   8 jelvan-d  student    272 Nov  8 12:16 src
+drwxr-xr-x  13 jelvan-d  student    442 Nov  9 18:36 tester
+/bin/ls filethatdoesntexist
+expr $? + $?
+0
+echo "bla bla"
+bla bla
+echo "cat lol.c | cat > lol.c"
+cat lol.c | cat > lol.c
+echo ''
+
+echo 'bla'
+bla
+echo 'env'
+env
+echo 'ls -l | wc -l'
+ls -l | wc -l
+echo '$USER'
+$USER
+env | sort
+Apple_PubSub_Socket_Render=/private/tmp/com.apple.launchd.LkNnIe7EX7/Render
+COLORTERM=truecolor
+COMMAND_MODE=unix2003
+GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
+HOME=/Users/jelvan-d
+LANG=en_US.UTF-8
+LESS=-R
+LOGNAME=jelvan-d
+LSCOLORS=Gxfxcxdxbxegedabagacad
+MallocNanoZone=0
+ORIGINAL_XDG_CURRENT_DESKTOP=undefined
+PAGER=less
+PATH=/Users/jelvan-d/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+PWD=/Users/jelvan-d/Documents/minishell_voggie
+SECURITYSESSIONID=186a7
+SHELL=/bin/zsh
+SHLVL=3
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.xFcPV28Fxa/Listeners
+TERM=xterm-256color
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.73.0
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n0007v54001ys9/T/
+USER=jelvan-d
+USER_ZDOTDIR=/Users/jelvan-d
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node
+VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper.app/Contents/MacOS/Code Helper
+VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n0007v54001ys9/T/vscode-git-a5a311690e.sock
+VSCODE_INJECTION=1
+XPC_FLAGS=0x0
+XPC_SERVICE_NAME=0
+ZDOTDIR=/Users/jelvan-d
+ZSH=/Users/jelvan-d/.oh-my-zsh
+_=/usr/bin/env
+__CF_USER_TEXT_ENCODING=0xFB29:0x0:0x0
+env | grep USER=
+USER=jelvan-d
+cd tests
+cd tests
+cd .
+cd ..
 pwd
-/home/jelvan-d/minishell
-ls -la
-total 92
-drwxr-xr-x  9 jelvan-d jelvan-d  4096 Jun 22 14:00 .
-drwxr-xr-x 23 jelvan-d jelvan-d  4096 Jun 22 14:01 ..
-drwxr-xr-x  8 jelvan-d jelvan-d  4096 Jun 22 13:53 .git
-drwxr-xr-x  3 jelvan-d jelvan-d  4096 Feb 28  2021 .github
--rw-r--r--  1 jelvan-d jelvan-d  3411 Jun 22 13:41 Makefile
--rw-r--r--  1 jelvan-d jelvan-d    14 Feb  1  2021 README.md
-drwxr-xr-x  2 jelvan-d jelvan-d  4096 Jun 22 13:41 includes
-drwxr-xr-x  2 jelvan-d jelvan-d  4096 Jun 22 14:00 libft
--rwxr-xr-x  1 jelvan-d jelvan-d 48904 Jun 22 14:00 minishell
-drwxr-xr-x  6 jelvan-d jelvan-d  4096 Jun 22 14:00 obj
-drwxr-xr-x  6 jelvan-d jelvan-d  4096 Jun 22 13:41 src
-drwxr-xr-x  3 jelvan-d jelvan-d  4096 Jun 22 14:01 tester
-exit 4 | exit 5 | exit 2 ; echo $?
-2
-./blub
-blub
-echo $0
-bash
-exit
+/Users/jelvan-d/Documents/minishell_voggie
+export TEST=1
+unset TEST
+export TEST=directory1:directory2
+cat < Makefile
+# **************************************************************************** #
+#                                                                              #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
+#                                                    +#+                       #
+#    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
+#    Updated: 2022/11/09 17:21:04 by jelvan-d      ########   odam.nl          #
+#                                                                              #
+# **************************************************************************** #
+
+NAME		=	minishell
+CC			=	gcc
+SRCS		=	builtins/cd\
+				builtins/echo\
+				builtins/env\
+				builtins/exit\
+				builtins/export\
+				builtins/pwd\
+				builtins/unset\
+				execute/check_file_information\
+				execute/execute_builtin\
+				execute/execute\
+				execute/final_args\
+				execute/processes\
+				execute/redirection_here_doc\
+				execute/redirection\
+				tokenizer_and_parser/check_input\
+				tokenizer_and_parser/check_multiline_command\
+				tokenizer_and_parser/parser_word\
+				tokenizer_and_parser/parser_word_segments\
+				tokenizer_and_parser/parser\
+				tokenizer_and_parser/tokenizer\
+				utils/bubble_sort\
+				utils/environment_utils\
+				utils/free\
+				utils/free2\
+				utils/get_env\
+				utils/list\
+				utils/malloc_wrapper\
+				utils/print_error\
+				utils/string\
+				utils/string_count\
+				utils/string_isthis\
+				utils/string_skip_characters\
+				main\
+				signals
+CFILES		=	$(SRCS:%=src/%.c)
+OFILES		=	$(SRCS:%=obj/%.o)
+INCLUDES	=	./includes/.
+FLAGS		=	-Wall -Wextra -Werror
+ifdef DEBUG
+FLAGS += -g -fsanitize=address
+endif
+LIBRARIES	=	libft/libft.a
+
+all:	announce $(NAME)
+
+announce:
+	@echo '  __  __              _   _                ____     _   _  U _____ u  _       _'
+	@echo 'U|" \/ "|u   ___     | \ |"|       ___    / __"| u |"| |"| \| ___"|/ |"|     |"|'
+	@echo '\| |\/| |/  |_"_|   <|  \| |>     |_"_|  <\___ \/ /| |_| |\ |  _|" U | | u U | | u   '
+	@echo ' | |  | |    | |    U| |\  |u      | |    u___) | U|  _  |u | |___  \| |/__ \| |/__  '
+	@echo ' |_|  |_|  U/| |\u   |_| \_|     U/| |\u  |____/>> |_| |_|  |_____|  |_____| |_____| '
+	@echo '<<,-,,-..-,_|___|_,-.||   \\,-.-,_|___|_,-.)(  (__)//   \\  <<   >>  //  \\  //  \\  '
+	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
+
+$(NAME): $(OFILES) $(LIBRARIES)
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline -L `brew --prefix readline`/lib
+
+$(LIBRARIES):
+	@echo "   _                   ____    _____  _____" 
+	@echo "  |\"|        ___    U | __\")u |\" ___||_ \" _|" 
+	@echo "U | | u     |_\"_|    \\|  _ \\/U| |_  u  | |"   
+	@echo " \\| |/__     | |      | |_) |\\|  _|/  /| |\\"  
+	@echo "  |_____|  U/| |\\u    |____/  |_|    u |_|U"
+	@echo "  //  \\\\\.-,_|___|_,-._|| \\\\\_  )(\\\\\,- _// \\\\\_"
+	@echo " (_\")(\"_)\\_)-' '-(_/(__) (__)(__)(_/(__) (__)" 
+	@$(MAKE) bonus -sC libft
+
+obj/%.o: src/%.c
+	@mkdir -p $(@D)
+	@echo "Compiling... $^"
+	@gcc $(FLAGS) -c $^ -o $@ -I $(INCLUDES) -I `brew --prefix readline`/include
+
+clean:
+	@echo "Cleaning..."
+	@rm -f $(OFILES) $(BOFILES)
+	@make clean -sC libft
+
+fclean: clean
+	@echo "Extra cleaning..."
+	@rm -f $(NAME)
+	@make fclean -sC libft
+
+re: fclean all
+
+.PHONY: all clean fclean re
+< Makefile cat
+# **************************************************************************** #
+#                                                                              #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
+#                                                    +#+                       #
+#    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
+#    Updated: 2022/11/09 17:21:04 by jelvan-d      ########   odam.nl          #
+#                                                                              #
+# **************************************************************************** #
+
+NAME		=	minishell
+CC			=	gcc
+SRCS		=	builtins/cd\
+				builtins/echo\
+				builtins/env\
+				builtins/exit\
+				builtins/export\
+				builtins/pwd\
+				builtins/unset\
+				execute/check_file_information\
+				execute/execute_builtin\
+				execute/execute\
+				execute/final_args\
+				execute/processes\
+				execute/redirection_here_doc\
+				execute/redirection\
+				tokenizer_and_parser/check_input\
+				tokenizer_and_parser/check_multiline_command\
+				tokenizer_and_parser/parser_word\
+				tokenizer_and_parser/parser_word_segments\
+				tokenizer_and_parser/parser\
+				tokenizer_and_parser/tokenizer\
+				utils/bubble_sort\
+				utils/environment_utils\
+				utils/free\
+				utils/free2\
+				utils/get_env\
+				utils/list\
+				utils/malloc_wrapper\
+				utils/print_error\
+				utils/string\
+				utils/string_count\
+				utils/string_isthis\
+				utils/string_skip_characters\
+				main\
+				signals
+CFILES		=	$(SRCS:%=src/%.c)
+OFILES		=	$(SRCS:%=obj/%.o)
+INCLUDES	=	./includes/.
+FLAGS		=	-Wall -Wextra -Werror
+ifdef DEBUG
+FLAGS += -g -fsanitize=address
+endif
+LIBRARIES	=	libft/libft.a
+
+all:	announce $(NAME)
+
+announce:
+	@echo '  __  __              _   _                ____     _   _  U _____ u  _       _'
+	@echo 'U|" \/ "|u   ___     | \ |"|       ___    / __"| u |"| |"| \| ___"|/ |"|     |"|'
+	@echo '\| |\/| |/  |_"_|   <|  \| |>     |_"_|  <\___ \/ /| |_| |\ |  _|" U | | u U | | u   '
+	@echo ' | |  | |    | |    U| |\  |u      | |    u___) | U|  _  |u | |___  \| |/__ \| |/__  '
+	@echo ' |_|  |_|  U/| |\u   |_| \_|     U/| |\u  |____/>> |_| |_|  |_____|  |_____| |_____| '
+	@echo '<<,-,,-..-,_|___|_,-.||   \\,-.-,_|___|_,-.)(  (__)//   \\  <<   >>  //  \\  //  \\  '
+	@echo ' (./  \.)\_)-" "-(_/ (_")  (_/ \_)-" "-(_/(__)    (_") ("_)(__) (__)(_")("_)(_")("_) '
+
+$(NAME): $(OFILES) $(LIBRARIES)
+	@$(CC) $(FLAGS) $^ -o $(NAME) -lreadline -L `brew --prefix readline`/lib
+
+$(LIBRARIES):
+	@echo "   _                   ____    _____  _____" 
+	@echo "  |\"|        ___    U | __\")u |\" ___||_ \" _|" 
+	@echo "U | | u     |_\"_|    \\|  _ \\/U| |_  u  | |"   
+	@echo " \\| |/__     | |      | |_) |\\|  _|/  /| |\\"  
+	@echo "  |_____|  U/| |\\u    |____/  |_|    u |_|U"
+	@echo "  //  \\\\\.-,_|___|_,-._|| \\\\\_  )(\\\\\,- _// \\\\\_"
+	@echo " (_\")(\"_)\\_)-' '-(_/(__) (__)(__)(_/(__) (__)" 
+	@$(MAKE) bonus -sC libft
+
+obj/%.o: src/%.c
+	@mkdir -p $(@D)
+	@echo "Compiling... $^"
+	@gcc $(FLAGS) -c $^ -o $@ -I $(INCLUDES) -I `brew --prefix readline`/include
+
+clean:
+	@echo "Cleaning..."
+	@rm -f $(OFILES) $(BOFILES)
+	@make clean -sC libft
+
+fclean: clean
+	@echo "Extra cleaning..."
+	@rm -f $(NAME)
+	@make fclean -sC libft
+
+re: fclean all
+
+.PHONY: all clean fclean re
+ls -la > OUT1
+< OUT1 ls -la >> OUT1
+dsbksdgbksdghsd
+echo $PATH
+/Users/jelvan-d/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+echo "$PATH"
+/Users/jelvan-d/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+echo $USER
+jelvan-d
+echo "$USER"
+jelvan-d

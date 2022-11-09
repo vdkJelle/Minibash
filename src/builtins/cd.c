@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/09 13:26:52 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 18:06:33 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ static void	handle_cd_home(t_data *data)
 	if (!home)
 	{
 		free(tmp_old_pwd);
-		return (print_error(data, 1,
+		return (print_error(1,
 				make_array("codyshell: cd: HOME not set", NULL, NULL, NULL)));
 	}
 	ret = chdir(home);
 	if (ret == -1)
 	{
 		free(tmp_old_pwd);
-		return (print_error(data, 1,
+		return (print_error(1,
 				make_array("codyshell: cd: ",
 					data->args[1], ": ", strerror(errno))));
 	}
@@ -93,11 +93,11 @@ void	ft_cd(t_data *data)
 	if (ret == -1)
 	{
 		free(tmp_old_pwd);
-		return (print_error(data, 1,
+		return (print_error(1,
 				make_array("codyshell: cd: ",
 					data->args[1], ": ", strerror(errno))));
 	}
 	update_oldpwd_and_pwd(data, tmp_old_pwd);
 	free(tmp_old_pwd);
-	data->exit_status = 0;
+	g_status_code = 0;
 }
