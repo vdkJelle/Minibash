@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/10 15:38:40 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 17:20:57 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:10:06 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	check_for_entry(char *arg, char ***our_env, int *env_size)
 	{
 		j = 0;
 		if (ft_strchr((*our_env)[i], '='))
-			tmp = malloc_guard(ft_substr((*our_env)[i], 0, skip_until_char((*our_env)[i], '=')));
+			tmp = malloc_guard(ft_substr((*our_env)[i],
+						0, skip_until_char((*our_env)[i], '=')));
 		else
 			tmp = malloc_guard(ft_strdup((*our_env)[i]));
 		if (!ft_strcmp(tmp, arg))

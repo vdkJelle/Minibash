@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:38:31 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/06/07 15:54:15 by tessa         ########   odam.nl         */
+/*   Updated: 2022/11/09 12:37:20 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	skip_non_metacharacters(char *s, char control_operator, int *count)
 	while (s[i] && s[i] != control_operator && !is_metacharacter(s[i]))
 	{
 		if (s[i] == '\'' && !(count_backslash(s, i) % 2))
-			i += skip_until_char(s + i, '\'');
+			i += skip_until_next_singleq(s + i);
 		else if (s[i] == '\"' && !(count_backslash(s, i) % 2))
 			i += skip_until_next_doubleq(s + i);
 		i++;

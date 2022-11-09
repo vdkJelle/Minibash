@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/08 10:24:32 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 17:25:59 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:38:11 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,7 @@ void	cody_catch(t_data *data)
 	{
 		expression = parse_one(data, (t_token *)temp->content);
 		if (get_exec(data, &cur, expression))
-		{
-			free(cur);
-			free(prev);
-			free_expression(expression);
-			return ;
-		}
+			return (free_cur_prev_expression(cur, prev, expression));
 		free_expression(expression);
 		execute(data, cur, prev);
 		if (prev)

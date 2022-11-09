@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 10:33:33 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 16:10:32 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 12:12:20 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,10 +244,16 @@ t_expression	*parse_one(t_data *data, t_token *token);
 void			get_token(t_data *data, char *s);
 
 /*
-**---------------------------------UTILS/FREE.C---------------------------------
+**--------------------------UTILS/ENVIRONMENT_UTILS.C---------------------------
 */
 void			initialize_env(char ***our_env, int *env_size);
-
+/*
+**---------------------------------UTILS/FREE.C---------------------------------
+*/
+void			free_cur_prev_expression(
+				t_execute *cur,
+				t_execute *prev,
+				t_expression *expression);
 /*
 **---------------------------------UTILS/FREE.C---------------------------------
 */
@@ -256,6 +262,7 @@ void			free_array_part(char ***array, int i);
 void			free_exec(t_execute *exec);
 void			free_expression(void *content);
 void			free_token(void *content);
+
 /*
 **-------------------------------UTILS/GET_ENV.C--------------------------------
 */

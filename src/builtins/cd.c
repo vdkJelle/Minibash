@@ -6,7 +6,7 @@
 /*   By: jelvan-d <jelvan-d@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/04 18:22:56 by jelvan-d      #+#    #+#                 */
-/*   Updated: 2022/11/08 15:39:17 by jelvan-d      ########   odam.nl         */
+/*   Updated: 2022/11/09 13:26:52 by jelvan-d      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	update_oldpwd_and_pwd(t_data *data, char *oldpwd)
 {
 	char	*pwd;
+	char	*tmp;
 	int		i;
 
 	pwd = NULL;
@@ -24,15 +25,20 @@ static void	update_oldpwd_and_pwd(t_data *data, char *oldpwd)
 	{
 		if ((!ft_strcmp("OLDPWD", data->our_env[i])
 				|| !ft_strncmp("OLDPWD=", data->our_env[i], 7)))
-			append_key_value(malloc_guard(ft_strjoin_wrapper("OLDPWD=",
-						oldpwd, 0)), &data->our_env, &data->env_size);
+		{
+			tmp = malloc_guard(ft_strjoin_wrapper("OLDPWD=", oldpwd, 0));
+			append_key_value(tmp, &data->our_env, &data->env_size);
+			free(tmp);
+		}
 		else if ((!ft_strcmp("PWD", data->our_env[i])
 				|| !ft_strncmp("PWD=", data->our_env[i], 4)))
-			append_key_value(malloc_guard(ft_strjoin_wrapper("PWD=", pwd, 2)),
-				&data->our_env, &data->env_size);
+		{
+			tmp = malloc_guard(ft_strjoin_wrapper("PWD=", pwd, 2));
+			append_key_value(tmp, &data->our_env, &data->env_size);
+			free(tmp);
+		}
 		i++;
 	}
-	data->exit_status = 0;
 }
 
 static void	handle_cd_home(t_data *data)
@@ -46,13 +52,19 @@ static void	handle_cd_home(t_data *data)
 	tmp_old_pwd = malloc_guard(getcwd(tmp_old_pwd, 0));
 	home = get_env(data->our_env, "HOME");
 	if (!home)
+	{
+		free(tmp_old_pwd);
 		return (print_error(data, 1,
 				make_array("codyshell: cd: HOME not set", NULL, NULL, NULL)));
+	}
 	ret = chdir(home);
 	if (ret == -1)
+	{
+		free(tmp_old_pwd);
 		return (print_error(data, 1,
 				make_array("codyshell: cd: ",
 					data->args[1], ": ", strerror(errno))));
+	}
 	update_oldpwd_and_pwd(data, tmp_old_pwd);
 	free(tmp_old_pwd);
 }
@@ -79,9 +91,13 @@ void	ft_cd(t_data *data)
 	tmp_old_pwd = malloc_guard(getcwd(tmp_old_pwd, 0));
 	ret = chdir(data->args[1]);
 	if (ret == -1)
+	{
+		free(tmp_old_pwd);
 		return (print_error(data, 1,
 				make_array("codyshell: cd: ",
 					data->args[1], ": ", strerror(errno))));
+	}
 	update_oldpwd_and_pwd(data, tmp_old_pwd);
 	free(tmp_old_pwd);
+	data->exit_status = 0;
 }

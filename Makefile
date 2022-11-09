@@ -6,7 +6,7 @@
 #    By: jelvan-d <jelvan-d@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/04 10:33:36 by jelvan-d      #+#    #+#                  #
-#    Updated: 2022/11/08 13:49:11 by jelvan-d      ########   odam.nl          #
+#    Updated: 2022/11/09 12:10:49 by jelvan-d      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS		=	builtins/cd\
 				utils/bubble_sort\
 				utils/environment_utils\
 				utils/free\
+				utils/free2\
 				utils/get_env\
 				utils/list\
 				utils/malloc_wrapper\
