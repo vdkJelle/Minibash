@@ -54,7 +54,7 @@ cd <target_location>
   <p>To use codyshell you can type in commands and press enter. Codyshell can execute several builtin commands: cd, echo, exit, export and pwd. All other commands by executed by using execve.</p>
   <ul>
     <li>
-      <p>Commands are seperated form each other by control operators. Codyshell runs single commands, multiple commands (separated by <code>;</code>) and commands with pipes <code>|</code> in between them.<br>
+      <p>Commands are seperated from each other by control operators. Codyshell runs single commands, multiple commands (separated by <code>;</code>) and commands with pipes <code>|</code> in between them.<br>
       The <code>;</code> operator simply separates commands from each other. The <code>|</code> operator (also called a pipe) also allows the user to use the output of the previous command as input of the next command.<br>
       Codyshell does not handle the following control operators: <code>||</code>, <code>&&</code>, <code>&</code>, <code>;;</code>, <code>;&</code>, <code>;;&</code>, <code>|&&</code>, <code>(</code> and <code>)</code>.</p>
     </li>
