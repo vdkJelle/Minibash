@@ -51,7 +51,7 @@ cd <target_location>
 </div>
 <div class="commands">
   <h2>What can codyshell do?</h2>
-  <p>To use cody shell you can type in commands and press enter. Codyshell can execute several builtin commands: cd, echo, exit, export and pwd. All other commands by executed by using execve.</p>
+  <p>To use codyshell you can type in commands and press enter. Codyshell can execute several builtin commands: cd, echo, exit, export and pwd. All other commands by executed by using execve.</p>
   <ul>
     <li>
       <p>Commands are seperated form each other by control operators. Codyshell runs single commands, multiple commands (separated by <code>;</code>) and commands with pipes <code>|</code> in between them.<br>
