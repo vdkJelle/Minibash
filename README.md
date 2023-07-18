@@ -16,17 +16,18 @@
     <li>Copy the url of the repository.</li>
     <li>Open up a terminal.</li>
     <li>Clone the repostiory using the `git clone` command. You can type in `git clone ` and paste the url you just copied after it. It is also recommended to specify the target location (e.g. where you would like the repository to be cloned to).
-      <p>
-        ```
-        git clone url_you_just_copied name_of_target_directory
-        ```
-      </p>
-      <p>For example:</p>
-      <p>
-      ```
-      git clone https://github.com/vdkJelle/Minibash codyshell
-      ```
-      </p>
+<p>
+
+```
+git clone <url> <target_location>
+```
+  </p>
+      <p>For example:</p><p>
+
+```
+git clone https://github.com/Minibash codyshell
+```
+  </p>
       <p>This will create a new directory called codyshell and will clone the github repostiory into it. Please note if you do not specify name_of_target_directory, the repostitory will be cloned into your working directory.</p>
     </li>
     <li>Press enter and you've successfully cloned the repostitory!</li>
@@ -35,13 +36,12 @@
 <div class="run">
   <h2>How to run codyshell</h2>
   <ol>
-    <li>Change your directory to the newly created directory.
-      <p>
-        ```
-        cd name_of_target_directory
-        ```
-      </p>
-    </li>
+    <li>Change your directory to the directory you've just cloned.</li><p>
+
+```
+cd <target_location>
+```
+  </p>
     <li>Use the makefile to build the project. Type in `make` into the terminal and press enter. The makefile will build the project and create an executable called codyshell.</li>
     <li>The makefile also allows you to rebuild the project with: `make re`, remove all object files with `make clean` and remove all object files and the executable with `make fclean`.</li>
     <li>Now you can run codyshell by typing in `./codyshell`.</li>
