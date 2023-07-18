@@ -8,7 +8,7 @@
   <h2>What is a shell?</h2>
   <img src="https://i0.wp.com/matt.might.net/articles/bash-by-example/images/bash-shell.png" />
   <p>A shell is a program that runs in a terminal. A terminal is simply a program that opens up a window in which you can interact with the shell. A shell
-    takes in commands from a user and gives them to an operating system, which execute the commands. The results are then displayed in the terminal. Codyshell is based on the shell bash.</p>
+    takes in commands from a user and gives them to an operating system, which execute the commands. Depending on the type of command, results will be displayed in the terminal. Codyshell is based on the shell bash.</p>
 </div>
 <div class="clone">
   <h2>How to clone the repository</h2>
