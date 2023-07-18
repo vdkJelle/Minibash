@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html><div class="welcome">
   <h1>Hi there, welcome to codyshell 👋</h1>
-  <subtitle>Codyshell (also know as Minishell in the 42 curriculum) is a mini version of the shell: bash.
-  Codyshell is written in the C programming language and created by vdkJelle and TessavdL.</subtitle>
+  <subtitle>Codyshell (also know as Minishell in the 42 curriculum) is a mini version of the Unix shell: bash. Codyshell is written in the C programming language and created by vdkJelle and TessavdL.</subtitle>
 </div>
 <div class="shell">
   <h2>What is a shell?</h2>
