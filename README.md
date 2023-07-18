@@ -72,5 +72,12 @@ cd <target_location>
 <div class="learning_objectives">
   <h2>What did we learn?</h2>
   <p>This is the first time we built a shell from scratch. We learned how to change the input from the user (the commands) into something that can be executed by the operating system. We had to learn how to write a lexer and a parser. We had to make sure that the input was valid and return the correct error messages in case of invalid input. The project also required us to use and manage file descriptors extensively. For redirections, but also for pipes, which was the trickiest part of the project. Lastly we also learned about processes and signals.</p>
-</div></html>
+</div>
+<div class="doggo">
+  <h2>Why is the shell called codyshell?</h2>
+  <p>Because Cody is best boi</p>
+</div>
+</html>
+
+  ![image](https://github.com/vdkJelle/Minibash/assets/72658914/875429dc-4a3f-4148-a6fe-276b988df73b)
 
