@@ -13,7 +13,7 @@
 <div class="clone">
   <h2>How to clone the repository</h2>
   <ol>
-    <li>Above the list of files, click < > Code.</li>
+    <li>Above the list of files, click <code>< > Code</code>.</li>
     <li>Copy the url of the repository.</li>
     <li>Open up a terminal.</li>
     <li>Clone the repostiory using the <code>git clone</code> command. You can type in <code>git clone</code> and paste the url you just copied after it. It is also recommended to specify the target location (e.g. where you would like the repository to be cloned to).
