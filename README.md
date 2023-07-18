@@ -65,7 +65,3 @@
   <h2>What did we learn?</h2>
   <p>This is the first time we build a shell from scratch. We learned how to change the input from the user (the commands) into something that can be executed by the operating system. We had to learn how to write a lexer and a parser. We had to make sure that the input was valid and return the correct error messages in case of invalid input. The project also required us to use and manage file descriptors extensively. For redirections, but also for pipes, which was the trickiest part of the project. Lastly we also learned about processes and signals.</p>
 </div>
-<div class="end">
-  <h2>What did we learn?</h2>
-  <p>This is the first time we build a shell from scratch. We learned how to change the input from the user (the commands) into something that can be executed by the operating system. We had to learn how to write a lexer and a parser. We had to make sure that the input was valid and return the correct error messages in case of invalid input. The project also required us to use and manage file descriptors extensively. For redirections, but also for pipes, which was the trickiest part of the project. Lastly we also learned about processes and signals.</p>
-</div>
