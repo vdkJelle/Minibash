@@ -25,7 +25,7 @@ git clone <url> <target_location>
       <p>For example:</p><p>
 
 ```
-git clone https://github.com/Minibash codyshell
+git clone https://github.com/vdkJelle/Minibash codyshell
 ```
   </p>
       <p>This will create a new directory called codyshell and will clone the github repostiory into it. Please note if you do not specify name_of_target_directory, the repostitory will be cloned into your working directory.</p>
