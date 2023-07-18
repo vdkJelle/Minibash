@@ -46,7 +46,7 @@ cd <target_location>
     <li>Use the makefile to build the project. Type in <code>make</code> into the terminal and press enter. The makefile will build the project and create an executable called codyshell.</li>
     <li>The makefile also allows you to rebuild the project with: <code>make re</code>, remove all object files with <code>make clean</code> and remove all object files and the executable with <code>make fclean</code>.</li>
     <li>Now you can run codyshell by typing in <code>./codyshell</code>.</li>
-    <li>If you wish to exit codyshell you can type in <code>exit</code>, press <code>ctrl + c</code> or close the terminal.</li>
+    <li>If you wish to exit codyshell you can use the <code>exit</code> command, press <code>ctrl + c</code> or close the terminal.</li>
   </ol>
 </div>
 <div class="commands">
@@ -63,7 +63,7 @@ cd <target_location>
       Codyshell does not handle the following metacharacters: <code>&</code>, <code>(</code>, and <code>)</code>.</p>
     <li>Codyshell handles environmental variables with <code>$var</code> which will expand to the value of the variable name if it exists.</li>
     <li>Codyshell can also handle <code>$0</code>, which displays the exit status of the previosly executed command.</li>
-    <li>Codyshell handles redirections <code>'<'</code>, <code>'<<'</code>(heredoc), <code>'>'</code> and <code>'>>'</code>.</li>
+    <li>Codyshell handles redirections <code><</code>, <code><<</code>(heredoc), <code>></code> and <code>>></code>.</li>
     <li>Codyshell handles escape characters.</li>
     <li>Codyshell responds to the following signals: <code>ctrl + c</code>, <code>ctrl + d</code> and <code>ctrl + /</code>.</li>
     <li>Codyshell does not handle multiline commands.</li>
