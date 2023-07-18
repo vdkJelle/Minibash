@@ -61,7 +61,7 @@ cd <target_location>
     <li>
       <p>Commands can consists of one or more words. The first word is always the name of the command that is to be executed. The rest of the words are arguments that can change the behavior of the command that is executed.<br>Words are seperated by metacharacters. Codyshell handles <code>spaces</code>, <code>tabs</code>, <code>'<'</code>, <code>'>'</code>, <code>;</code> and <code>|</code>.<br>
       Codyshell does not handle the following metacharacters: <code>&</code>, <code>(</code>, and <code>)</code>.</p>
-    <li>Codyshell handles environmental variables with <code>$var</code> which will expand to the value of the variable name if it exists.</li>
+    <li>Codyshell handles environmental variables with <code>$variable_name</code> which will expand to the value of the variable_name if it exists.</li>
     <li>Codyshell can also handle <code>$0</code>, which displays the exit status of the previosly executed command.</li>
     <li>Codyshell handles redirections <code><</code>, <code><<</code>(heredoc), <code>></code> and <code>>></code>.</li>
     <li>Codyshell handles escape characters.</li>
